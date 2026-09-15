@@ -25,10 +25,19 @@ html,body{margin:0;height:100%;background:#11100f;color:#fff;overflow:hidden}
 .stage-top{position:absolute;top:24px;left:28px;right:28px;display:flex;align-items:center;justify-content:space-between;z-index:7;pointer-events:none}
 .stage-count{font:500 11px/1 var(--font-body);letter-spacing:.16em;color:rgba(255,255,255,.58)}
 .demo{position:static;text-align:left;font-size:10px;color:var(--bt-amber)}
-.stage-rail{position:absolute;left:28px;right:28px;bottom:68px;display:grid;grid-template-columns:repeat(8,1fr);gap:5px;z-index:7;pointer-events:none}
-.stage-rail i{height:3px;background:rgba(255,255,255,.18);transition:background .35s var(--ease-out),transform .35s var(--ease-out);transform-origin:left center}
-.stage-rail i.on{background:var(--bt-salmon)}
-.stage-rail i.current{transform:scaleY(2)}
+.journey-map{position:absolute;top:52px;left:28px;right:28px;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px;z-index:7}
+.journey-node{all:unset;min-width:0;display:grid;gap:7px;color:rgba(255,255,255,.38);font:500 9px/1 var(--font-body);letter-spacing:.08em;text-transform:uppercase;cursor:default;transition:color .25s var(--ease-out)}
+.journey-node:enabled{cursor:pointer}
+.journey-node:enabled:hover,.journey-node:focus-visible{color:#fff;outline:none}
+.journey-node[aria-current="step"]{color:var(--bt-salmon)}
+.journey-node .marker{height:3px;background:rgba(255,255,255,.18);transition:background .25s var(--ease-out),transform .25s var(--ease-out);transform-origin:left center}
+.journey-node.is-open .marker{background:rgba(255,151,131,.6)}
+.journey-node[aria-current="step"] .marker{background:var(--bt-salmon);transform:scaleY(2)}
+.journey-preview{width:100%;box-sizing:border-box;border-top:1px solid rgba(255,255,255,.28);border-bottom:1px solid rgba(255,255,255,.16);padding:13px 0 11px;text-align:left}
+.journey-preview-head{display:flex;justify-content:space-between;gap:12px;color:var(--bt-salmon);font:500 10px/1 var(--font-body);letter-spacing:.18em;text-transform:uppercase}
+.journey-preview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px}
+.journey-preview-grid strong{display:block;font:900 18px/1 var(--font-display);color:#fff}
+.journey-preview-grid span{display:block;margin-top:5px;color:rgba(255,255,255,.58);font:400 10px/1.2 var(--font-body);letter-spacing:.06em;text-transform:uppercase}
 .stage-controls{position:absolute;left:28px;right:28px;bottom:20px;display:flex;justify-content:space-between;align-items:center;z-index:9;pointer-events:none}
 .stage-controls button{all:unset;min-width:74px;height:32px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;gap:8px;color:rgba(255,255,255,.7);font:500 10px/1 var(--font-body);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;pointer-events:auto;border-bottom:1px solid rgba(255,255,255,.24);transition:color .2s var(--ease-out),border-color .2s var(--ease-out)}
 .stage-controls button:hover,.stage-controls button:focus-visible{color:#fff;border-color:var(--bt-salmon);outline:none}
@@ -64,11 +73,12 @@ const WARP=Array.from({length:22},(_,i)=>i);
 function Warp(){return <svg className="warp" viewBox="0 0 440 932" preserveAspectRatio="none">{WARP.map(i=><line key={i} x1={i*21+8} y1="0" x2={i*21+8} y2="932" strokeWidth={i%5===0?2:1} style={{animationDelay:(i*0.31)+"s"}}/>)}</svg>}
 function useCount(target,run,dur=1400){const [v,setV]=React.useState(0);React.useEffect(()=>{if(!run){setV(0);return}let raf,t0;const tick=t=>{if(!t0)t0=t;const p=Math.min(1,(t-t0)/dur);setV(Math.round(target*(1-Math.pow(1-p,3))));if(p<1)raf=requestAnimationFrame(tick)};raf=requestAnimationFrame(tick);return()=>cancelAnimationFrame(raf)},[target,run,dur]);return v}
 
-function Idle(){return <div className="scene" style={{alignItems:"center",justifyContent:"center",textAlign:"center",gap:30}}>
+function Idle(){return <div className="scene" style={{alignItems:"center",justifyContent:"center",textAlign:"center",gap:26}}>
   <div className="up" style={{animationDelay:".1s"}}><div className="eb">Beyond Tenun · Seed to Loom</div></div>
   <div className="up" style={{animationDelay:".25s"}}><div className="dsp" style={{fontSize:42}}>Claim the record<br/>of one cloth.</div></div>
   <div className="ring up" style={{animationDelay:".5s"}}><div style={{width:8,height:8,borderRadius:"50%",background:"var(--bt-salmon)"}}/></div>
   <p className="bd up" style={{animationDelay:".7s",maxWidth:"27ch"}}>Every length of tenun carries a record of the hands that made it. Hold your phone to the tag in the selvedge to read it.</p>
+  <div className="journey-preview up" style={{animationDelay:".9s"}}><div className="journey-preview-head"><span>Your journey in view</span><span>8 chapters</span></div><div className="journey-preview-grid"><div><strong>Seed</strong><span>Origin</span></div><div><strong>Loom</strong><span>Maker</span></div><div><strong>Claim</strong><span>Keep it moving</span></div></div></div>
 </div>}
 
 function Explain(){const items=[["What you claim","A Cloth Record — the provenance of one specific length of tenun: which cotton, whose hands, how long on the loom, and what the community allows to be told about the motif."],["Why it exists","Ancestral knowledge is rarely credited and even more rarely paid for. A record makes the maker visible and keeps her attached to her work."],["What you get","The record stays with this cloth — including on resale — and your claim tells us which weaver's next cloth you want to follow."],["What it is not","Not ownership of the cloth. Not a token, an investment or a donation receipt. The cloth and its motif stay with the community."]];
@@ -153,7 +163,7 @@ return <div className="scene" style={{justifyContent:"center",gap:20}}>
 </div>}
 
 const FLOW=[{c:Idle,t:5600},{c:Explain,t:9000},{c:Reading,t:3400},{c:Record,t:7000},{c:Journey,t:6800},{c:Claim,t:0},{c:Sealing,t:2600},{c:Claimed,t:0}];
-const FLOW_LABELS=["Welcome","Context","Scan","Maker","Journey","Claim","Processing","Issued"];
+const FLOW_LABELS=["Start","Story","Scan","Maker","Path","Claim","Write","Issued"];
 function App(){const [i,setI]=React.useState(0);const [p,setP]=React.useState(0);const [who,setWho]=React.useState({name:"",org:""});
   const step=FLOW[i],auto=step.t>0;
   React.useEffect(()=>{setP(0);if(!auto)return;let t0=performance.now(),raf;const tick=t=>{const q=Math.min(1,(t-t0)/step.t);setP(q);if(q<1)raf=requestAnimationFrame(tick);else setI(v=>v+1)};raf=requestAnimationFrame(tick);return()=>cancelAnimationFrame(raf)},[i,auto,step.t]);
@@ -162,12 +172,13 @@ function App(){const [i,setI]=React.useState(0);const [p,setP]=React.useState(0)
   const props=S===Claim?{onClaim:w=>{setWho(w);setI(i+1)}}:S===Claimed?{who,onAgain:()=>{setWho({name:"",org:""});setI(0)}}:{run:true};
   const goNext=()=>{if(auto)setI(v=>Math.min(FLOW.length-1,v+1))};
   const goBack=()=>setI(v=>Math.max(0,v-1));
+  const goTo=index=>{if(index<=i)setI(index)};
   return <div className="stage" onClick={goNext} style={{cursor:auto?"pointer":"default"}}>
     <div className="prog" style={{width:(p*100)+"%"}}/>
     <div className="vig"/>
     <div className="stage-top"><div className="demo">Sample / demo content</div><div className="stage-count">{String(i+1).padStart(2,"0")} / {String(FLOW.length).padStart(2,"0")}</div></div>
+    <nav className="journey-map" aria-label="Journey chapters">{FLOW_LABELS.map((label,index)=><button key={label} type="button" className={"journey-node"+(index<=i?" is-open":"")} aria-current={index===i?"step":undefined} disabled={index>i} onClick={e=>{e.stopPropagation();goTo(index)}}><span className="marker"/><span>{label}</span></button>)}</nav>
     <div key={i} style={{position:"absolute",inset:0}}><S {...props}/></div>
-    <div className="stage-rail" aria-label="Journey progress">{FLOW_LABELS.map((label,index)=><i key={label} className={(index<=i?"on ":"")+(index===i?"current":"")} title={label}/>)}</div>
     <div className="stage-controls"><button type="button" onClick={e=>{e.stopPropagation();goBack()}} disabled={i===0}>Back</button><span className="hint">{auto?"Tap or use next":"Your record, in your hands"}</span><button className="next" type="button" onClick={e=>{e.stopPropagation();goNext()}} disabled={!auto}>Next</button></div>
   </div>}
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
