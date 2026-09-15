@@ -1,0 +1,15 @@
+<!-- @dsCard group="Deck" viewport="1280x720" name="Fundraising deck (click-through)" subtitle="Arrow keys or click to move between the seven slide types" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css"><script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script><style>html,body{margin:0;height:100%;background:var(--bt-ink);overflow:hidden}#root{width:100%;height:100%;display:grid;place-items:center}.stage{position:relative;width:1280px;height:720px;transform-origin:center;cursor:pointer}.nav{position:absolute;left:0;right:0;bottom:16px;display:flex;justify-content:center;gap:8px}.nav i{width:24px;height:2px;background:rgba(255,255,255,.3)}.nav i.on{background:var(--bt-salmon)}</style></head><body><div id="root"></div>
+<script type="text/babel" src="slides.jsx"></script>
+<script type="text/babel">
+const order=[TitleSlide,ProblemSlide,StepsSlide,StatementSlide,StatsSlide,TableSlide,ClosingSlide];
+function Deck(){const [i,setI]=React.useState(()=>+(localStorage.getItem("bt-deck-i")||0));const [s,setS]=React.useState(1);
+  React.useEffect(()=>{const fit=()=>setS(Math.min(innerWidth/1280,innerHeight/720));fit();addEventListener("resize",fit);const k=e=>{if(e.key==="ArrowRight")setI(v=>Math.min(order.length-1,v+1));if(e.key==="ArrowLeft")setI(v=>Math.max(0,v-1))};addEventListener("keydown",k);return()=>{removeEventListener("resize",fit);removeEventListener("keydown",k)}},[]);
+  React.useEffect(()=>localStorage.setItem("bt-deck-i",i),[i]);
+  const S=order[i];
+  return <div className="stage" style={{transform:"scale("+s+")"}} onClick={()=>setI(v=>(v+1)%order.length)}><S/><div className="nav">{order.map((_,k)=><i key={k} className={k===i?"on":""}/>)}</div></div>}
+ReactDOM.createRoot(document.getElementById("root")).render(<Deck/>);
+</script></body></html>

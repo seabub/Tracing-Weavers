@@ -1,0 +1,3 @@
+/** Primary call-to-action. Letterspaced caps, square corners, red fill. */
+export interface ButtonProps{variant?:"primary"|"secondary"|"ghost";size?:"sm"|"md"|"lg";/** Use on ink grounds — swaps red for salmon */inverse?:boolean;disabled?:boolean;fullWidth?:boolean;type?:"button"|"submit";onClick?:()=>void;children?:React.ReactNode;style?:React.CSSProperties}
+export function Button(props:ButtonProps):JSX.Element;

@@ -1,0 +1,60 @@
+:root{
+/* Base — sampled from Beyond Tenun Fundraising Deck v3 */
+--bt-ink:#201E1D;          /* near-black text, dark slide grounds */
+--bt-ink-2:#605D5D;        /* secondary text */
+--bt-ink-3:#7B7B7B;        /* tertiary / captions */
+--bt-black:#000000;
+--bt-white:#FFFFFF;
+--bt-paper:#F3F2F2;        /* light slide ground */
+--bt-paper-2:#F5F5F5;
+--bt-stone:#CFC8BB;        /* warm rule / divider on paper */
+--bt-red:#AE1800;          /* primary accent — eyebrows, rules, emphasis */
+--bt-red-bright:#EC3013;   /* hover / active */
+--bt-salmon:#FF9783;       /* accent on dark grounds */
+--bt-blush:#FFF2EF;        /* tinted surface */
+--bt-clay:#F29A6A;         /* secondary warm accent */
+--bt-amber:#ECA406;        /* highlight / natural-dye gold */
+--bt-indigo:#2B3A67;       /* natural-dye indigo, used sparingly for data */
+
+/* Semantic — light */
+--surface-page:var(--bt-paper);
+--surface-card:var(--bt-white);
+--surface-tint:var(--bt-blush);
+--surface-inverse:var(--bt-ink);
+--text-body:var(--bt-ink);
+--text-muted:var(--bt-ink-2);
+--text-faint:var(--bt-ink-3);
+--text-accent:var(--bt-red);
+--text-on-inverse:var(--bt-white);
+--text-on-inverse-muted:rgba(255,255,255,.62);
+--border-subtle:var(--bt-stone);
+--border-strong:var(--bt-ink);
+--accent:var(--bt-red);
+--accent-hover:var(--bt-red-bright);
+--accent-soft:var(--bt-salmon);
+--accent-on-dark:var(--bt-salmon);
+--focus-ring:var(--bt-red-bright);
+--link:var(--bt-red);
+--link-hover:var(--bt-red-bright);
+/* status — restrained; the brand uses no green/blue semantic set */
+--status-positive:#3E6B2E;
+--status-warning:var(--bt-amber);
+--status-negative:var(--bt-red-bright);
+}
+[data-theme="dark"]{
+--surface-page:var(--bt-ink);
+--surface-card:#2A2827;
+--surface-tint:#332F2E;
+--surface-inverse:var(--bt-paper);
+--text-body:var(--bt-white);
+--text-muted:rgba(255,255,255,.72);
+--text-faint:rgba(255,255,255,.5);
+--text-accent:var(--bt-salmon);
+--text-on-inverse:var(--bt-ink);
+--border-subtle:rgba(255,255,255,.18);
+--border-strong:var(--bt-white);
+--accent:var(--bt-salmon);
+--accent-hover:#FFB3A4;
+--link:var(--bt-salmon);
+--link-hover:#FFB3A4;
+}

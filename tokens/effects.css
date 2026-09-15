@@ -1,0 +1,18 @@
+:root{
+/* The deck is flat: hard edges, no shadows, 1px rules. Radii stay near zero. */
+--radius-none:0;
+--radius-sm:2px;
+--radius-md:4px;
+--radius-pill:999px;   /* tags only */
+--rule:1px solid var(--border-subtle);
+--rule-strong:2px solid var(--accent);
+--shadow-none:none;
+--shadow-float:0 12px 32px rgba(32,30,29,.16);   /* dialogs only */
+--scrim-bottom:linear-gradient(180deg,rgba(32,30,29,0) 35%,rgba(32,30,29,.78) 100%); /* @kind other */
+--scrim-left:linear-gradient(90deg,rgba(32,30,29,.82) 0%,rgba(32,30,29,.35) 55%,rgba(32,30,29,0) 100%); /* @kind other */
+--photo-filter:saturate(.92) contrast(1.04); /* @kind other */
+--ease-out:cubic-bezier(.2,.7,.2,1); /* @kind other */
+--duration-fast:120ms; /* @kind other */
+--duration-base:220ms; /* @kind other */
+--hover-opacity:.8; /* @kind other */
+}

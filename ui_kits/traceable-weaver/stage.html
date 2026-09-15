@@ -1,0 +1,177 @@
+<!-- @dsCard group="Traceable Weaver" viewport="430x932" name="Traceable Weaver — stage" subtitle="Conference showpiece: explain → scan → record → journey → claim a Cloth Record; demo content" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Traceable Weaver — stage</title><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+html,body{margin:0;height:100%;background:#11100f;color:#fff;overflow:hidden}
+#root{height:100vh;display:grid;place-items:center}
+.stage{position:relative;width:100%;max-width:620px;height:100vh;overflow:hidden;-webkit-tap-highlight-color:transparent;background:var(--bt-ink);box-shadow:0 24px 80px rgba(0,0,0,.42)}
+.warp{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.warp line{stroke:var(--bt-salmon);animation:breathe 7s var(--ease-out) infinite}
+@keyframes breathe{0%,100%{opacity:.06}50%{opacity:.26}}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 70% at 50% 40%,rgba(32,30,29,0) 30%,rgba(32,30,29,.86) 100%)}
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;padding:92px 36px 104px;box-sizing:border-box;overflow-y:auto;overflow-x:hidden}
+.eb{font:400 11px/1 var(--font-body);letter-spacing:.42em;text-transform:uppercase;color:var(--bt-salmon)}
+.dsp{font-family:var(--font-display);font-weight:900;letter-spacing:-.025em;line-height:1}
+.bd{font:400 16px/1.5 var(--font-body);color:rgba(255,255,255,.75);margin:0}
+.up{opacity:0;transform:translateY(14px);animation:up .9s var(--ease-out) forwards}
+@keyframes up{to{opacity:1;transform:none}}
+.draw line{stroke:var(--bt-salmon);stroke-width:1.5;stroke-dasharray:420;stroke-dashoffset:420;animation:draw 1.5s var(--ease-out) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.weft{stroke:#fff;stroke-width:3;stroke-dasharray:340;stroke-dashoffset:340;animation:draw 1s .9s var(--ease-out) forwards}
+.ring{width:126px;height:126px;border:1px solid rgba(255,255,255,.35);border-radius:50%;display:grid;place-items:center;position:relative}
+.ring::before,.ring::after{content:"";position:absolute;inset:-1px;border:1px solid var(--bt-salmon);border-radius:50%;animation:pulse 3s var(--ease-out) infinite}
+.ring::after{animation-delay:1.5s}
+@keyframes pulse{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.85);opacity:0}}
+.prog{position:absolute;top:0;left:0;height:3px;background:var(--bt-salmon);z-index:8}
+.stage-top{position:absolute;top:24px;left:28px;right:28px;display:flex;align-items:center;justify-content:space-between;z-index:7;pointer-events:none}
+.stage-count{font:500 11px/1 var(--font-body);letter-spacing:.16em;color:rgba(255,255,255,.58)}
+.demo{position:static;text-align:left;font-size:10px;color:var(--bt-amber)}
+.stage-rail{position:absolute;left:28px;right:28px;bottom:68px;display:grid;grid-template-columns:repeat(8,1fr);gap:5px;z-index:7;pointer-events:none}
+.stage-rail i{height:3px;background:rgba(255,255,255,.18);transition:background .35s var(--ease-out),transform .35s var(--ease-out);transform-origin:left center}
+.stage-rail i.on{background:var(--bt-salmon)}
+.stage-rail i.current{transform:scaleY(2)}
+.stage-controls{position:absolute;left:28px;right:28px;bottom:20px;display:flex;justify-content:space-between;align-items:center;z-index:9;pointer-events:none}
+.stage-controls button{all:unset;min-width:74px;height:32px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;gap:8px;color:rgba(255,255,255,.7);font:500 10px/1 var(--font-body);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;pointer-events:auto;border-bottom:1px solid rgba(255,255,255,.24);transition:color .2s var(--ease-out),border-color .2s var(--ease-out)}
+.stage-controls button:hover,.stage-controls button:focus-visible{color:#fff;border-color:var(--bt-salmon);outline:none}
+.stage-controls button:disabled{opacity:.28;cursor:default}
+.stage-controls .next{color:var(--bt-salmon)}
+.tag{display:inline-block;padding:5px 12px;border:1px solid rgba(255,255,255,.4);border-radius:var(--radius-pill);font:400 11px/1 var(--font-body);letter-spacing:.14em;text-transform:uppercase}
+.row{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-top:1px solid rgba(255,255,255,.18);font:400 15px/1.3 var(--font-body)}
+.step{display:flex;align-items:baseline;gap:14px;padding:11px 0;border-top:1px solid rgba(255,255,255,.14);opacity:.32;transition:opacity .5s var(--ease-out)}
+.step.on{opacity:1}
+.step i{font:400 11px/1 var(--font-body);letter-spacing:.14em;color:var(--bt-salmon);font-style:normal;width:22px;flex:none}
+.step b{font:900 17px/1 var(--font-display);letter-spacing:.07em;text-transform:uppercase}
+.btn{all:unset;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;height:52px;background:var(--bt-salmon);color:var(--bt-ink);font:500 14px/1 var(--font-body);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:background var(--duration-fast) var(--ease-out),transform var(--duration-fast) var(--ease-out),opacity var(--duration-fast) var(--ease-out)}
+.btn:hover{background:#FFB3A4}
+.btn:active{transform:translateY(1px)}
+.btn:focus-visible{outline:2px solid #fff;outline-offset:4px}
+.btn:disabled{opacity:.48;cursor:wait}
+.btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.45);height:46px}
+.btn.ghost:hover{background:rgba(255,255,255,.08)}
+.fld{width:100%;box-sizing:border-box;background:transparent;color:#fff;border:none;border-bottom:1px solid rgba(255,255,255,.4);padding:10px 0;font:400 18px/1.3 var(--font-body);outline:none}
+.fld:focus{border-color:var(--bt-salmon)}
+.lbl{display:block;font:400 11px/1 var(--font-body);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:2px}
+.keep{position:relative;border:1px solid rgba(255,255,255,.32);padding:24px;overflow:hidden;background:rgba(255,255,255,.04)}
+.keep::after{content:"";position:absolute;top:0;bottom:0;width:38%;left:-40%;background:linear-gradient(90deg,transparent,rgba(255,151,131,.22),transparent);animation:sheen 4.5s 1s var(--ease-out) infinite}
+@keyframes sheen{to{left:120%}}
+.seal circle,.seal line{stroke:var(--bt-salmon);fill:none;stroke-dasharray:600;stroke-dashoffset:600;animation:draw 1.1s var(--ease-out) forwards}
+.hint{position:absolute;left:0;right:0;bottom:20px;text-align:center;font:400 12px/1 var(--font-body);letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.62);animation:blink 3.4s ease-in-out infinite;z-index:6}
+@keyframes blink{0%,100%{opacity:.62}50%{opacity:1}}
+.photo{position:absolute;inset:0;background-position:center;background-size:cover;filter:var(--photo-filter);opacity:0;animation:kb 7s var(--ease-out) forwards}
+@keyframes kb{0%{opacity:0;transform:scale(1.14)}30%{opacity:1}100%{opacity:1;transform:scale(1)}}
+</style></head><body><div id="root"></div>
+<script type="text/babel">
+const WARP=Array.from({length:22},(_,i)=>i);
+function Warp(){return <svg className="warp" viewBox="0 0 440 932" preserveAspectRatio="none">{WARP.map(i=><line key={i} x1={i*21+8} y1="0" x2={i*21+8} y2="932" strokeWidth={i%5===0?2:1} style={{animationDelay:(i*0.31)+"s"}}/>)}</svg>}
+function useCount(target,run,dur=1400){const [v,setV]=React.useState(0);React.useEffect(()=>{if(!run){setV(0);return}let raf,t0;const tick=t=>{if(!t0)t0=t;const p=Math.min(1,(t-t0)/dur);setV(Math.round(target*(1-Math.pow(1-p,3))));if(p<1)raf=requestAnimationFrame(tick)};raf=requestAnimationFrame(tick);return()=>cancelAnimationFrame(raf)},[target,run,dur]);return v}
+
+function Idle(){return <div className="scene" style={{alignItems:"center",justifyContent:"center",textAlign:"center",gap:30}}>
+  <div className="up" style={{animationDelay:".1s"}}><div className="eb">Beyond Tenun · Seed to Loom</div></div>
+  <div className="up" style={{animationDelay:".25s"}}><div className="dsp" style={{fontSize:42}}>Claim the record<br/>of one cloth.</div></div>
+  <div className="ring up" style={{animationDelay:".5s"}}><div style={{width:8,height:8,borderRadius:"50%",background:"var(--bt-salmon)"}}/></div>
+  <p className="bd up" style={{animationDelay:".7s",maxWidth:"27ch"}}>Every length of tenun carries a record of the hands that made it. Hold your phone to the tag in the selvedge to read it.</p>
+</div>}
+
+function Explain(){const items=[["What you claim","A Cloth Record — the provenance of one specific length of tenun: which cotton, whose hands, how long on the loom, and what the community allows to be told about the motif."],["Why it exists","Ancestral knowledge is rarely credited and even more rarely paid for. A record makes the maker visible and keeps her attached to her work."],["What you get","The record stays with this cloth — including on resale — and your claim tells us which weaver's next cloth you want to follow."],["What it is not","Not ownership of the cloth. Not a token, an investment or a donation receipt. The cloth and its motif stay with the community."]];
+return <div className="scene" style={{justifyContent:"center"}}>
+  <div className="up"><div className="eb">Before you claim</div><div className="dsp" style={{fontSize:32,marginTop:12}}>One cloth.<br/>One record.</div></div>
+  <div style={{marginTop:24}}>{items.map(([t,d],i)=><div key={t} className="up" style={{animationDelay:(0.25+i*0.15)+"s",borderTop:"1px solid rgba(255,255,255,.18)",padding:"13px 0"}}>
+    <div style={{font:"400 11px/1 var(--font-body)",letterSpacing:".2em",textTransform:"uppercase",color:"var(--bt-salmon)"}}>{t}</div>
+    <p className="bd" style={{fontSize:14,marginTop:7}}>{d}</p></div>)}</div>
+</div>}
+
+function Reading(){return <div className="scene" style={{justifyContent:"center",alignItems:"center",gap:36}}>
+  <svg className="draw" viewBox="0 0 340 380" style={{width:"74%"}}>
+    {Array.from({length:13},(_,i)=><line key={i} x1={i*26+14} y1="0" x2={i*26+14} y2="380" style={{animationDelay:(i*0.075)+"s"}}/>)}
+    <line className="weft" x1="6" y1="192" x2="334" y2="192"/>
+  </svg>
+  <div className="up" style={{animationDelay:"1.4s",textAlign:"center"}}><div className="eb">Tag read</div><div className="dsp" style={{fontSize:26,marginTop:14}}>Cloth no. 0042</div></div>
+</div>}
+
+function Record({run}){const weeks=useCount(11,run),baths=useCount(3,run,1000);
+return <><div className="photo" style={{backgroundImage:"url(../../assets/imagery/web/weaver-portrait.jpg)",backgroundPosition:"center 28%"}}/>
+<div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(32,30,29,.35) 0%,rgba(32,30,29,.55) 42%,rgba(32,30,29,.96) 100%)"}}/>
+<div className="scene" style={{justifyContent:"flex-end",gap:16}}>
+  <div className="up"><div className="eb">The maker · Adonara</div><div className="dsp" style={{fontSize:38,marginTop:12}}>Mama<br/>[Name]</div></div>
+  <div className="up" style={{animationDelay:".35s",display:"flex",gap:8,flexWrap:"wrap"}}><span className="tag">Adonara</span><span className="tag">PEGAS PEKKA</span><span className="tag" style={{borderColor:"var(--bt-salmon)",color:"var(--bt-salmon)"}}>No. 0042</span></div>
+  <div className="up" style={{animationDelay:".5s"}}>
+    <div className="row"><span style={{color:"rgba(255,255,255,.75)"}}>Weeks on the loom</span><span className="dsp" style={{fontSize:26,color:"var(--bt-salmon)"}}>{weeks}</span></div>
+    <div className="row"><span style={{color:"rgba(255,255,255,.75)"}}>Dye baths, natural indigo</span><span className="dsp" style={{fontSize:26,color:"var(--bt-salmon)"}}>{baths}</span></div>
+    <div className="row" style={{borderBottom:"1px solid rgba(255,255,255,.18)"}}><span style={{color:"rgba(255,255,255,.75)"}}>Motif</span><span>shown with her permission</span></div>
+  </div>
+</div></>}
+
+const STEPS=["Seed","Loom","Trace","Teach","Regenerate","Hub","Flourish"];
+function Journey({run}){const [n,setN]=React.useState(0);
+React.useEffect(()=>{if(!run){setN(0);return}const id=setInterval(()=>setN(v=>v<7?v+1:v),560);return()=>clearInterval(id)},[run]);
+return <div className="scene" style={{justifyContent:"center"}}>
+  <div className="up"><div className="eb">What the record follows</div><div className="dsp" style={{fontSize:32,marginTop:12}}>Seed to Loom,<br/>then beyond it.</div></div>
+  <div style={{marginTop:22}}>{STEPS.map((s,i)=><div key={s} className={"step"+(i<n?" on":"")}><i>{"0"+(i+1)}</i><b>{s}</b><span style={{marginLeft:"auto",font:"400 13px/1 var(--font-body)",color:"var(--bt-salmon)",opacity:i===n-1?1:0,transition:"opacity .5s"}}>reading</span></div>)}</div>
+  <p className="bd" style={{marginTop:20,fontSize:14}}>A three-year pathway across Adonara, Lembata and Manggarai. Each step only holds if the one before it is in place.</p>
+</div>}
+
+function Claim({onClaim}){const [name,setName]=React.useState("");const [org,setOrg]=React.useState("");const [err,setErr]=React.useState(false);const [saving,setSaving]=React.useState(false);
+const submit=e=>{e.preventDefault();e.stopPropagation();if(!name.trim()){setErr(true);return}setSaving(true);window.setTimeout(()=>onClaim({name:name.trim(),org:org.trim()}),700)};
+return <form className="scene" onClick={e=>e.stopPropagation()} onSubmit={submit} style={{justifyContent:"center",gap:22}}>
+  <div className="up"><div className="eb">Claim · Cloth no. 0042</div><div className="dsp" style={{fontSize:34,marginTop:12}}>Put your name<br/>on the record.</div>
+  <p className="bd" style={{fontSize:15,marginTop:14}}>Your claim is recorded against this cloth, and we send you its record plus the next update from Mama [Name]'s community.</p></div>
+  <div className="up" style={{animationDelay:".3s",display:"grid",gap:18}}>
+    <label><span className="lbl">Your name</span><input className="fld" value={name} onChange={e=>{setName(e.target.value);setErr(false)}} placeholder="Full name" style={err?{borderColor:"var(--bt-red-bright)"}:null}/>{err&&<span style={{display:"block",marginTop:6,font:"400 13px/1 var(--font-body)",color:"#FFB3A4"}}>A name is needed to attach the claim</span>}</label>
+    <label><span className="lbl">Organization <span style={{opacity:.6}}>· optional</span></span><input className="fld" value={org} onChange={e=>setOrg(e.target.value)} placeholder="Foundation, fund or company"/></label>
+  </div>
+  <div className="up" style={{animationDelay:".45s",display:"grid",gap:10}}>
+    <button className="btn" type="submit" disabled={saving}>{saving?"Preparing your record…":"Claim this record"}</button>
+    <p className="bd" style={{fontSize:13}}>One claim per cloth. Demo record — nothing is transferred and no cloth changes hands.</p>
+  </div>
+</form>}
+
+function Sealing(){return <div className="scene" style={{alignItems:"center",justifyContent:"center",gap:34}}>
+  <svg className="seal" viewBox="0 0 200 200" style={{width:190}}>
+    <circle cx="100" cy="100" r="88" strokeWidth="1.5"/>
+    <circle cx="100" cy="100" r="62" strokeWidth="1" style={{animationDelay:".25s"}}/>
+    {[0,1,2,3,4,5].map(i=>{const a=(-90+i*60)*Math.PI/180;return <line key={i} x1={100+62*Math.cos(a)} y1={100+62*Math.sin(a)} x2={100+88*Math.cos(a)} y2={100+88*Math.sin(a)} strokeWidth="2" style={{animationDelay:(0.4+i*0.08)+"s"}}/>})}
+    <line x1="60" y1="100" x2="140" y2="100" strokeWidth="2.5" style={{animationDelay:".9s"}}/>
+  </svg>
+  <div className="up" style={{animationDelay:"1.1s",textAlign:"center"}}><div className="eb">Attaching your claim</div><div className="dsp" style={{fontSize:24,marginTop:12}}>Writing to the record…</div></div>
+</div>}
+
+function Claimed({who,onAgain}){const [joined,setJoined]=React.useState(false);const d=new Date().toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"});
+return <div className="scene" style={{justifyContent:"center",gap:20}}>
+  <div className="up"><div className="eb">Claimed</div></div>
+  <div className="keep up" style={{animationDelay:".25s"}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",gap:12}}><div className="dsp" style={{fontSize:28}}>Cloth no. 0042</div><span className="tag" style={{borderColor:"var(--bt-salmon)",color:"var(--bt-salmon)"}}>Issued once</span></div>
+    <div className="row" style={{marginTop:14}}><span style={{color:"rgba(255,255,255,.75)"}}>Held by</span><span style={{textAlign:"right",maxWidth:"60%"}}>{who.name}{who.org?" · "+who.org:""}</span></div>
+    <div className="row"><span style={{color:"rgba(255,255,255,.75)"}}>Woven by</span><span>Mama [Name] · Adonara</span></div>
+    <div className="row"><span style={{color:"rgba(255,255,255,.75)"}}>Claimed</span><span>{d}</span></div>
+    <p className="bd" style={{fontSize:13,marginTop:14,paddingTop:12,borderTop:"1px solid rgba(255,255,255,.22)"}}>The record travels with the cloth, including on resale. Value from each sale returns to the household that wove it.</p>
+  </div>
+  <div className="up" style={{animationDelay:".5s"}}><div className="dsp" style={{fontSize:25}}>Value returns to the people<br/>who hold the knowledge.</div>
+  <p className="bd" style={{fontSize:14,marginTop:12}}>580 weavers are mapped across Adonara, Lembata and Manggarai. The three-year Impact Partnership is how their records get built.</p></div>
+  <div className="up" style={{animationDelay:".65s",display:"grid",gap:9}}>
+    <button className="btn" onClick={e=>{e.stopPropagation();setJoined(true)}} disabled={joined}>{joined?"You are on the list":"Join the 3-year journey"}</button>
+    <button className="btn ghost" onClick={e=>{e.stopPropagation();onAgain()}}>Read another cloth</button>
+  </div>
+</div>}
+
+const FLOW=[{c:Idle,t:5600},{c:Explain,t:9000},{c:Reading,t:3400},{c:Record,t:7000},{c:Journey,t:6800},{c:Claim,t:0},{c:Sealing,t:2600},{c:Claimed,t:0}];
+const FLOW_LABELS=["Welcome","Context","Scan","Maker","Journey","Claim","Processing","Issued"];
+function App(){const [i,setI]=React.useState(0);const [p,setP]=React.useState(0);const [who,setWho]=React.useState({name:"",org:""});
+  const step=FLOW[i],auto=step.t>0;
+  React.useEffect(()=>{setP(0);if(!auto)return;let t0=performance.now(),raf;const tick=t=>{const q=Math.min(1,(t-t0)/step.t);setP(q);if(q<1)raf=requestAnimationFrame(tick);else setI(v=>v+1)};raf=requestAnimationFrame(tick);return()=>cancelAnimationFrame(raf)},[i,auto,step.t]);
+  React.useEffect(()=>{const k=e=>{if(e.key==="ArrowRight"&&auto)setI(v=>Math.min(FLOW.length-1,v+1));if(e.key==="ArrowLeft")setI(v=>Math.max(0,v-1))};addEventListener("keydown",k);return()=>removeEventListener("keydown",k)},[auto]);
+  const S=step.c;
+  const props=S===Claim?{onClaim:w=>{setWho(w);setI(i+1)}}:S===Claimed?{who,onAgain:()=>{setWho({name:"",org:""});setI(0)}}:{run:true};
+  const goNext=()=>{if(auto)setI(v=>Math.min(FLOW.length-1,v+1))};
+  const goBack=()=>setI(v=>Math.max(0,v-1));
+  return <div className="stage" onClick={goNext} style={{cursor:auto?"pointer":"default"}}>
+    <div className="prog" style={{width:(p*100)+"%"}}/>
+    <Warp/><div className="vig"/>
+    <div className="stage-top"><div className="demo">Sample / demo content</div><div className="stage-count">{String(i+1).padStart(2,"0")} / {String(FLOW.length).padStart(2,"0")}</div></div>
+    <div key={i} style={{position:"absolute",inset:0}}><S {...props}/></div>
+    <div className="stage-rail" aria-label="Journey progress">{FLOW_LABELS.map((label,index)=><i key={label} className={(index<=i?"on ":"")+(index===i?"current":"")} title={label}/>)}</div>
+    <div className="stage-controls"><button type="button" onClick={e=>{e.stopPropagation();goBack()}} disabled={i===0}>Back</button><span className="hint">{auto?"Tap or use next":"Your record, in your hands"}</span><button className="next" type="button" onClick={e=>{e.stopPropagation();goNext()}} disabled={!auto}>Next</button></div>
+  </div>}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script></body></html>

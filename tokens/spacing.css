@@ -1,0 +1,13 @@
+:root{
+--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:24px;--space-6:32px;--space-7:48px;--space-8:64px;--space-9:96px;--space-10:128px;
+/* slide layout (1920×1080 master) */
+--slide-margin-x:120px;
+--slide-margin-y:96px;
+--slide-gutter:48px;
+/* page layout */
+--page-max:1200px;
+--page-gutter:24px;
+/* controls */
+--control-h-sm:36px;--control-h-md:44px;--control-h-lg:56px;
+--control-px-sm:14px;--control-px-md:20px;--control-px-lg:28px;
+}

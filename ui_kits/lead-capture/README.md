@@ -1,0 +1,2 @@
+# Lead capture / QR landing
+Brief §5.13: mobile-friendly landing reached from booth QR codes. Interest options are the nine listed in the brief; captures name, organization, role, email/WhatsApp; thank-you dialog offers the executive brief. Composes Eyebrow, Input, Select, Checkbox, Tag, Button, Dialog.

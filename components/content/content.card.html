@@ -1,0 +1,24 @@
+<!-- @dsCard group="Components" viewport="700x400" name="Content" subtitle="Eyebrow, Stat, Step, Card, Tag, Badge, Quote" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;padding:20px;background:var(--surface-page)}.g{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:16px}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}</style></head><body><div id="root"></div>
+<script type="text/babel">
+const {Eyebrow,Stat,Step,Card,Tag,Badge,Quote}=window.BeyondTenunDesignSystem_9d918e;
+function App(){return <div style={{display:"grid",gap:16}}>
+<div className="g">
+<div style={{display:"grid",gap:12,alignContent:"start"}}><Eyebrow>Why this matters</Eyebrow><Stat value=">1,000" label="sociopreneurs developed" size="md"/><Stat value="USD 1M" label="three-year Impact Partnership" accent size="md"/></div>
+<Step number={1} title="Seed">Restore land, cotton and local ecological knowledge.</Step>
+<Card eyebrow="Adonara" title="Existing weaving practice" footer="PEGAS PEKKA · 250 weavers">Community-rooted organizations already on the ground.</Card>
+</div>
+<div className="g">
+<Quote source="In the communities' own words">Body, mind and soul. Dignity.</Quote>
+<div className="row"><Tag>Adonara</Tag><Tag>Lembata</Tag><Tag tone="accent">Manggarai</Tag><Tag tone="soft" onRemove={()=>{}}>Grant</Tag></div>
+<div className="row"><Badge>Core</Badge><Badge tone="accent">Hero</Badge><Badge tone="amber">To confirm</Badge><Badge tone="outline">Year 1 · Restore</Badge></div>
+</div>
+<div style={{background:"var(--bt-ink)",padding:16,display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:16}}><Eyebrow inverse>The loop</Eyebrow><Step inverse number={7} title="Flourish">Strengthen agency, dignity and resilience.</Step><Card inverse tone="tint" title="Local Impact Hub">A place, not a program.</Card></div>
+</div>}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script></body></html>

@@ -1,0 +1,17 @@
+<!-- @dsCard group="Components" viewport="700x300" name="Overlay & Navigation" subtitle="Tabs, Dialog, Toast, Tooltip" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;padding:20px;background:var(--surface-page)}</style></head><body><div id="root"></div>
+<script type="text/babel">
+const {Tabs,Dialog,Toast,Tooltip,Button,Badge}=window.BeyondTenunDesignSystem_9d918e;
+function App(){const [o,setO]=React.useState(false);return <div style={{display:"grid",gap:20}}>
+<Tabs items={["Year 1 · Restore","Year 2 · Regenerate","Year 3 · Flourish"]}/>
+<div style={{display:"flex",gap:16,alignItems:"center",flexWrap:"wrap"}}><Toast action="Undo">Lead saved to follow-up list.</Toast><Toast tone="amber">Budget line to confirm.</Toast><Tooltip label="NFC tag inside the selvedge"><Badge>Traceable</Badge></Tooltip><Button size="sm" variant="secondary" onClick={()=>setO(true)}>Open dialog</Button></div>
+<div style={{position:"relative",height:120,background:"var(--bt-white)",border:"1px solid var(--bt-stone)"}}><div style={{position:"absolute",inset:0,background:"rgba(32,30,29,.6)",display:"grid",placeItems:"center"}}><div style={{background:"#fff",boxShadow:"var(--shadow-float)",borderRadius:4,padding:"16px 20px",display:"grid",gap:6,width:380}}><div style={{font:"400 11px/1 var(--font-body)",letterSpacing:".42em",color:"var(--bt-red)"}}>THANK YOU</div><div style={{font:"900 18px/1.1 var(--font-display)"}}>We'll be in touch within 72 hours.</div><div style={{font:"400 13px/1.3 var(--font-body)",color:"var(--text-muted)"}}>The executive brief is on its way.</div></div></div></div>
+<Dialog open={o} onClose={()=>setO(false)} eyebrow="Thank you" title="We'll be in touch within 72 hours." actions={<Button onClick={()=>setO(false)}>Done</Button>}>The executive brief is on its way.</Dialog>
+</div>}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script></body></html>

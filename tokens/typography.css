@@ -1,0 +1,45 @@
+:root{
+--font-display:"Hanken Grotesk","Telegraf",system-ui,sans-serif;   /* Telegraf stand-in */
+--font-body:"Archivo Narrow","Arial Narrow",sans-serif;
+--font-script:"Caveat","Biro Script Plus",cursive;                   /* Biro Script stand-in */
+
+/* weights */
+--weight-display:900;   /* Telegraf Black */
+--weight-display-regular:400;
+--weight-body:400;
+--weight-body-bold:700;
+
+/* scale (px) — deck set at 1920×1080; divide by 1.5 for 1280 frames */
+--text-eyebrow:13px;
+--text-caption:14px;
+--text-body-sm:16px;
+--text-body:19px;
+--text-lead:24px;
+--text-h4:28px;
+--text-h3:36px;
+--text-h2:48px;
+--text-h1:64px;
+--text-display:96px;
+--text-stat:120px;
+
+/* line-height */
+--leading-display:.98;
+--leading-heading:1.08;
+--leading-body:1.4;
+--leading-loose:1.55;
+
+/* tracking */
+--tracking-eyebrow:.42em;   /* T H E   B I G   I D E A */
+--tracking-caps:.12em;
+--tracking-tight:-.02em;
+
+/* semantic composites */
+--type-eyebrow:400 var(--text-eyebrow)/1 var(--font-body);
+--type-h1:var(--weight-display) var(--text-h1)/var(--leading-heading) var(--font-display);
+--type-h2:var(--weight-display) var(--text-h2)/var(--leading-heading) var(--font-display);
+--type-h3:var(--weight-display-regular) var(--text-h3)/var(--leading-heading) var(--font-display);
+--type-lead:400 var(--text-lead)/var(--leading-body) var(--font-body);
+--type-body:400 var(--text-body)/var(--leading-body) var(--font-body);
+--type-caption:400 var(--text-caption)/var(--leading-body) var(--font-body);
+--type-script:700 var(--text-h3)/1 var(--font-script);
+}
