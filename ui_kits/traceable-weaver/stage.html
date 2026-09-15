@@ -59,6 +59,9 @@ html,body{margin:0;height:100%;background:#11100f;color:#fff;overflow:hidden}
 .fld{width:100%;box-sizing:border-box;background:transparent;color:#fff;border:none;border-bottom:1px solid rgba(255,255,255,.4);padding:10px 0;font:400 18px/1.3 var(--font-body);outline:none}
 .fld:focus{border-color:var(--bt-salmon)}
 .lbl{display:block;font:400 11px/1 var(--font-body);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:2px}
+.demo-fill{all:unset;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:12px 0;border-top:1px solid rgba(255,255,255,.2);border-bottom:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.72);font:500 11px/1.2 var(--font-body);letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.demo-fill::after{content:"+";font:400 20px/1 var(--font-body);color:var(--bt-salmon)}
+.demo-fill:hover,.demo-fill:focus-visible{color:#fff;outline:none;border-color:var(--bt-salmon)}
 .keep{position:relative;border:1px solid rgba(255,255,255,.32);padding:24px;overflow:hidden;background:rgba(255,255,255,.04)}
 .keep::after{content:"";position:absolute;top:0;bottom:0;width:38%;left:-40%;background:linear-gradient(90deg,transparent,rgba(255,151,131,.22),transparent);animation:sheen 4.5s 1s var(--ease-out) infinite}
 @keyframes sheen{to{left:120%}}
@@ -73,6 +76,17 @@ html,body{margin:0;height:100%;background:#11100f;color:#fff;overflow:hidden}
   .journey-node{font-size:8px;letter-spacing:.03em}
   .stage-controls{left:20px;right:20px}
   .hint{font-size:10px;letter-spacing:.18em}
+  .scene .dsp{font-size:clamp(28px,8vw,38px)!important;line-height:1.04}
+  .scene .bd{font-size:17px!important;line-height:1.48}
+  .scene .eb{font-size:12px;letter-spacing:.28em}
+  .scene .row{font-size:16px;line-height:1.4;padding:14px 0}
+  .scene .step b{font-size:19px}
+  .scene .step i{font-size:12px}
+  .scene .journey-preview-grid strong{font-size:20px}
+  .scene .journey-preview-grid span{font-size:11px}
+  .scene .journey-preview-head{font-size:11px}
+  .scene .lbl{font-size:12px}
+  .scene .fld{font-size:19px;padding:12px 0}
 }
 @media (max-height:700px) and (max-width:760px){
   .scene{padding-top:82px;padding-bottom:88px}
@@ -124,7 +138,7 @@ function Record({run}){const weeks=useCount(11,run),baths=useCount(3,run,1000);
 return <><div className="photo" style={{backgroundImage:"url(../../assets/imagery/web/weaver-portrait.jpg)",backgroundPosition:"center 28%"}}/>
 <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(32,30,29,.35) 0%,rgba(32,30,29,.55) 42%,rgba(32,30,29,.96) 100%)"}}/>
 <div className="scene" style={{justifyContent:"flex-end",gap:16}}>
-  <div className="up"><div className="eb">The maker · Adonara</div><div className="dsp" style={{fontSize:38,marginTop:12}}>Mama<br/>[Name]</div></div>
+  <div className="up"><div className="eb">The maker · Adonara</div><div className="dsp" style={{fontSize:38,marginTop:12}}>Mama<br/>Ina Dida</div></div>
   <div className="up" style={{animationDelay:".35s",display:"flex",gap:8,flexWrap:"wrap"}}><span className="tag">Adonara</span><span className="tag">PEGAS PEKKA</span><span className="tag" style={{borderColor:"var(--bt-salmon)",color:"var(--bt-salmon)"}}>No. 0042</span></div>
   <div className="up" style={{animationDelay:".5s"}}>
     <div className="row"><span style={{color:"rgba(255,255,255,.75)"}}>Weeks on the loom</span><span className="dsp" style={{fontSize:26,color:"var(--bt-salmon)"}}>{weeks}</span></div>
@@ -144,10 +158,12 @@ return <div className="scene" style={{justifyContent:"center"}}>
 
 function Claim({onClaim}){const [name,setName]=React.useState("");const [org,setOrg]=React.useState("");const [err,setErr]=React.useState(false);const [saving,setSaving]=React.useState(false);
 const submit=e=>{e.preventDefault();e.stopPropagation();if(!name.trim()){setErr(true);return}setSaving(true);window.setTimeout(()=>onClaim({name:name.trim(),org:org.trim()}),700)};
+const fillDemo=()=>{setName("Dinny Jusuf");setOrg("Torajamelo Foundation");setErr(false)};
 return <form className="scene" onClick={e=>e.stopPropagation()} onSubmit={submit} style={{justifyContent:"center",gap:22}}>
   <div className="up"><div className="eb">Claim · Cloth no. 0042</div><div className="dsp" style={{fontSize:34,marginTop:12}}>Put your name<br/>on the record.</div>
-  <p className="bd" style={{fontSize:15,marginTop:14}}>Your claim is recorded against this cloth, and we send you its record plus the next update from Mama [Name]'s community.</p></div>
+  <p className="bd" style={{fontSize:15,marginTop:14}}>Your claim is recorded against this cloth, and we send you its record plus the next update from Mama Ina Dida's community.</p></div>
   <div className="up" style={{animationDelay:".3s",display:"grid",gap:18}}>
+    <button className="demo-fill" type="button" onClick={fillDemo}>Use demo identity</button>
     <label><span className="lbl">Your name</span><input className="fld" value={name} onChange={e=>{setName(e.target.value);setErr(false)}} placeholder="Full name" style={err?{borderColor:"var(--bt-red-bright)"}:null}/>{err&&<span style={{display:"block",marginTop:6,font:"400 13px/1 var(--font-body)",color:"#FFB3A4"}}>A name is needed to attach the claim</span>}</label>
     <label><span className="lbl">Organization <span style={{opacity:.6}}>· optional</span></span><input className="fld" value={org} onChange={e=>setOrg(e.target.value)} placeholder="Foundation, fund or company"/></label>
   </div>
@@ -173,7 +189,7 @@ return <div className="scene" style={{justifyContent:"center",gap:20}}>
   <div className="keep up" style={{animationDelay:".25s"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",gap:12}}><div className="dsp" style={{fontSize:28}}>Cloth no. 0042</div><span className="tag" style={{borderColor:"var(--bt-salmon)",color:"var(--bt-salmon)"}}>Issued once</span></div>
     <div className="row" style={{marginTop:14}}><span style={{color:"rgba(255,255,255,.75)"}}>Held by</span><span style={{textAlign:"right",maxWidth:"60%"}}>{who.name}{who.org?" · "+who.org:""}</span></div>
-    <div className="row"><span style={{color:"rgba(255,255,255,.75)"}}>Woven by</span><span>Mama [Name] · Adonara</span></div>
+    <div className="row"><span style={{color:"rgba(255,255,255,.75)"}}>Woven by</span><span>Mama Ina Dida · Adonara</span></div>
     <div className="row"><span style={{color:"rgba(255,255,255,.75)"}}>Claimed</span><span>{d}</span></div>
     <p className="bd" style={{fontSize:13,marginTop:14,paddingTop:12,borderTop:"1px solid rgba(255,255,255,.22)"}}>The record travels with the cloth, including on resale. Value from each sale returns to the household that wove it.</p>
   </div>
