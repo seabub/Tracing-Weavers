@@ -148,8 +148,7 @@ return <><div className="photo" style={{backgroundImage:"url(../../assets/imager
 </div></>}
 
 const STEPS=["Seed","Loom","Trace","Teach","Regenerate","Hub","Flourish"];
-function Journey({run}){const [n,setN]=React.useState(0);
-React.useEffect(()=>{if(!run){setN(0);return}const id=setInterval(()=>setN(v=>v<7?v+1:v),560);return()=>clearInterval(id)},[run]);
+function Journey(){const n=STEPS.length;
 return <div className="scene" style={{justifyContent:"center"}}>
   <div className="up"><div className="eb">What the record follows</div><div className="dsp" style={{fontSize:32,marginTop:12}}>Seed to Loom,<br/>then beyond it.</div></div>
   <div style={{marginTop:22}}>{STEPS.map((s,i)=><div key={s} className={"step"+(i<n?" on":"")}><i>{"0"+(i+1)}</i><b>{s}</b><span style={{marginLeft:"auto",font:"400 13px/1 var(--font-body)",color:"var(--bt-salmon)",opacity:i===n-1?1:0,transition:"opacity .5s"}}>reading</span></div>)}</div>
@@ -157,7 +156,7 @@ return <div className="scene" style={{justifyContent:"center"}}>
 </div>}
 
 function Claim({onClaim}){const [name,setName]=React.useState("");const [org,setOrg]=React.useState("");const [err,setErr]=React.useState(false);const [saving,setSaving]=React.useState(false);
-const submit=e=>{e.preventDefault();e.stopPropagation();if(!name.trim()){setErr(true);return}setSaving(true);window.setTimeout(()=>onClaim({name:name.trim(),org:org.trim()}),700)};
+const submit=e=>{e.preventDefault();e.stopPropagation();if(!name.trim()){setErr(true);return}setSaving(true);onClaim({name:name.trim(),org:org.trim()});};
 const fillDemo=()=>{setName("Dinny Jusuf");setOrg("Torajamelo Foundation");setErr(false)};
 return <form className="scene" onClick={e=>e.stopPropagation()} onSubmit={submit} style={{justifyContent:"center",gap:22}}>
   <div className="up"><div className="eb">Claim · Cloth no. 0042</div><div className="dsp" style={{fontSize:34,marginTop:12}}>Put your name<br/>on the record.</div>
@@ -201,24 +200,23 @@ return <div className="scene" style={{justifyContent:"center",gap:20}}>
   </div>
 </div>}
 
-const FLOW=[{c:Idle,t:5600},{c:Explain,t:9000},{c:Reading,t:3400},{c:Record,t:7000},{c:Journey,t:6800},{c:Claim,t:0},{c:Sealing,t:2600},{c:Claimed,t:0}];
+const FLOW=[Idle,Explain,Reading,Record,Journey,Claim,Sealing,Claimed];
 const FLOW_LABELS=["Start","Story","Scan","Maker","Path","Claim","Write","Issued"];
-function App(){const [i,setI]=React.useState(0);const [p,setP]=React.useState(0);const [who,setWho]=React.useState({name:"",org:""});
-  const step=FLOW[i],auto=step.t>0;
-  React.useEffect(()=>{setP(0);if(!auto)return;let t0=performance.now(),raf;const tick=t=>{const q=Math.min(1,(t-t0)/step.t);setP(q);if(q<1)raf=requestAnimationFrame(tick);else setI(v=>v+1)};raf=requestAnimationFrame(tick);return()=>cancelAnimationFrame(raf)},[i,auto,step.t]);
-  React.useEffect(()=>{const k=e=>{if(e.key==="ArrowRight"&&auto)setI(v=>Math.min(FLOW.length-1,v+1));if(e.key==="ArrowLeft")setI(v=>Math.max(0,v-1))};addEventListener("keydown",k);return()=>removeEventListener("keydown",k)},[auto]);
-  const S=step.c;
-  const props=S===Claim?{onClaim:w=>{setWho(w);setI(i+1)}}:S===Claimed?{who,onAgain:()=>{setWho({name:"",org:""});setI(0)}}:{run:true};
-  const goNext=()=>{if(auto)setI(v=>Math.min(FLOW.length-1,v+1))};
+function App(){const [i,setI]=React.useState(0);const [who,setWho]=React.useState({name:"",org:""});
+  const isClaim=i===5,isLast=i===FLOW.length-1;
+  React.useEffect(()=>{const k=e=>{if(e.key==="ArrowRight"&&!isClaim&&!isLast)setI(v=>Math.min(FLOW.length-1,v+1));if(e.key==="ArrowLeft")setI(v=>Math.max(0,v-1))};addEventListener("keydown",k);return()=>removeEventListener("keydown",k)},[isClaim,isLast]);
+  const S=FLOW[i];
+  const props=S===Claim?{onClaim:w=>{setWho(w);setI(i+1)}}:S===Claimed?{who,onAgain:()=>{setWho({name:"",org:""});setI(0)}}:{};
+  const goNext=()=>{if(!isClaim&&!isLast)setI(v=>Math.min(FLOW.length-1,v+1))};
   const goBack=()=>setI(v=>Math.max(0,v-1));
   const goTo=index=>{if(index<=i)setI(index)};
-  return <div className="stage" onClick={goNext} style={{cursor:auto?"pointer":"default"}}>
-    <div className="prog" style={{width:(p*100)+"%"}}/>
+  return <div className="stage" onClick={goNext} style={{cursor:!isClaim&&!isLast?"pointer":"default"}}>
+    <div className="prog" style={{width:((i/(FLOW.length-1))*100)+"%"}}/>
     <div className="vig"/>
     <div className="stage-top"><div className="demo">Sample / demo content</div><div className="stage-count">{String(i+1).padStart(2,"0")} / {String(FLOW.length).padStart(2,"0")}</div></div>
     <nav className="journey-map" aria-label="Journey chapters">{FLOW_LABELS.map((label,index)=><button key={label} type="button" className={"journey-node"+(index<=i?" is-open":"")} aria-current={index===i?"step":undefined} disabled={index>i} onClick={e=>{e.stopPropagation();goTo(index)}}><span className="marker"/><span>{label}</span></button>)}</nav>
     <div key={i} style={{position:"absolute",inset:0}}><S {...props}/></div>
-    <div className="stage-controls"><button type="button" onClick={e=>{e.stopPropagation();goBack()}} disabled={i===0}>Back</button><span className="hint">{auto?"Tap or use next":"Your record, in your hands"}</span><button className="next" type="button" onClick={e=>{e.stopPropagation();goNext()}} disabled={!auto}>Next</button></div>
+    <div className="stage-controls"><button type="button" onClick={e=>{e.stopPropagation();goBack()}} disabled={i===0}>Back</button><span className="hint">{isClaim?"Complete your claim":"Click or use next"}</span><button className="next" type="button" onClick={e=>{e.stopPropagation();goNext()}} disabled={isClaim||isLast}>Next</button></div>
   </div>}
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
 </script></body></html>
