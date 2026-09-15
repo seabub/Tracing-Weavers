@@ -59,9 +59,6 @@ html,body{margin:0;height:100%;background:#11100f;color:#fff;overflow:hidden}
 .fld{width:100%;box-sizing:border-box;background:transparent;color:#fff;border:none;border-bottom:1px solid rgba(255,255,255,.4);padding:10px 0;font:400 18px/1.3 var(--font-body);outline:none}
 .fld:focus{border-color:var(--bt-salmon)}
 .lbl{display:block;font:400 11px/1 var(--font-body);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:2px}
-.demo-fill{all:unset;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:12px 0;border-top:1px solid rgba(255,255,255,.2);border-bottom:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.72);font:500 11px/1.2 var(--font-body);letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
-.demo-fill::after{content:"+";font:400 20px/1 var(--font-body);color:var(--bt-salmon)}
-.demo-fill:hover,.demo-fill:focus-visible{color:#fff;outline:none;border-color:var(--bt-salmon)}
 .keep{position:relative;border:1px solid rgba(255,255,255,.32);padding:24px;overflow:hidden;background:rgba(255,255,255,.04)}
 .keep::after{content:"";position:absolute;top:0;bottom:0;width:38%;left:-40%;background:linear-gradient(90deg,transparent,rgba(255,151,131,.22),transparent);animation:sheen 4.5s 1s var(--ease-out) infinite}
 @keyframes sheen{to{left:120%}}
@@ -157,14 +154,13 @@ return <div className="scene" style={{justifyContent:"center"}}>
 
 function Claim({onClaim}){const [name,setName]=React.useState("");const [org,setOrg]=React.useState("");const [err,setErr]=React.useState(false);const [saving,setSaving]=React.useState(false);
 const submit=e=>{e.preventDefault();e.stopPropagation();if(!name.trim()){setErr(true);return}setSaving(true);onClaim({name:name.trim(),org:org.trim()});};
-const fillDemo=()=>{setName("Dinny Jusuf");setOrg("Torajamelo Foundation");setErr(false)};
+const fillDemo=()=>{if(!name&&!org){setName("Dinny Jusuf");setOrg("Torajamelo Foundation");setErr(false)}};
 return <form className="scene" onClick={e=>e.stopPropagation()} onSubmit={submit} style={{justifyContent:"center",gap:22}}>
   <div className="up"><div className="eb">Claim · Cloth no. 0042</div><div className="dsp" style={{fontSize:34,marginTop:12}}>Put your name<br/>on the record.</div>
   <p className="bd" style={{fontSize:15,marginTop:14}}>Your claim is recorded against this cloth, and we send you its record plus the next update from Mama Ina Dida's community.</p></div>
   <div className="up" style={{animationDelay:".3s",display:"grid",gap:18}}>
-    <button className="demo-fill" type="button" onClick={fillDemo}>Use demo identity</button>
-    <label><span className="lbl">Your name</span><input className="fld" value={name} onChange={e=>{setName(e.target.value);setErr(false)}} placeholder="Full name" style={err?{borderColor:"var(--bt-red-bright)"}:null}/>{err&&<span style={{display:"block",marginTop:6,font:"400 13px/1 var(--font-body)",color:"#FFB3A4"}}>A name is needed to attach the claim</span>}</label>
-    <label><span className="lbl">Organization <span style={{opacity:.6}}>· optional</span></span><input className="fld" value={org} onChange={e=>setOrg(e.target.value)} placeholder="Foundation, fund or company"/></label>
+    <label><span className="lbl">Full name</span><input className="fld" value={name} onFocus={fillDemo} onChange={e=>{setName(e.target.value);setErr(false)}} placeholder="Full name" style={err?{borderColor:"var(--bt-red-bright)"}:null}/>{err&&<span style={{display:"block",marginTop:6,font:"400 13px/1 var(--font-body)",color:"#FFB3A4"}}>A name is needed to attach the claim</span>}</label>
+    <label><span className="lbl">Foundation <span style={{opacity:.6}}>· optional</span></span><input className="fld" value={org} onFocus={fillDemo} onChange={e=>setOrg(e.target.value)} placeholder="Foundation name"/></label>
   </div>
   <div className="up" style={{animationDelay:".45s",display:"grid",gap:10}}>
     <button className="btn" type="submit" disabled={saving}>{saving?"Preparing your record…":"Claim this record"}</button>
