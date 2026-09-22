@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { encodeIdentity, sessionCookieName } from "@/lib/session";
+import { signingConfigured } from "@/lib/passport";
 
 /** Identify a holder so their passports can be listed back to them.
  *  No password and no verification email on purpose — the minimum needed to
@@ -16,6 +17,16 @@ export async function POST(request: Request) {
         return NextResponse.json(
             { error: "A name and a valid email address are needed." },
             { status: 400 },
+        );
+    }
+
+    if (!signingConfigured()) {
+        return NextResponse.json(
+            {
+                error:
+                    "PASSPORT_SIGNING_SECRET belum diset di deployment ini, jadi sesi tidak bisa ditandatangani. Tambahkan variabel itu di Vercel, lalu redeploy.",
+            },
+            { status: 503 },
         );
     }
 

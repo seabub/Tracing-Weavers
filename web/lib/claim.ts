@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { getRecord } from "@/lib/records";
 import { passportStore } from "@/lib/store";
-import { passportId, passportToken } from "@/lib/passport";
+import { passportId, passportToken, signingConfigured } from "@/lib/passport";
 import { encodeIdentity, sessionCookieName } from "@/lib/session";
 import type { Passport } from "@/lib/types";
 
@@ -29,6 +29,19 @@ export type IssueResult =
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export async function issuePassport(input: IssueInput): Promise<IssueResult> {
+    /* Pre-flight: signing is what makes the passport and the session cookie
+       meaningful. Without the secret we must fail BEFORE writing, otherwise a
+       holder ends up with a passport in the store, an error on screen, and no
+       way to tell what happened. */
+    if (!signingConfigured()) {
+        return {
+            ok: false,
+            status: 503,
+            error:
+                "Paspor belum bisa diterbitkan: PASSPORT_SIGNING_SECRET belum diset di deployment ini. Tambahkan variabel itu di Vercel (nilai: hasil `openssl rand -hex 32`), lalu redeploy.",
+        };
+    }
+
     const record = getRecord(input.code ?? "");
     if (!record) {
         return { ok: false, status: 404, error: "That record does not exist." };
