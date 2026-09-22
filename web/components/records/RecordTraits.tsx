@@ -2,31 +2,10 @@ import { WeftCrossing } from "@/components/motif/marks";
 
 type Attribute = { trait_type?: string; value?: unknown };
 
-/* The interface speaks English, so the craft's own word follows as a gloss. */
-const GLOSS: Record<string, string> = {
-    maker: "Penenun",
-    origin: "Asal",
-    material: "Bahan",
-    technique: "Teknik",
-    dye: "Pewarna",
-    "weeks on the loom": "Lama di alat tenun",
-    "dye baths": "Kali celup",
-    "journey step": "Tahap",
-    "record type": "Jenis",
-    season: "Musim panen",
-};
-
-function label(traitType: string | undefined): React.ReactNode {
-    if (!traitType) return "";
-    const gloss = GLOSS[traitType.trim().toLowerCase()];
-    if (!gloss) return traitType;
-    /* The gloss is Indonesian inside an English interface, so it is marked as
-       such (WCAG 3.1.2) instead of leaving the reader to guess. */
-    return (
-        <>
-            {traitType} · <span lang="id">{gloss}</span>
-        </>
-    );
+/* The attribute names are already English (data/records.json), so the table
+   prints them as they are — no gloss, nothing to translate. */
+function label(traitType: string | undefined): string {
+    return traitType?.trim() ?? "";
 }
 
 /* The fact table of the record: hairline rows, label caps left, value right.
@@ -37,7 +16,7 @@ export function RecordTraits({ attributes }: { attributes?: Attribute[] }) {
     return (
         <section>
             <div className="flex items-end justify-between gap-4">
-                <h2 className="eyebrow">Cloth notes · Traits</h2>
+                <h2 className="eyebrow">Cloth notes</h2>
                 <WeftCrossing className="h-4 w-20 text-stone" aria-hidden />
             </div>
 

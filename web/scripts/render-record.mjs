@@ -1,9 +1,9 @@
 /**
- * Jejak kain — the record artwork, one SVG per record.
+ * Cloth record — the record artwork, one SVG per record.
  *
  * Tenun structure first: warp pinstripes on an ink ground, a woven band where
  * one weft thread is carried across, a selvedge edge, tally marks for the
- * count, hairline rows where the label is Indonesian and the gloss is English.
+  * count, hairline rows of English labels and values.
  *
  *   npm run record:svg                 # every record in data/records.json
  *   npm run record:svg -- BT-0042      # one of them
@@ -75,18 +75,18 @@ const textWidth = (text, size, letterSpacing = 0) =>
 const FONT_DISPLAY = "Hanken Grotesk, Telegraf, Helvetica Neue, Arial, sans-serif";
 const FONT_BODY = "Archivo Narrow, Arial Narrow, Helvetica Neue, Arial, sans-serif";
 
-/* Indonesian label first, English word kept as the gloss. One column has room
-   for both; two columns use the Indonesian alone, which is the label a weaver
-   reads. `npm run record:svg` fails if any label would reach its value. */
+/* The sheet prints the English label. One column has room for a gloss; two
+   columns use the label alone. `npm run record:svg` fails if any label would
+   reach its value. */
 const ROWS = [
-    { id: "PENENUN", gloss: "Maker", key: "Maker" },
-    { id: "ASAL", gloss: "Origin", key: "Origin" },
-    { id: "BAHAN", gloss: "Material", key: "Material" },
-    { id: "TEKNIK", gloss: "Technique", key: "Technique" },
-    { id: "PEWARNA", gloss: "Dye", key: "Dye" },
-    { id: "LAMA DI ALAT TENUN", gloss: "Weeks", key: "Weeks on the loom" },
-    { id: "KALI CELUP", gloss: "Dye baths", key: "Dye baths" },
-    { id: "TAHAP", gloss: "Step", key: "Journey step" },
+        { id: "MAKER", gloss: "", key: "Maker" },
+    { id: "ORIGIN", gloss: "", key: "Origin" },
+    { id: "MATERIAL", gloss: "", key: "Material" },
+    { id: "TECHNIQUE", gloss: "", key: "Technique" },
+    { id: "DYE", gloss: "", key: "Dye" },
+    { id: "WEEKS ON THE LOOM", gloss: "", key: "Weeks on the loom" },
+    { id: "DYE BATHS", gloss: "", key: "Dye baths" },
+    { id: "JOURNEY STAGE", gloss: "", key: "Journey step" },
 ];
 
 function warpGround() {
@@ -167,7 +167,7 @@ function traitTable(rows, top) {
 
         slice.forEach((row, i) => {
             const ry = top + 44 + i * rowHeight;
-            const label = columns === 2 ? row.id : `${row.id} · ${row.gloss}`;
+            const label = columns === 2 || !row.gloss ? row.id : `${row.id} · ${row.gloss}`;
             const labelSize = columns === 2 ? 20 : 24;
             const valueSize = columns === 2 ? 24 : 29;
             const tracking = columns === 2 ? 1.5 : 2.5;
@@ -262,7 +262,7 @@ function render(record) {
   <rect width="${W}" height="${H}" fill="#201E1D"/>
   <g>${warpGround()}</g>
 
-  <text x="${M}" y="${M + 22}" font-family="${FONT_BODY}" font-size="22" letter-spacing="8" fill="#FF9783">JEJAK KAIN · DIGITAL PRODUCT PASSPORT</text>
+  <text x="${M}" y="${M + 22}" font-family="${FONT_BODY}" font-size="22" letter-spacing="8" fill="#FF9783">CLOTH RECORD · DIGITAL PRODUCT PASSPORT</text>
   <text x="${W - M}" y="${M + 22}" text-anchor="end" font-family="${FONT_BODY}" font-size="22" letter-spacing="5" fill="#FFFFFF" fill-opacity=".62">${esc(
         record.code,
     )}</text>
@@ -288,7 +288,7 @@ function render(record) {
   }
 
   <line x1="${M}" y1="${FOOTER_RULE}" x2="${W - M}" y2="${FOOTER_RULE}" stroke="#FFFFFF" stroke-opacity=".18"/>
-  <text x="${M}" y="${H - M + 4}" font-family="${FONT_BODY}" font-size="24" letter-spacing="2" fill="#FFFFFF" fill-opacity=".62">Jejaknya ikut bersama kain. Nilai kembali ke rumah yang menenumnya.</text>
+  <text x="${M}" y="${H - M + 4}" font-family="${FONT_BODY}" font-size="24" letter-spacing="2" fill="#FFFFFF" fill-opacity=".62">The record travels with the cloth. Value returns to the weaver's household.</text>
   <text x="${M}" y="${H - M + 44}" font-family="${FONT_BODY}" font-size="24" letter-spacing="2" fill="#FF9783">${site}/record/${esc(
         record.code,
     )}</text>

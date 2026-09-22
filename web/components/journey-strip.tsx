@@ -60,15 +60,7 @@ export function JourneyStrip({
                                 >
                                     {step.id_label}
                                 </span>
-                                                                <span
-                                    lang="id"
-                                    className={cn(
-                                        "ml-2 text-[12px] uppercase tracking-[.14em]",
-                                        tone === "ink" ? "text-white/50" : "text-muted-foreground",
-                                    )}
-                                >
-                                    {step.label}
-                                </span>
+                                                                
                                 {isActive && (
                                     <span
                                         className={cn(

@@ -12,10 +12,10 @@ import { Reveal } from "@/components/ui/reveal";
 /* The four dyestuffs the weavers actually use — the brand's reserved dye
    colours, so each swatch is a material, not a decoration. */
 const DYES = [
-    { name: "Nila", en: "Indigo", hex: "#2B3A67", note: "indigo leaf, steeped for days" },
-    { name: "Mengkudu", en: "Morinda", hex: "#AE1800", note: "morinda root, a red that lasts" },
-    { name: "Kunyit", en: "Turmeric", hex: "#ECA406", note: "turmeric, a warm yellow" },
-    { name: "Tanah", en: "Clay", hex: "#F29A6A", note: "clay and tree bark" },
+    { name: "Indigo", hex: "#2B3A67", note: "indigo leaf, steeped for days" },
+    { name: "Morinda", hex: "#AE1800", note: "morinda root, a red that lasts" },
+    { name: "Turmeric", hex: "#ECA406", note: "turmeric, a warm yellow" },
+    { name: "Clay", hex: "#F29A6A", note: "clay and tree bark" },
 ];
 
 /**
@@ -33,7 +33,7 @@ export default function Home() {
             >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                    src="/imagery/tenun-hanging.jpg"
+                    src="/imagery/cloth-hanging.jpg"
                     alt=""
                     aria-hidden
                     className="absolute inset-0 h-full w-full object-cover"
@@ -93,11 +93,8 @@ export default function Home() {
                                 style={{ background: dye.hex }}
                             />
                             <span className="min-w-0">
-                                <span className="block text-[17px] leading-tight">
+                                                                <span className="block text-[17px] leading-tight">
                                     {dye.name}
-                                    <span className="data ml-2 text-muted-foreground">
-                                        {dye.en}
-                                    </span>
                                 </span>
                                 <span className="block text-[14px] leading-snug text-muted-foreground">
                                     {dye.note}

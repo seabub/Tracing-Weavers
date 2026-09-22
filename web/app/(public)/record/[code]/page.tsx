@@ -18,14 +18,14 @@ export const dynamic = "force-dynamic";
 
 /* The fact table of a record: Indonesian label, English gloss, and the source
    attribute. Same order as the artwork, so the card and the page agree. */
-const FACTS: [string, string][] = [
-    ["Maker · Penenun", "Maker"],
-    ["Origin · Asal", "Origin"],
-    ["Material · Bahan", "Material"],
-    ["Technique · Teknik", "Technique"],
-    ["Dye · Pewarna", "Dye"],
-    ["Weeks on the loom · Lama", "Weeks on the loom"],
-    ["Dye baths · Kali celup", "Dye baths"],
+const FACTS: string[] = [
+    "Maker",
+    "Origin",
+    "Material",
+    "Technique",
+    "Dye",
+    "Weeks on the loom",
+    "Dye baths",
 ];
 
 /**
@@ -123,9 +123,8 @@ export default async function RecordPage({
                         className="mt-6"
                         items={[
                             {
-                                id: "bahan",
+                                id: "material",
                                 label: "Material",
-                                gloss: "Bahan",
                                 body: (
                                     <>
                                         <span className="text-ink">
@@ -136,9 +135,8 @@ export default async function RecordPage({
                                 ),
                             },
                             {
-                                id: "teknik",
+                                id: "technique",
                                 label: "Technique",
-                                gloss: "Teknik",
                                 body: (
                                     <>
                                         <span className="text-ink">
@@ -177,7 +175,7 @@ export default async function RecordPage({
                     </header>
 
                     <dl>
-                        {FACTS.map(([label, key]) => {
+                        {FACTS.map((key) => {
                             const value = attr(record, key);
                             if (value === undefined) return null;
                             return (
@@ -185,7 +183,7 @@ export default async function RecordPage({
                                     key={key}
                                     className="flex items-baseline justify-between gap-6 border-t border-border py-3"
                                 >
-                                    <dt className="label">{label}</dt>
+                                    <dt className="label">{key}</dt>
                                     <dd className="num text-right text-[17px]">
                                         {String(value)}
                                     </dd>
@@ -221,7 +219,7 @@ export default async function RecordPage({
                     {/* the record sheet: what print, QR and the passport carry */}
                     <section className="rounded-lg bg-card p-4 shadow-[var(--ring)]">
                         <div className="flex items-baseline justify-between gap-4">
-                            <h2 className="eyebrow">Record sheet · Lembar jejak</h2>
+                            <h2 className="eyebrow">Record sheet</h2>
                             <a
                                 href={record.image}
                                 target="_blank"
@@ -259,7 +257,7 @@ export default async function RecordPage({
                 <div className="mt-8">
                     <div className="eyebrow">{t.journeyEyebrow}</div>
                     <h2 className="mt-3">{t.journeyTitle}</h2>
-                    <Reveal summary="Lihat tujuh tahap" className="mt-4">
+                    <Reveal summary="See the seven stages" className="mt-4">
                         <JourneyStrip
                             activeStep={step ? String(step) : undefined}
                             className="mt-2"

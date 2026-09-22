@@ -4,9 +4,9 @@
     {
       "id": "DPP-BT0042-0001-XXXXXXXX",
       "code": "BT-0042",
-      "holder": "Nama Pemegang",
-      "email": "pemegang@contoh.org",
-      "outlet": "Yayasan, studio, atau toko (opsional)",
+      "holder": "Holder Name",
+      "email": "holder@example.org",
+      "outlet": "Foundation, studio or shop (optional)",
       "issuedAt": "2026-09-22T00:00:00.000Z",
       "serial": 1,
       "status": "issued",

@@ -56,21 +56,21 @@ export const t = {
         },
     ],
 
-    /* the seven stages of the programme. `id_label` is what is shown, `label` is
-       the gloss beside it, and `id` is the key that a record's "Journey step"
-       attribute matches on (see components/journey-strip.tsx). */
+        /* The seven stages of the programme. `id_label` is what is shown, and `id` is
+       the key that a record's "Journey step" attribute matches on (see
+       components/journey-strip.tsx). */
     journeyEyebrow: "What the record follows",
     journeyTitle: "Seed to loom, and after.",
     journeyLead:
         "Three years, seven stages, three districts. Each stage stands on the one before it.",
     steps: [
-        { id: "Seed", id_label: "Seed", label: "Benih", note: "Cotton planted in community gardens" },
-        { id: "Loom", id_label: "Loom", label: "Tenun", note: "Woven, one length by one weaver" },
-        { id: "Trace", id_label: "Trace", label: "Jejak", note: "The tag is written, the record sticks" },
-        { id: "Teach", id_label: "Teach", label: "Ajar", note: "Motifs documented for the curriculum" },
-        { id: "Regenerate", id_label: "Regenerate", label: "Tumbuh", note: "Gardens and tools restored" },
-        { id: "Hub", id_label: "Hub", label: "Hub", note: "Sold through the Local Impact Hub" },
-        { id: "Flourish", id_label: "Flourish", label: "Mekar", note: "Value returns to the weaver's household" },
+                { id: "Seed", id_label: "Seed", note: "Cotton planted in community gardens" },
+        { id: "Loom", id_label: "Loom", note: "Woven, one length by one weaver" },
+        { id: "Trace", id_label: "Trace", note: "The tag is written, the record sticks" },
+        { id: "Teach", id_label: "Teach", note: "Motifs documented for the curriculum" },
+        { id: "Regenerate", id_label: "Regenerate", note: "Gardens and tools restored" },
+        { id: "Hub", id_label: "Hub", note: "Sold through the Local Impact Hub" },
+        { id: "Flourish", id_label: "Flourish", note: "Value returns to the weaver's household" },
     ],
 
     /* the natural dyes — the brand's reserved data palette */
@@ -85,15 +85,15 @@ export const t = {
     issued: "Issued",
     remaining: "Still available",
     tagRead: "Tag read",
-    fieldMaker: "Maker · Penenun",
-    fieldOrigin: "Origin · Asal",
-    fieldMaterial: "Material · Bahan",
-    fieldTechnique: "Technique · Teknik",
-    fieldDye: "Dye · Pewarna",
-    fieldWeeks: "Weeks on the loom · Lama",
-    fieldBaths: "Dye baths · Kali celup",
-    fieldStep: "Journey stage · Tahap",
-    traitsEyebrow: "Cloth notes · Traits",
+    fieldMaker: "Maker",
+    fieldOrigin: "Origin",
+    fieldMaterial: "Material",
+    fieldTechnique: "Technique",
+    fieldDye: "Dye",
+    fieldWeeks: "Weeks on the loom",
+    fieldBaths: "Dye baths",
+    fieldStep: "Journey stage",
+    traitsEyebrow: "Cloth notes",
     yourPassport: "Your passport",
 
     /* claim */

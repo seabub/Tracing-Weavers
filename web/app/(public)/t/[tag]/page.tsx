@@ -27,29 +27,27 @@ export default async function TagPage({
 
     return (
         <div className="mx-auto max-w-2xl">
-            <div className="eyebrow">Tag belum dikenali</div>
-            <h1 className="mt-4">Tag ini belum tersambung ke sebuah jejak.</h1>
+            <div className="eyebrow">Tag not recognised</div>
+            <h1 className="mt-4">This tag is not connected to a record yet.</h1>
             <p className="mt-4 max-w-[52ch] text-[17px] text-muted-foreground">
-                Tag terbaca <span className="data text-ink">{tag}</span>. Kodenya
-                belum ada di daftar, atau kainnya belum dicatat.
+                Tag read: <span className="data text-ink">{tag}</span>. Its code is not in the register yet, or the cloth has not been recorded.
             </p>
 
             <div className="mt-9 grid gap-6 sm:grid-cols-2">
                 <div className="rounded-lg bg-card p-6 shadow-[var(--ring)]">
-                    <div className="eyebrow">Cara lain membacanya</div>
+                    <div className="eyebrow">Another way to read it</div>
                     <p className="mt-3 text-[16px] text-muted-foreground">
-                        Ketik kode yang tercetak di sebelah tag.
+                        Type the code printed beside the tag.
                     </p>
                     <Link href="/scan" className="mt-4 inline-block text-[14px]">
-                        Buka pembacanya →
+                        Open the reader →
                     </Link>
                 </div>
                 <div className="rounded-lg bg-card p-6 shadow-[var(--ring)]">
-                    <div className="eyebrow">Tim lapangan</div>
+                    <div className="eyebrow">Field team</div>
                     <p className="mt-3 text-[16px] text-muted-foreground">
-                        Tambahkan kodenya ke{" "}
-                        <span className="data text-ink">data/tags.json</span> beserta
-                        jejak yang harus dibuka, lalu deploy ulang.
+                        Add its code to{" "}
+                        <span className="data text-ink">data/tags.json</span> with the record it should open, then redeploy.
                     </p>
                 </div>
             </div>

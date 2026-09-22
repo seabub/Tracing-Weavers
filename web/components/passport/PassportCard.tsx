@@ -37,7 +37,7 @@ export function PassportCard({
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                         src={record.image}
-                        alt={`Lembar jejak ${record.code}`}
+                        alt={`Record sheet ${record.code}`}
                         className="h-28 w-full object-cover object-top sm:h-32"
                         draggable={false}
                     />
