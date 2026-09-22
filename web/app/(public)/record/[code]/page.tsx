@@ -11,7 +11,7 @@ import { PassportLeaf } from "@/components/passport/passport-leaf";
 import { ClaimBar } from "@/components/passport/claim-bar";
 import { RecordTraits } from "@/components/records/RecordTraits";
 import { ClothTabs } from "@/components/cloth-tabs";
-import { JourneyStrip } from "@/components/journey-strip";
+import { JourneyRail } from "@/components/journey-rail";
 import { CornerBrackets, ThreadRule } from "@/components/motif/marks";
 import { Reveal } from "@/components/ui/reveal";
 export const dynamic = "force-dynamic";
@@ -174,25 +174,24 @@ export default async function RecordPage({
                         </p>
                     </header>
 
-                    <dl>
+                    {/* Two facts to a row on a phone: the same eight rows read
+                        as four, which is a third of the scrolling. */}
+                    <dl className="grid grid-cols-2 gap-x-6 sm:grid-cols-2">
                         {FACTS.map((key) => {
                             const value = attr(record, key);
                             if (value === undefined) return null;
                             return (
-                                <div
-                                    key={key}
-                                    className="flex items-baseline justify-between gap-6 border-t border-border py-3"
-                                >
+                                <div key={key} className="border-t border-border py-2.5">
                                     <dt className="label">{key}</dt>
-                                    <dd className="num text-right text-[17px]">
+                                    <dd className="num mt-0.5 text-[16px] leading-snug">
                                         {String(value)}
                                     </dd>
                                 </div>
                             );
                         })}
-                        <div className="flex items-baseline justify-between gap-6 border-t border-border py-3">
+                        <div className="border-t border-border py-2.5">
                             <dt className="label">{t.issued}</dt>
-                                                        <dd className="num text-right text-[17px]">
+                            <dd className="num mt-0.5 text-[16px] leading-snug">
                                 {issuedCount} / {record.supply}
                             </dd>
                         </div>
@@ -214,23 +213,27 @@ export default async function RecordPage({
                         />
                     )}
 
-                    <RecordTraits attributes={record.attributes} />
-
-                                    </div>
+                    <Reveal summary="Everything on the record sheet">
+                        <RecordTraits attributes={record.attributes} />
+                    </Reveal>
+                </div>
             </div>
 
-            {/* where this piece sits in the three-year path */}
-            <section className="mt-16">
+            {/* Where this piece sits in the three-year path. It used to hide
+                behind "See the seven stages", which pushed the page down and
+                left the column beside it empty; the rail is one line tall, so
+                it can simply be open. */}
+            <section className="mt-12">
                 <ThreadRule className="h-2 w-full text-stone" aria-hidden />
-                <div className="mt-8">
+                <div className="mt-6">
                     <div className="eyebrow">{t.journeyEyebrow}</div>
-                    <h2 className="mt-3">{t.journeyTitle}</h2>
-                    <Reveal summary="See the seven stages" className="mt-4">
-                        <JourneyStrip
-                            activeStep={step ? String(step) : undefined}
-                            className="mt-2"
-                        />
-                    </Reveal>
+                    <h2 className="mt-2 text-[clamp(1.3rem,4vw,1.7rem)]">
+                        {t.journeyTitle}
+                    </h2>
+                    <JourneyRail
+                        activeStep={step ? String(step) : undefined}
+                        className="mt-3"
+                    />
                 </div>
             </section>
 

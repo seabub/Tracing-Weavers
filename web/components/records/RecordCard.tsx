@@ -45,7 +45,10 @@ export default function RecordCard({
                     </span>
                 </div>
 
-                <h3 className="mt-1.5 text-[19px] leading-tight">
+                {/* text-ink on purpose: inside the link the heading inherited
+                    the anchor's morinda, so every card shouted its title in the
+                    accent colour and the code beside it lost its job. */}
+                <h3 className="mt-1.5 text-[19px] leading-tight text-ink">
                     {record.title.split(" · ")[0]}
                 </h3>
 

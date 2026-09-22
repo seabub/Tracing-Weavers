@@ -25,17 +25,24 @@ const issuedOn = (iso: string) =>
 export function PassportLeaf({
     passport,
     record,
+    /* `fill` is the book: the page has already been given its shape by the
+       sheet around it, so the leaf takes the height it is handed instead of
+       insisting on a square of its own. */
+    fill = false,
     className,
 }: {
     passport: Passport;
     record?: ProductRecord;
+    fill?: boolean;
     className?: string;
 }) {
     const revoked = passport.status === "revoked";
 
     return (
         <article
-            className={`cloth relative flex aspect-square w-full flex-col overflow-hidden rounded-lg bg-card shadow-[var(--ring)] ${className ?? ""}`}
+            className={`cloth relative flex w-full flex-col overflow-hidden bg-card ${
+                fill ? "h-full" : "aspect-square rounded-lg shadow-[var(--ring)]"
+            } ${className ?? ""}`}
         >
             {/* the cloth itself, as the page's header band */}
             <div className="relative h-[38%] shrink-0 overflow-hidden bg-ink">
