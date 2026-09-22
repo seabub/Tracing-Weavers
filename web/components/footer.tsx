@@ -17,17 +17,16 @@ export default function Footer() {
                     <div>
                         <div className="eyebrow">Jejak yang menempel</div>
                         <p className="mt-3 max-w-[34ch] text-[17px] text-muted-foreground">
-                            {brand} — jejak asal-usul yang menempel pada benda
-                            fisik. Tempel tag, baca jejaknya, simpan jadi milikmu.
+                            Jejak asal-usul yang menempel pada kainnya. Tempel
+                            tag, baca namanya, simpan jadi milikmu.
                         </p>
                     </div>
 
                     <div>
                         <div className="eyebrow">Tanpa rantai blok</div>
                         <p className="mt-3 max-w-[34ch] text-[17px] text-muted-foreground">
-                            Tidak ada dompet, tidak ada token untuk dijual, tidak
-                            ada gas. Paspor adalah catatan bertanda tangan, tersimpan
-                            atas namamu.
+                            Tanpa dompet, tanpa token untuk dijual, tanpa gas.
+                            Paspor adalah catatan bertanda tangan atas namamu.
                         </p>
                     </div>
 
@@ -40,7 +39,7 @@ export default function Footer() {
                             </span>
                         </div>
                         <p className="mt-2 text-[13px] text-muted-foreground/70">
-                            penyimpanan: {backend}
+                            disimpan di: {backend}
                         </p>
                     </div>
                 </div>
@@ -55,10 +54,9 @@ export default function Footer() {
                 </div>
 
                 <p className="mt-3 text-[12px] text-muted-foreground/70">
-                    Foto di halaman ini masih placeholder dari berkas design
-                    system — ganti dengan fotografi komunitas berlisensi sebelum
-                    dipublikasikan (brief §6). Motif hanya ditampilkan dengan izin
-                    komunitas.
+                    Foto masih placeholder dari berkas design system —
+                    ganti dengan fotografi komunitas berlisensi sebelum terbit
+                    (brief §6). Motif hanya tampil dengan izin komunitas.
                 </p>
             </div>
         </footer>

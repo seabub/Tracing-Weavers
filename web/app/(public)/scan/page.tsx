@@ -10,19 +10,19 @@ export const metadata = { title: "Tempel tag" };
 const STEPS = [
     {
         title: "Cari tag-nya",
-        body: "Chip NTAG213 dijahit di tepi kain atau dicetak di label; QR cadangan ada di kemasan.",
+        body: "Chip NTAG213 dijahit di tepi kain; QR cadangan ada di kemasan.",
     },
     {
         title: "Tempelkan ponsel",
-        body: "iPhone membaca dari layar kunci tanpa aplikasi. Android perlu NFC aktif, lalu tempel dan tap notifikasi.",
+        body: "iPhone membacanya dari layar kunci. Android: aktifkan NFC, tempel, lalu tap notifikasi.",
     },
     {
         title: "Tap banner-nya",
-        body: "Ponsel menawarkan tautan. Isinya hanya kode jejak — tanpa pemasangan aplikasi, tanpa akun.",
+        body: "Isinya tautan ke jejak kainnya — tanpa memasang aplikasi, tanpa akun.",
     },
     {
         title: "Baca, lalu klaim",
-        body: "Jejaknya terbuka: penenun, bahan, lama pengerjaan. Taruh namamu di sana dan paspornya jadi milikmu.",
+        body: "Penenunnya siapa, bahannya apa, berapa lama. Taruh namamu di sana — paspornya jadi milikmu.",
     },
 ];
 
@@ -66,8 +66,7 @@ export default function ScanPage() {
                 <div className="rounded-lg bg-card p-6 shadow-[var(--ring)]">
                     <div className="eyebrow">Kode tag</div>
                     <p className="mt-3 text-[17px] text-muted-foreground">
-                        Tidak bisa membaca tag? Ketik kode yang tercetak di
-                        sebelahnya.
+                        Tag tidak terbaca? Ketik kode yang tercetak di sebelahnya.
                     </p>
                     <TagLookupForm className="mt-5 max-w-md" />
                 </div>

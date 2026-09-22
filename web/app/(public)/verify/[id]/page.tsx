@@ -73,8 +73,8 @@ export default async function VerifyPage({
                 </div>
                 <p className="mt-3 max-w-[62ch] text-[16px] text-muted-foreground">
                     {stored
-                        ? "Paspor ini diterbitkan oleh aplikasi ini dan tercatat atas nama yang tertera. Jejak yang ditunjuknya ada di berkas data aplikasi, jadi keduanya bisa dicocokkan."
-                        : "Daftar tidak mengembalikan id ini — mungkin penyimpanannya belum disiapkan pada deployment ini, atau id-nya datang dari tempat lain. Tanda tangan pada tautannya tetap menunjukkan paspor ini terbit dari aplikasi ini; buka jejaknya untuk mencocokkan pemegangnya."}
+                        ? "Paspor ini terbit dari aplikasi ini, atas nama yang tertera. Jejak yang ditunjuknya ada di berkas data, jadi keduanya bisa dicocokkan."
+                        : "Daftar sedang tidak menjawab, tapi tanda tangan di tautannya membuktikan paspor ini terbit dari aplikasi ini. Buka jejaknya untuk mencocokkan pemegangnya."}
                 </p>
                 {record && (
                     <Link

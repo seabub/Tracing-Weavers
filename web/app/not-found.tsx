@@ -8,8 +8,7 @@ export default function NotFound() {
             <div className="eyebrow">404</div>
             <h1 className="mt-4">Tidak ada jejak di alamat ini.</h1>
             <p className="mt-4 max-w-[48ch] text-[17px] text-muted-foreground">
-                Jejak dibuka dengan menempelkan tag pada kainnya, atau dari daftar
-                jejak.
+                Jejak dibuka dengan menempelkan tag pada kainnya — atau dari daftar.
             </p>
             <ThreadRule className="mt-9 h-2 w-full text-stone" aria-hidden />
             <Link

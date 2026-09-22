@@ -25,7 +25,7 @@ export default async function CollectionPage() {
                 <h1 className="mt-3">{t.collectionTitle}</h1>
                 <p className="mt-3 max-w-[52ch] text-[17px] text-muted-foreground">
                     {identity
-                        ? `Paspor yang terbit untuk ${identity.email}.`
+                        ? `Tercatat atas ${identity.email}.`
                         : t.collectionSignInNote}
                 </p>
             </header>

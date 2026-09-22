@@ -204,7 +204,7 @@ export function PassportClaim({
                             <div className="eyebrow">{t.claimedEyebrow}</div>
                             <h3 className="mt-3 text-[26px]">{title.split(" · ")[0]}</h3>
                             <p className="mt-2 text-[15px] text-muted-foreground">
-                                tersimpan di paspor{" "}
+                                Tercatat atas nama{" "}
                                 <span className="text-ink">{name}</span>.
                             </p>
                             <p className="data mt-4 text-[15px] text-ink">{issued.id}</p>

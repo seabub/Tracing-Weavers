@@ -81,9 +81,7 @@ export default function Home() {
             <section className="mt-16">
                 <div className="flex flex-wrap items-baseline justify-between gap-3">
                     <div className="eyebrow">{t.dyeEyebrow}</div>
-                    <p className="text-[15px] text-muted-foreground">
-                        Warna di halaman ini berasal dari pewarna penenun.
-                    </p>
+                    <p className="text-[15px] text-muted-foreground">{t.dyeLead}</p>
                 </div>
                 <ul className="mt-4 grid gap-x-7 gap-y-3 sm:grid-cols-2 lg:grid-cols-4">
                     {DYES.map((dye) => (
@@ -147,7 +145,7 @@ export default function Home() {
                 </div>
 
                 <p className="mt-10 border-t border-white/18 pt-4 text-[12px] uppercase tracking-[.12em] text-white/50">
-                    {brand} · sasaran yang diukur selama tiga tahun, bukan janji
+                    {brand} · tiga tahun yang diukur, bukan janji.
                 </p>
             </section>
 

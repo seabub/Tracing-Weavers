@@ -124,8 +124,8 @@ export default async function RecordPage({
                                         <span className="text-ink">
                                             {String(attr(record, "Material") ?? "—")}
                                         </span>{" "}
-                                        — kapas tumbuh di kebun komunitas, dipintal
-                                        dengan tangan, diwarnai tanpa benang sintetis.
+                                        — kapas dari kebun komunitas, dipintal tangan,
+                                        diwarnai tanpa benang sintetis.
                                     </>
                                 ),
                             },
@@ -138,9 +138,9 @@ export default async function RecordPage({
                                         <span className="text-ink">
                                             {String(attr(record, "Technique") ?? "—")}
                                         </span>{" "}
-                                        — benang lusi diikat dan dicelup sebelum
-                                        ditenun, sehingga polanya muncul saat kainnya
-                                        jadi. Satu penenun, satu alat tenun, satu helai.
+                                        — lusi diikat dan dicelup sebelum ditenun;
+                                        polanya muncul saat kainnya jadi. Satu penenun,
+                                        satu alat tenun, satu helai.
                                     </>
                                 ),
                             },
@@ -151,9 +151,8 @@ export default async function RecordPage({
                                 body: (
                                     <>
                                         Motif ini dipakai di upacara keluarga.
-                                        Komunitas yang memutuskan bagian mana yang
-                                        boleh dicatat dan ditampilkan; sebagian
-                                        maknanya tetap tinggal bersama penenun.
+                                        Komunitas yang memutuskan mana yang boleh
+                                        dicatat; sisanya tetap tinggal bersama penenun.
                                     </>
                                 ),
                             },
@@ -247,8 +246,8 @@ export default async function RecordPage({
                             </div>
                         </div>
                         <p className="mt-2 text-[13px] text-muted-foreground">
-                            Lembar ini yang tercetak di kemasan, di-encode jadi QR, dan
-                            menempel di paspor sebagai bukti jejak.
+                            Lembar ini yang tercetak di kemasan, jadi QR di label,
+                            dan menempel di paspor.
                         </p>
                     </section>
                 </div>

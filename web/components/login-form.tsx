@@ -25,17 +25,34 @@ export default function LoginForm() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, email, outlet }),
             });
-            const body = await res.json();
+
+            /* Read as text first, so a server message (for example a missing
+               signing secret) reaches the screen instead of a generic failure. */
+            const raw = await res.text();
+            let body: { error?: string; hint?: string } = {};
+            try {
+                body = JSON.parse(raw) as typeof body;
+            } catch {
+                body = {};
+            }
 
             if (!res.ok) {
-                setError(body.error ?? "Tidak bisa masuk. Coba lagi.");
+                setError(
+                    [body.error ?? `Tidak bisa masuk (HTTP ${res.status}).`, body.hint]
+                        .filter(Boolean)
+                        .join(" "),
+                );
                 return;
             }
 
             router.push("/collection");
             router.refresh();
         } catch {
-            setError("Sambungan terputus. Coba lagi.");
+            setError(
+                navigator.onLine
+                    ? "Permintaan tidak sampai ke server. Coba lagi sebentar lagi."
+                    : "Ponsel sedang tanpa sambungan internet.",
+            );
         } finally {
             setBusy(false);
         }
@@ -48,7 +65,10 @@ export default function LoginForm() {
             <Field label={t.claimOutlet} value={outlet} onChange={setOutlet} placeholder="Yayasan, studio, toko" autoComplete="organization" />
 
             {error && (
-                <p className="rounded-md bg-destructive/8 p-3 text-[15px] text-destructive shadow-[0_0_0_1px_rgba(236,48,19,.25)]">
+                <p
+                    role="alert"
+                    className="rounded-md bg-destructive/8 p-3 text-[15px] text-destructive shadow-[0_0_0_1px_rgba(236,48,19,.25)]"
+                >
                     {error}
                 </p>
             )}
