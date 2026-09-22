@@ -55,17 +55,38 @@ export function PassportClaim({
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ code, name, email, outlet, tag: tagCode }),
             });
-            const body = (await res.json()) as ClaimResponse;
+
+            /* Read as text first: an error page (HTML) must not turn into a
+               vague "connection dropped", which hides what to fix. */
+            const raw = await res.text();
+            let body: ClaimResponse & { detail?: string; hint?: string } = {};
+            try {
+                body = JSON.parse(raw) as typeof body;
+            } catch {
+                body = {};
+            }
 
             if (!res.ok || !body.passport) {
-                setError(body.error ?? "Paspor gagal diterbitkan. Coba lagi.");
+                setError(
+                    [
+                        body.error ?? `Paspor gagal diterbitkan (HTTP ${res.status}).`,
+                        body.detail,
+                        body.hint,
+                    ]
+                        .filter(Boolean)
+                        .join(" "),
+                );
                 return;
             }
 
             rememberLocalPassport(body.passport);
             setIssued(body.passport);
         } catch {
-            setError("Sambungan terputus sebelum paspor terbit.");
+            setError(
+                navigator.onLine
+                    ? "Permintaan tidak sampai ke server. Coba lagi; kalau tetap gagal, buka /api/health di deployment ini."
+                    : "Ponsel sedang tanpa sambungan internet.",
+            );
         } finally {
             setBusy(false);
         }

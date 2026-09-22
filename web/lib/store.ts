@@ -54,8 +54,17 @@ async function readFileStore(): Promise<FileShape> {
 }
 
 async function writeFileStore(data: FileShape) {
-    await fs.mkdir(path.dirname(FILE), { recursive: true });
-    await fs.writeFile(FILE, `${JSON.stringify(data, null, 2)}\n`, "utf8");
+    try {
+        await fs.mkdir(path.dirname(FILE), { recursive: true });
+        await fs.writeFile(FILE, `${JSON.stringify(data, null, 2)}\n`, "utf8");
+    } catch (cause) {
+        const onReadOnlyHost = Boolean(process.env.VERCEL) || process.env.NODE_ENV === "production";
+        throw new Error(
+            onReadOnlyHost
+                ? "The passport store is set to `file`, which cannot be written here (a deployed filesystem is read-only). Connect Upstash from Vercel → Storage → Marketplace, then set PASSPORT_STORE=kv and redeploy."
+                : `Could not write ${FILE}: ${(cause as Error)?.message ?? "unknown error"}`,
+        );
+    }
 }
 
 const fileStore: PassportStore = {
@@ -97,23 +106,25 @@ const fileStore: PassportStore = {
 /* ─────────────────────────── kv backend ─────────────────────────── */
 
 /* Vercel's KV product is served by Upstash now, and the Marketplace install
-   injects either the legacy KV_REST_API_* names or the Upstash ones. Accept
-   both — it is the same REST endpoint either way, and no SDK is needed. */
+   injects whatever the "Custom Prefix" field said. Accept every name it
+   plausibly produces — it is the same REST endpoint either way, and no SDK is
+   needed: KV_REST_API_* (the KV-era names), UPSTASH_REDIS_REST_* (Upstash's
+   own), and STORAGE_* (what the prefix field defaults to). */
 function kvConfig() {
     const url = (
         process.env.KV_REST_API_URL ??
         process.env.UPSTASH_REDIS_REST_URL ??
+        process.env.STORAGE_URL ??
         ""
     ).replace(/\/$/, "");
     const token =
-        process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
+        process.env.KV_REST_API_TOKEN ??
+        process.env.UPSTASH_REDIS_REST_TOKEN ??
+        process.env.STORAGE_TOKEN;
 
     if (!url || !token) {
         throw new Error(
-            "PASSPORT_STORE=kv needs a Redis REST url + token. Install Upstash from " +
-                "Vercel → Storage → Marketplace, connect it to this project, then set " +
-                "KV_REST_API_URL / KV_REST_API_TOKEN (or UPSTASH_REDIS_REST_URL / " +
-                "UPSTASH_REDIS_REST_TOKEN).",
+            "PASSPORT_STORE=kv is set, but no Redis REST url/token was found. Install Upstash from Vercel → Storage → Marketplace and connect it to this project, then redeploy. It injects either KV_REST_API_URL / KV_REST_API_TOKEN, UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN, or <prefix>_URL / <prefix>_TOKEN depending on the prefix you typed in the connect dialog.",
         );
     }
     return { url, token };
