@@ -1,14 +1,13 @@
 import Link from "next/link";
 import { records } from "@/lib/records";
 import { tagCount } from "@/lib/tags";
-import { passportStore } from "@/lib/store";
 import { brand } from "@/lib/brand";
 import { t } from "@/lib/copy";
 import { ThreadRule, TallyMarks } from "@/components/motif/marks";
+import { Reveal } from "@/components/ui/reveal";
 
 export default function Footer() {
     const year = new Date().getFullYear();
-    const backend = passportStore().backend;
 
     return (
         <footer className="mt-20 border-t border-border">
@@ -17,16 +16,16 @@ export default function Footer() {
                     <div>
                         <div className="eyebrow">Jejak yang menempel</div>
                         <p className="mt-3 max-w-[34ch] text-[17px] text-muted-foreground">
-                            Jejak asal-usul yang menempel pada kainnya. Tempel
-                            tag, baca namanya, simpan jadi milikmu.
+                            Tag di tepi kain menyimpan satu halaman tentang
+                            penenunnya.
                         </p>
                     </div>
 
                     <div>
                         <div className="eyebrow">Tanpa rantai blok</div>
                         <p className="mt-3 max-w-[34ch] text-[17px] text-muted-foreground">
-                            Tanpa dompet, tanpa token untuk dijual, tanpa gas.
-                            Paspor adalah catatan bertanda tangan atas namamu.
+                            Tanpa dompet, tanpa token, tanpa gas. Catatan
+                            bertanda tangan atas namamu.
                         </p>
                     </div>
 
@@ -38,9 +37,7 @@ export default function Footer() {
                                 {records.length} jejak · {tagCount} {t.tagsCount}
                             </span>
                         </div>
-                        <p className="mt-2 text-[13px] text-muted-foreground/70">
-                            disimpan di: {backend}
-                        </p>
+
                     </div>
                 </div>
 
@@ -53,11 +50,11 @@ export default function Footer() {
                     <span>Adonara · Lembata · Manggarai</span>
                 </div>
 
-                <p className="mt-3 text-[12px] text-muted-foreground/70">
-                    Foto masih placeholder dari berkas design system —
-                    ganti dengan fotografi komunitas berlisensi sebelum terbit
-                    (brief §6). Motif hanya tampil dengan izin komunitas.
-                </p>
+                <Reveal summary="Catatan penerbitan" className="mt-4 border-border">
+                    Foto masih placeholder dari berkas design system — ganti dengan
+                    fotografi komunitas berlisensi sebelum terbit (brief §6). Motif
+                    hanya tampil dengan izin komunitas.
+                </Reveal>
             </div>
         </footer>
     );

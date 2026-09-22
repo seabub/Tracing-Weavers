@@ -7,6 +7,7 @@ import RecordGrid from "@/components/records/RecordGrid";
 import { JourneyStrip } from "@/components/journey-strip";
 import { ThreadRule, WarpField } from "@/components/motif/marks";
 import { Button } from "@/components/ui/button";
+import { Reveal } from "@/components/ui/reveal";
 
 /* The four dyestuffs the weavers actually use — the brand's reserved dye
    colours, so each swatch is a material, not a decoration. */
@@ -132,6 +133,23 @@ export default function Home() {
                                 </div>
                             ))}
                         </dl>
+
+                        {/* the story earns its length, so it is offered, not imposed */}
+                        <Reveal tone="ink" summary="Kenapa ini penting" className="mt-6">
+                            <p>
+                                Di Adonara, nama penenun jarang muncul di mana pun:
+                                kainnya dijual, motifnya difoto, harganya dicatat —
+                                namanya tidak. Padahal satu helai bisa berarti sebelas
+                                minggu kerja, tiga kali celup, dan motif yang hanya boleh
+                                dipakai keluarga tertentu.
+                            </p>
+                            <p>
+                                Jejak ini menuliskannya. Setiap kain yang keluar dari kebun
+                                dan alat tenun membawa satu halaman: siapa yang
+                                mengerjakannya, dari bahan apa, berapa lama. Halaman itu
+                                ikut ke mana kainnya pergi.
+                            </p>
+                        </Reveal>
                     </div>
 
                     <div>

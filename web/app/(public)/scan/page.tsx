@@ -4,6 +4,7 @@ import { tagCount } from "@/lib/tags";
 import { siteUrl } from "@/lib/brand";
 import { t } from "@/lib/copy";
 import { ThreadRule, WarpField, WeftCrossing } from "@/components/motif/marks";
+import { Reveal } from "@/components/ui/reveal";
 
 export const metadata = { title: "Tempel tag" };
 
@@ -79,15 +80,20 @@ export default function ScanPage() {
                     <div className="relative">
                         <div className="eyebrow">Untuk tim lapangan</div>
                         <p className="mt-3 max-w-[60ch] text-[16px] text-white/75">
-                            Tulis tiap tag dengan{" "}
-                            <code className="data text-salmon">
-                                {siteUrl}/t/&lt;KODE_TAG&gt;
-                            </code>{" "}
-                            sebagai NDEF URI, lalu tambahkan kodenya ke{" "}
-                            <code className="data text-salmon">data/tags.json</code>.
-                            Daftar URL-nya keluar dari{" "}
-                            <code className="data text-salmon">npm run nfc:urls</code>.
+                            Satu tag, satu URL, satu baris di berkas tag.
                         </p>
+                        <Reveal tone="ink" summary="Cara menulis tag" className="mt-4">
+                            <p>
+                                Tulis tiap tag dengan{" "}
+                                <code className="data text-salmon">
+                                    {siteUrl}/t/&lt;KODE_TAG&gt;
+                                </code>{" "}
+                                sebagai NDEF URI, lalu tambahkan kodenya ke{" "}
+                                <code className="data text-salmon">data/tags.json</code>.
+                                Daftar URL-nya keluar dari{" "}
+                                <code className="data text-salmon">npm run nfc:urls</code>.
+                            </p>
+                        </Reveal>
                     </div>
                 </div>
             </div>

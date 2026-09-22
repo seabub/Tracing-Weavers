@@ -27,7 +27,7 @@ export const t = {
     homeTitleA: "Kain ini",
     homeTitleB: "punya nama",
     homeLead:
-        "Mama Ina Dida menenumnya sebelas minggu di Adonara. Tempelkan ponsel ke tag di tepi kain, dan namanya terbaca — sekarang, dan setiap kali kainnya berpindah tangan.",
+        "Mama Ina Dida menenumnya sebelas minggu di Adonara. Tempelkan ponsel ke tag di tepi kain — namanya terbaca.",
     recordsEyebrow: "Jejak kain",
     recordsTitle: "Satu kain. Satu nama.",
     recordsCount: "jejak",
@@ -39,19 +39,19 @@ export const t = {
     explain: [
         {
             title: "Yang kamu klaim",
-            body: "Satu halaman tentang satu kain: siapa penenunnya, dari apa bahannya, dan berapa lama dikerjakan.",
+            body: "Siapa penenunnya, dari apa bahannya, berapa lama dikerjakan.",
         },
         {
             title: "Kenapa ada",
-            body: "Nama penenun jarang tercatat. Halaman ini menuliskannya, dan membiarkannya menempel pada kainnya.",
+            body: "Nama penenun jarang tercatat. Halaman ini menuliskannya.",
         },
         {
             title: "Yang kamu dapat",
-            body: "Satu nomor id, satu halaman yang bisa diperiksa siapa saja, dan tempatnya di koleksimu.",
+            body: "Nomor id, halaman yang bisa diperiksa siapa saja, tempat di koleksimu.",
         },
         {
             title: "Yang bukan",
-            body: "Bukan kepemilikan atas kain. Bukan token untuk diperdagangkan, bukan investasi. Tanpa dompet kripto, tanpa gas.",
+            body: "Bukan kepemilikan kain, bukan token, bukan investasi. Tanpa dompet kripto.",
         },
     ],
 
@@ -104,8 +104,7 @@ export const t = {
     claimBusy: "Menerbitkan paspor…",
     claimSoldOut: "Semua paspor sudah terbit",
     claimOnePerCloth: "Satu klaim per kain",
-    claimFine:
-        "Kain dan motifnya tetap milik penenun dan komunitasnya. Paspor ini mencatat jejak, bukan memindahkan kepemilikan.",
+    claimFine: "Kain dan motifnya tetap milik penenun dan komunitasnya.",
     claimedEyebrow: "Terbit",
     claimedHolder: "Dipegang oleh",
     claimedWovenBy: "Ditenun oleh",
@@ -120,7 +119,7 @@ export const t = {
     collectionTitle: "Tersimpan atas namamu",
     collectionEmpty: "Belum ada paspor di sini",
     collectionEmptyNote:
-        "Terbitkan satu dan tempatnya sudah menunggu. Kalau kamu mengklaimnya dari perangkat lain, masuk dengan email yang sama.",
+        "Terbitkan satu dan tempatnya sudah menunggu. Dari perangkat lain, masuk dengan email yang sama.",
     collectionSignInNote:
         "Masuk dengan email yang kamu pakai saat mengklaim, dan paspornya muncul di sini.",
     signInEyebrow: "Masuk",

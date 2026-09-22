@@ -12,6 +12,7 @@ import { RecordTraits } from "@/components/records/RecordTraits";
 import { ClothTabs } from "@/components/cloth-tabs";
 import { JourneyStrip } from "@/components/journey-strip";
 import { CornerBrackets, ThreadRule } from "@/components/motif/marks";
+import { Reveal } from "@/components/ui/reveal";
 export const dynamic = "force-dynamic";
 
 /* The fact table of a record: Indonesian label, English gloss, and the source
@@ -259,10 +260,12 @@ export default async function RecordPage({
                 <div className="mt-8">
                     <div className="eyebrow">{t.journeyEyebrow}</div>
                     <h2 className="mt-3">{t.journeyTitle}</h2>
-                    <JourneyStrip
-                        activeStep={step ? String(step) : undefined}
-                        className="mt-6"
-                    />
+                    <Reveal summary="Lihat tujuh tahap" className="mt-4">
+                        <JourneyStrip
+                            activeStep={step ? String(step) : undefined}
+                            className="mt-2"
+                        />
+                    </Reveal>
                 </div>
             </section>
 
