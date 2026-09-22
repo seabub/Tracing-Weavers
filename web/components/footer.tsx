@@ -14,27 +14,25 @@ export default function Footer() {
             <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
                 <div className="grid gap-10 sm:grid-cols-3">
                     <div>
-                        <div className="eyebrow">Jejak yang menempel</div>
+                        <div className="eyebrow">The record that travels</div>
                         <p className="mt-3 max-w-[34ch] text-[17px] text-muted-foreground">
-                            Tag di tepi kain menyimpan satu halaman tentang
-                            penenunnya.
+                            A tag at the edge of the cloth holds one page about the weaver.
                         </p>
                     </div>
 
                     <div>
-                        <div className="eyebrow">Tanpa rantai blok</div>
+                        <div className="eyebrow">No blockchain</div>
                         <p className="mt-3 max-w-[34ch] text-[17px] text-muted-foreground">
-                            Tanpa dompet, tanpa token, tanpa gas. Catatan
-                            bertanda tangan atas namamu.
+                            No wallet, no token, no gas. A signed record kept under your name.
                         </p>
                     </div>
 
                     <div>
-                        <div className="eyebrow">Jejak tercatat</div>
+                        <div className="eyebrow">Records written</div>
                         <div className="mt-3 flex items-center gap-3 text-[17px] text-muted-foreground">
                             <TallyMarks className="h-5 w-20 text-bt-red" />
                             <span className="num">
-                                {records.length} jejak · {tagCount} {t.tagsCount}
+                                {records.length} {t.recordsCount} · {tagCount} {t.tagsCount}
                             </span>
                         </div>
 
@@ -50,10 +48,8 @@ export default function Footer() {
                     <span>Adonara · Lembata · Manggarai</span>
                 </div>
 
-                <Reveal summary="Catatan penerbitan" className="mt-4 border-border">
-                    Foto masih placeholder dari berkas design system. Ganti dengan
-                    fotografi komunitas berlisensi sebelum terbit (brief §6). Motif
-                    hanya tampil dengan izin komunitas.
+                <Reveal summary="Publishing note" className="mt-4 border-border">
+                    Photographs are still placeholders from the design system. Replace them with licensed community photography before publication (brief §6). Motifs appear only with the community's permission.
                 </Reveal>
             </div>
         </footer>

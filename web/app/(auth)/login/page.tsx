@@ -4,7 +4,7 @@ import { brand, siteUrl } from "@/lib/brand";
 import { t } from "@/lib/copy";
 import { PartnerNodes, WarpField } from "@/components/motif/marks";
 
-export const metadata = { title: "Buka paspor saya" };
+export const metadata = { title: "Open my passport" };
 
 export default function Login() {
     return (
@@ -21,11 +21,10 @@ export default function Login() {
 
                 <div className="relative max-w-md">
                     <h1 className="text-[clamp(2rem,3.4vw,2.75rem)] text-white">
-                        Pengetahuan penenun, dicatat dengan nama.
+                        A weaver's knowledge, written down with a name.
                     </h1>
                     <p className="mt-5 text-[17px] text-white/75">
-                        Masuk untuk membaca jejak sebuah kain dan menyimpan paspor
-                        yang terbit untukmu.
+                        Sign in to read a cloth's record and keep the passport issued to you.
                     </p>
                 </div>
 
@@ -51,7 +50,7 @@ export default function Login() {
                         href="/"
                         className="mt-6 inline-block text-[14px] text-muted-foreground hover:text-ink"
                     >
-                        Baca jejak tanpa masuk →
+                        Read records without signing in →
                     </Link>
 
                     <p className="data mt-8 text-muted-foreground">

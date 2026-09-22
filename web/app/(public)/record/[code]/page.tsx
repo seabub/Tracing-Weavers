@@ -5,6 +5,7 @@ import { passportStore } from "@/lib/store";
 import { currentIdentity } from "@/lib/session";
 import { resolveTag } from "@/lib/tags";
 import { t } from "@/lib/copy";
+import { safeDecode } from "@/lib/safe";
 import { PassportClaim } from "@/components/passport/PassportClaim";
 import { PassportCard } from "@/components/passport/PassportCard";
 import { ClaimBar } from "@/components/passport/claim-bar";
@@ -18,13 +19,13 @@ export const dynamic = "force-dynamic";
 /* The fact table of a record: Indonesian label, English gloss, and the source
    attribute. Same order as the artwork, so the card and the page agree. */
 const FACTS: [string, string][] = [
-    ["Penenun · Maker", "Maker"],
-    ["Asal · Origin", "Origin"],
-    ["Bahan · Material", "Material"],
-    ["Teknik · Technique", "Technique"],
-    ["Pewarna · Dye", "Dye"],
-    ["Lama di alat tenun · Weeks", "Weeks on the loom"],
-    ["Kali celup · Dye baths", "Dye baths"],
+    ["Maker · Penenun", "Maker"],
+    ["Origin · Asal", "Origin"],
+    ["Material · Bahan", "Material"],
+    ["Technique · Teknik", "Technique"],
+    ["Dye · Pewarna", "Dye"],
+    ["Weeks on the loom · Lama", "Weeks on the loom"],
+    ["Dye baths · Kali celup", "Dye baths"],
 ];
 
 /**
@@ -51,7 +52,7 @@ export default async function RecordPage({
     const remaining = Math.max(record.supply - issued.length, 0);
     const identity = await currentIdentity();
 
-    const tagCode = tag ? decodeURIComponent(tag).trim().toUpperCase() : undefined;
+    const tagCode = tag ? safeDecode(tag).trim().toUpperCase() : undefined;
     const tagEntry = tag ? resolveTag(tag)?.entry : undefined;
 
     const mine = identity
@@ -109,7 +110,7 @@ export default async function RecordPage({
                     </figure>
                     {record.photoCredit && (
                         <p className="mt-3 text-[13px] text-ink-2">
-                            Foto: {record.photoCredit}
+                            Photo: {record.photoCredit}
                         </p>
                     )}
 
@@ -118,41 +119,36 @@ export default async function RecordPage({
                         items={[
                             {
                                 id: "bahan",
-                                label: "Bahan",
-                                gloss: "Material",
+                                label: "Material",
+                                gloss: "Bahan",
                                 body: (
                                     <>
                                         <span className="text-ink">
-                                            {String(attr(record, "Material") ?? "Belum dicatat")}
+                                            {String(attr(record, "Material") ?? "Not recorded yet")}
                                         </span>{" "}
-                                        dari kebun komunitas, diwarnai tanpa benang
-                                        sintetis.
+                                        from community gardens, dyed without synthetic thread.
                                     </>
                                 ),
                             },
                             {
                                 id: "teknik",
-                                label: "Teknik",
-                                gloss: "Technique",
+                                label: "Technique",
+                                gloss: "Teknik",
                                 body: (
                                     <>
                                         <span className="text-ink">
-                                            {String(attr(record, "Technique") ?? "Belum dicatat")}
-                                        </span>. Lusi diikat dan dicelup sebelum
-                                        ditenun, jadi polanya muncul saat kainnya jadi.
-                                        Satu penenun, satu alat tenun, satu helai.
+                                            {String(attr(record, "Technique") ?? "Not recorded yet")}
+                                        </span>. The warp is tied and dyed before weaving, so the pattern appears as the cloth does. One weaver, one loom, one length.
                                     </>
                                 ),
                             },
                             {
                                 id: "motif",
                                 label: "Motif",
-                                gloss: "Apa yang motif boleh ceritakan",
+                                gloss: "What the motif may tell",
                                 body: (
                                     <>
-                                        Motif ini dipakai di upacara keluarga.
-                                        Komunitas yang memutuskan mana yang boleh
-                                        dicatat; sisanya tetap tinggal bersama penenun.
+                                        This motif is worn at family ceremonies. The community decides how much may be recorded; the rest stays with the weaver.
                                     </>
                                 ),
                             },
@@ -192,7 +188,7 @@ export default async function RecordPage({
                             );
                         })}
                         <div className="flex items-baseline justify-between gap-6 border-t border-border py-3">
-                            <dt className="label">Sudah terbit</dt>
+                            <dt className="label">{t.issued}</dt>
                             <dd className="num text-right text-[17px]">
                                 {issued.length} / {record.supply}
                             </dd>
@@ -220,14 +216,14 @@ export default async function RecordPage({
                     {/* the record sheet: what print, QR and the passport carry */}
                     <section className="rounded-lg bg-card p-4 shadow-[var(--ring)]">
                         <div className="flex items-baseline justify-between gap-4">
-                            <h2 className="eyebrow">Lembar jejak · Record sheet</h2>
+                            <h2 className="eyebrow">Record sheet · Lembar jejak</h2>
                             <a
                                 href={record.image}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="text-[13px] text-muted-foreground hover:text-ink"
                             >
-                                Buka untuk cetak →
+                                Open for print →
                             </a>
                         </div>
                         <div className="mt-3 overflow-hidden rounded-md bg-ink">
@@ -239,15 +235,14 @@ export default async function RecordPage({
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
                                     src={record.image}
-                                    alt={`Lembar jejak ${record.code}`}
+                                    alt={`Record sheet ${record.code}`}
                                     className="w-full"
                                     draggable={false}
                                 />
                             </div>
                         </div>
                         <p className="mt-2 text-[13px] text-muted-foreground">
-                            Lembar ini yang tercetak di kemasan, jadi QR di label,
-                            dan menempel di paspor.
+                            This sheet is what gets printed on the packaging, encoded as the label's QR, and carried on the passport.
                         </p>
                     </section>
                 </div>

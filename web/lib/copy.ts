@@ -1,142 +1,142 @@
 /**
- * Copy in two languages, one place.
+ * Every word a visitor reads, in one place.
  *
- * Rewritten against the Ogilvy principles (skill: ogilvy-copywriting).
- * What changed and why:
- *  · one promise per surface, stated in plain words: "kain ini punya nama"
- *  · facts instead of praise: eleven minggu, tiga kali celup, dua tangan
- *  · the reader is spoken to, not briefed: second person, short sentences
+ * Written against the Ogilvy principles (skill: ogilvy-copywriting), in ENGLISH:
+ * the interface speaks English and the craft keeps its own words as a gloss
+ * (tenun, ikat, mengkudu). Proper nouns stay as they are — a weaver's name is
+ * not translated.
+ *
+ * The rules the copy is held to:
+ *  · one promise per surface, in plain words: "this cloth has a name"
+ *  · the framing said out loud: a birth record for the cloth
+ *  · facts instead of praise: eleven weeks, three dye baths, three districts
+ *  · short sentences, one idea each
  *  · nothing explains the machinery to a visitor before it earns it
- *
- * The design system's rule still holds: Indonesian first, English gloss only
- * where a visitor who does not read Indonesian needs the word, eyebrows
- * uppercase and letterspaced, headlines in sentence case.
  */
 
 export const t = {
     /* shell */
-    readTag: "Tempel tag",
+    readTag: "Tap a tag",
     readTagEn: "Read a tag",
-    myPassports: "Paspor saya",
-    openPassport: "Lihat paspor saya",
-    signIn: "Masuk",
-    brandLine: "Benih ke Tenun",
+    myPassports: "My passport",
+    openPassport: "Open my passport",
+    signIn: "Sign in",
+    brandLine: "Seed to Loom",
 
     /* home — the promise, then the news, then the action */
-    homeEyebrow: "Digital Product Passport · Benih ke Tenun",
-    homeTitleA: "Kain ini",
-    homeTitleB: "punya nama",
+    homeEyebrow: "Digital Product Passport · Seed to Loom",
+    homeTitleA: "This cloth",
+    homeTitleB: "has a name",
     homeLead:
-        "Mama Ina Dida menenumnya sebelas minggu di Adonara. Tempelkan ponsel ke tag, dan akte lahir kainnya terbaca.",
-    recordsEyebrow: "Jejak kain",
-    recordsTitle: "Satu kain. Satu nama.",
-    recordsCount: "jejak",
-    tagsCount: "tag",
+        "Mama Ina Dida wove it for eleven weeks in Adonara. Hold your phone to the tag, and its birth record comes up.",
+    recordsEyebrow: "Cloth records",
+    recordsTitle: "One cloth. One name.",
+    recordsCount: "records",
+    tagsCount: "tags",
 
     /* what it is / is not — the trust block, one line each */
-    beforeEyebrow: "Sebelum mengklaim",
-    beforeTitle: "Akte lahir kain, bukan token.",
+    beforeEyebrow: "Before you claim",
+    beforeTitle: "A birth record, not a token.",
     explain: [
         {
-            title: "Yang kamu klaim",
-            body: "Satu kain, satu halaman: siapa penenunnya, dari apa bahannya, berapa lama dikerjakan.",
+            title: "What you claim",
+            body: "One cloth, one page: who wove it, what from, how long it took.",
         },
         {
-            title: "Kenapa ada",
-            body: "Nama penenun jarang tercatat. Halaman ini menuliskannya.",
+            title: "Why it exists",
+            body: "Weavers' names are rarely recorded. This page writes it down.",
         },
         {
-            title: "Yang kamu dapat",
-            body: "Nomor id, halaman yang bisa diperiksa siapa saja, tempat di koleksimu.",
+            title: "What you get",
+            body: "An id, a page anyone can check, and a place in your collection.",
         },
         {
-            title: "Yang bukan",
-            body: "Bukan kepemilikan kain, bukan token, bukan investasi. Tanpa dompet kripto.",
+            title: "What it is not",
+            body: "Not ownership of the cloth, not a token, not an investment. No crypto wallet.",
         },
     ],
 
-    /* the seven steps of the programme (uppercase, per the design system) */
-    journeyEyebrow: "Yang diikuti jejaknya",
-    journeyTitle: "Benih ke tenun, lalu sesudahnya.",
+    /* the seven stages of the programme. `id_label` is what is shown, `label` is
+       the gloss beside it, and `id` is the key that a record's "Journey step"
+       attribute matches on (see components/journey-strip.tsx). */
+    journeyEyebrow: "What the record follows",
+    journeyTitle: "Seed to loom, and after.",
     journeyLead:
-        "Tiga tahun, tujuh tahap, tiga kabupaten. Tiap tahap berdiri di atas yang sebelumnya.",
+        "Three years, seven stages, three districts. Each stage stands on the one before it.",
     steps: [
-        { id: "Seed", id_label: "Benih", label: "Seed", note: "Kapas ditanam di kebun rakyat" },
-        { id: "Loom", id_label: "Tenun", label: "Loom", note: "Ditenun, satu helai satu penenun" },
-        { id: "Trace", id_label: "Jejak", label: "Trace", note: "Tag ditulis, jejak menempel" },
-        { id: "Teach", id_label: "Ajar", label: "Teach", note: "Motif didokumentasikan untuk kurikulum" },
-        { id: "Regenerate", id_label: "Tumbuh", label: "Regenerate", note: "Kebun dan alat dipulihkan" },
-        { id: "Hub", id_label: "Hub", label: "Hub", note: "Dijual lewat Local Impact Hub" },
-        { id: "Flourish", id_label: "Mekar", label: "Flourish", note: "Nilainya kembali ke rumah penenun" },
+        { id: "Seed", id_label: "Seed", label: "Benih", note: "Cotton planted in community gardens" },
+        { id: "Loom", id_label: "Loom", label: "Tenun", note: "Woven, one length by one weaver" },
+        { id: "Trace", id_label: "Trace", label: "Jejak", note: "The tag is written, the record sticks" },
+        { id: "Teach", id_label: "Teach", label: "Ajar", note: "Motifs documented for the curriculum" },
+        { id: "Regenerate", id_label: "Regenerate", label: "Tumbuh", note: "Gardens and tools restored" },
+        { id: "Hub", id_label: "Hub", label: "Hub", note: "Sold through the Local Impact Hub" },
+        { id: "Flourish", id_label: "Flourish", label: "Mekar", note: "Value returns to the weaver's household" },
     ],
 
-    /* wardrobe of natural dyes — the brand's reserved data palette */
-    dyeEyebrow: "Pewarna alami",
-    dyeLead: "Empat warna, semuanya dari dapur pewarna penenun.",
+    /* the natural dyes — the brand's reserved data palette */
+    dyeEyebrow: "Natural dyes",
+    dyeLead: "Four colours, all of them from the weavers' dye pots.",
 
     /* record page */
-    backToRecords: "Semua jejak",
-    recordEyebrow: "Jejak kain",
-    supplyUnique: "satu-satunya",
-    supplyShared: "hingga {n} pemegang",
-    issued: "Sudah terbit",
-    remaining: "Masih tersedia",
-    tagRead: "Tag terbaca",
-    fieldMaker: "Penenun · Maker",
-    fieldOrigin: "Asal · Origin",
-    fieldMaterial: "Bahan · Material",
-    fieldTechnique: "Teknik · Technique",
-    fieldDye: "Pewarna · Dye",
-    fieldWeeks: "Lama di alat tenun · Weeks",
-    fieldBaths: "Kali celup · Dye baths",
-    fieldStep: "Tahap · Step",
-    traitsEyebrow: "Catatan kain · Traits",
-    yourPassport: "Paspor kamu",
+    backToRecords: "All records",
+    recordEyebrow: "Cloth record",
+    supplyUnique: "the only one",
+    supplyShared: "up to {n} holders",
+    issued: "Issued",
+    remaining: "Still available",
+    tagRead: "Tag read",
+    fieldMaker: "Maker · Penenun",
+    fieldOrigin: "Origin · Asal",
+    fieldMaterial: "Material · Bahan",
+    fieldTechnique: "Technique · Teknik",
+    fieldDye: "Dye · Pewarna",
+    fieldWeeks: "Weeks on the loom · Lama",
+    fieldBaths: "Dye baths · Kali celup",
+    fieldStep: "Journey stage · Tahap",
+    traitsEyebrow: "Cloth notes · Traits",
+    yourPassport: "Your passport",
 
     /* claim */
-    claimEyebrow: "Klaim jejak ini",
-    claimTitle: "Taruh namamu di jejak ini.",
-    claimLead: "Cukup nama dan email. Tanpa dompet, tanpa kata sandi.",
-    claimName: "Nama lengkap",
+    claimEyebrow: "Claim this record",
+    claimTitle: "Put your name on this record.",
+    claimLead: "A name and an email is all it takes. No wallet, no password.",
+    claimName: "Full name",
     claimEmail: "Email",
-    claimOutlet: "Lembaga · opsional",
-    claimButton: "Klaim jejak ini",
-    claimBusy: "Menerbitkan paspor…",
-    claimSoldOut: "Semua paspor sudah terbit",
-    claimOnePerCloth: "Satu klaim per kain",
-    claimFine: "Kain dan motifnya tetap milik penenun dan komunitasnya.",
-    claimedEyebrow: "Terbit",
-    claimedHolder: "Dipegang oleh",
-    claimedWovenBy: "Ditenun oleh",
-    claimedIssued: "Diterbitkan",
+    claimOutlet: "Organisation · optional",
+    claimButton: "Claim this record",
+    claimBusy: "Issuing the passport…",
+    claimSoldOut: "All passports issued",
+    claimOnePerCloth: "One claim per cloth",
+    claimFine: "The cloth and its motifs stay with the weaver and their community.",
+    claimedEyebrow: "Issued",
+    claimedHolder: "Held by",
+    claimedWovenBy: "Woven by",
+    claimedIssued: "Issued on",
     claimedNote:
-        "Jejaknya ikut bersama kain, termasuk saat berpindah tangan. Tiap penjualan kembali ke rumah yang menenumnya.",
-    viewPassport: "Lihat paspor",
-    stayHere: "Tetap di jejak ini",
+        "The record travels with the cloth, including when it changes hands. Every resale returns value to the household that wove it.",
+    viewPassport: "View the passport",
+    stayHere: "Stay on this record",
 
     /* collection / verify / login */
-    collectionEyebrow: "Paspor saya",
-    collectionTitle: "Tersimpan atas namamu",
-    collectionEmpty: "Belum ada paspor di sini",
+    collectionEyebrow: "My passport",
+    collectionTitle: "Kept under your name",
+    collectionEmpty: "No passports here yet",
     collectionEmptyNote:
-        "Terbitkan satu, tempatnya sudah menunggu. Dari perangkat lain, masuk dengan email yang sama.",
+        "Issue one and its place is already waiting. A passport claimed on another device arrives once you open its verification link and save it.",
     collectionSignInNote:
-        "Masuk dengan email yang kamu pakai saat mengklaim, dan paspornya muncul di sini.",
-    signInEyebrow: "Masuk",
-    signInTitle: "Tanpa dompet. Tanpa kata sandi.",
-    signInLead: "Pakai email yang sama seperti saat kamu mengklaim.",
-    signInButton: "Buka paspor saya",
-    verifyEyebrow: "Periksa paspor",
-    verifyStored: "Terverifikasi di daftar",
-    verifySignature: "Terverifikasi dari tanda tangan",
-    verifyMissing: "Tidak ada paspor dengan id ini.",
-    verifyMissingNote:
-        "Periksa lagi karakternya, atau tempel tag sekali lagi. Bentuk paspor seperti",
-    verifyProves: "Yang dibuktikan halaman ini",
+        "Sign in with the email you claimed with, so your name is filled in next time.",
+    signInEyebrow: "Sign in",
+    signInTitle: "No wallet. No password.",
+    signInLead: "Use the same email you claimed with.",
+    signInButton: "Open my passport",
+    verifyEyebrow: "Passport check",
+    verifyStored: "Verified against the register",
+    verifySignature: "Verified by signature",
+    verifyProves: "What this page proves",
 
     /* scan */
-    scanEyebrow: "Membaca tag",
-    scanTitleA: "Tempelkan ponsel",
-    scanTitleB: "ke tepi kain.",
-    scanLead: "tag terdaftar. Satu tag, satu kain.",
+    scanEyebrow: "Reading a tag",
+    scanTitleA: "Hold your phone",
+    scanTitleB: "to the edge of the cloth.",
+    scanLead: "registered tags. One tag, one cloth.",
 } as const;

@@ -38,7 +38,7 @@ export default function LoginForm() {
 
             if (!res.ok) {
                 setError(
-                    [body.error ?? `Tidak bisa masuk (HTTP ${res.status}).`, body.hint]
+                    [body.error ?? `Could not sign in (HTTP ${res.status}).`, body.hint]
                         .filter(Boolean)
                         .join(" "),
                 );
@@ -50,8 +50,8 @@ export default function LoginForm() {
         } catch {
             setError(
                 navigator.onLine
-                    ? "Permintaan tidak sampai ke server. Coba lagi sebentar lagi."
-                    : "Ponsel sedang tanpa sambungan internet.",
+                    ? "The request did not reach the server. Try again in a moment."
+                    : "This phone has no internet connection.",
             );
         } finally {
             setBusy(false);
@@ -61,8 +61,8 @@ export default function LoginForm() {
     return (
         <form onSubmit={submit} className="space-y-4">
             <Field label={t.claimName} value={name} onChange={setName} placeholder="Dinny Jusuf" autoComplete="name" required />
-            <Field label={t.claimEmail} value={email} onChange={setEmail} placeholder="nama@contoh.org" type="email" autoComplete="email" required />
-            <Field label={t.claimOutlet} value={outlet} onChange={setOutlet} placeholder="Yayasan, studio, toko" autoComplete="organization" />
+            <Field label={t.claimEmail} value={email} onChange={setEmail} placeholder="name@example.org" type="email" autoComplete="email" required />
+            <Field label={t.claimOutlet} value={outlet} onChange={setOutlet} placeholder="Foundation, studio, shop" autoComplete="organization" />
 
             {error && (
                 <p
@@ -74,7 +74,7 @@ export default function LoginForm() {
             )}
 
             <Button type="submit" size="lg" className="w-full" disabled={busy}>
-                {busy ? "Membuka…" : t.signInButton}
+                {busy ? "Opening…" : t.signInButton}
             </Button>
         </form>
     );

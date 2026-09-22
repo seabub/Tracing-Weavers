@@ -21,7 +21,7 @@ export function TagLookupForm({ className }: { className?: string }) {
             }}
         >
             <label className="block">
-                <span className="label">Kode tag</span>
+                <span className="label">Tag code</span>
                 <input
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
@@ -31,7 +31,7 @@ export function TagLookupForm({ className }: { className?: string }) {
                 />
             </label>
             <Button type="submit" size="lg" className="mt-4 w-full sm:w-auto">
-                Buka jejaknya
+                Open the record
             </Button>
         </form>
     );

@@ -22,7 +22,7 @@ export function ClaimBar({
         <div className="no-print fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/98 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 lg:hidden">
             <div className="mx-auto flex max-w-5xl items-center gap-4">
                 <div className="min-w-0">
-                    <div className="data text-muted-foreground">Tersisa</div>
+                    <div className="data text-muted-foreground">Left</div>
                     <div className="num text-[19px] leading-tight">
                         {remaining === null ? "—" : Math.max(remaining, 0)}
                     </div>
@@ -43,7 +43,7 @@ export function ClaimBar({
                             ?.focus({ preventScroll: true });
                     }}
                 >
-                    {soldOut ? "Semua paspor terbit" : "Klaim jejak ini"}
+                    {soldOut ? "All passports issued" : "Claim this record"}
                 </Button>
             </div>
         </div>

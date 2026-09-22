@@ -1,0 +1,16 @@
+{
+  "_comment": "Example of the file backend's shape (PASSPORT_STORE=file). The real file, data/passports.json, is gitignored on purpose: it holds holder names and email addresses, and those should not be committed to a repository. Copy this file to passports.json to start from a clean local store.",
+  "passports": [
+    {
+      "id": "DPP-BT0042-0001-XXXXXXXX",
+      "code": "BT-0042",
+      "holder": "Nama Pemegang",
+      "email": "pemegang@contoh.org",
+      "outlet": "Yayasan, studio, atau toko (opsional)",
+      "issuedAt": "2026-09-22T00:00:00.000Z",
+      "serial": 1,
+      "status": "issued",
+      "tags": ["BT-0042"]
+    }
+  ]
+}

@@ -62,14 +62,14 @@ export function NfcReader() {
                 }
                 const fallback = text.trim().replace(/[^A-Za-z0-9._~-]/g, "");
                 if (fallback) router.push(`/t/${fallback}`);
-                else setError("Tag ini tidak membawa kode yang bisa dibaca.");
+                else setError("This tag carries no readable code.");
             };
             reader.onreadingerror = () =>
-                setError("Tag gagal dibaca. Coba lagi, atau ketik kodenya.");
+                setError("The tag could not be read. Try again, or type the code.");
             setListening(true);
         } catch {
             setError(
-                "Pemindaian NFC diblokir. Buka kamera ponsel dan arahkan ke tag sebagai gantinya.",
+                "NFC scanning is blocked. Open your phone camera and point it at the tag instead.",
             );
             setListening(false);
         }
@@ -81,10 +81,9 @@ export function NfcReader() {
         <div className="cloth relative overflow-hidden rounded-lg bg-card p-6 shadow-[var(--ring)]">
             <WarpField className="pointer-events-none absolute inset-x-0 top-0 h-20 w-full text-bt-red/20" />
             <div className="relative">
-                <div className="eyebrow">Tempel di sini</div>
+                <div className="eyebrow">Tap here</div>
                 <p className="mt-3 text-[17px] text-muted-foreground">
-                    Peramban ini bisa membaca tag langsung. Tempelkan ponsel ke tepi
-                    kain.
+                    This browser can read the tag directly. Hold your phone to the edge of the cloth.
                 </p>
                 <Button
                     size="lg"
@@ -92,7 +91,7 @@ export function NfcReader() {
                     onClick={start}
                     disabled={listening}
                 >
-                    {listening ? "Menunggu tag…" : "Mulai membaca"}
+                    {listening ? "Waiting for a tag…" : "Start reading"}
                 </Button>
                 {error && <p className="mt-4 text-[15px] text-destructive">{error}</p>}
             </div>

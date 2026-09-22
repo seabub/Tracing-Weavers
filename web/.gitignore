@@ -33,3 +33,8 @@ next-env.d.ts
 
 # generated tag/URL sheet
 data/tags.csv
+
+# the local passport store holds holder names and emails — never commit it.
+# data/passports.example.json is the tracked shape.
+data/passports.json
+data/passports.json.tmp

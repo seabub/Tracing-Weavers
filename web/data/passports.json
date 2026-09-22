@@ -1,4 +1,0 @@
-{
-  "_comment": "Issued passports — written by the app when somebody claims a record (PASSPORT_STORE=file). Read-only on Vercel: point PASSPORT_STORE at kv there instead. Safe to gitignore if you would rather not carry holder names in the repo.",
-  "passports": []
-}

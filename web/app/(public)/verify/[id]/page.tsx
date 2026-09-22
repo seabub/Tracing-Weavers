@@ -1,8 +1,12 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { getRecord } from "@/lib/records";
 import { passportStore } from "@/lib/store";
 import { readPassportToken } from "@/lib/passport";
+import { heldIds } from "@/lib/session";
+import { safeDecode } from "@/lib/safe";
 import { PassportCard } from "@/components/passport/PassportCard";
+import { HoldButton } from "@/components/passport/hold-button";
 import { Badge } from "@/components/ui/badge";
 import { t } from "@/lib/copy";
 import { ValueLoop } from "@/components/motif/marks";
@@ -10,13 +14,20 @@ import type { Passport } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "Periksa paspor" };
+export const metadata = { title: "Check a passport" };
 
 /**
  * Verification, two ways:
  *  · the store knows the id (the normal case) → show the issued passport
- *  · a holder presents ?t=<token> and the store is empty or elsewhere → the
+ *  · the store is empty or elsewhere and the holder presents ?t=<token> → the
  *    signature still proves the passport was issued here, without a database.
+ *
+ * The token must be FOR THE ID IN THE URL. Before this, the page took whatever
+ * payload the token carried and rendered it under the requested id, so anyone
+ * holding one passport could repaint it as any other id. A stored "revoked"
+ * also always wins over a token that says "issued".
+ *
+ * An id that resolves to nothing is a 404 now, not a 200 with an apology.
  */
 export default async function VerifyPage({
     params,
@@ -27,44 +38,43 @@ export default async function VerifyPage({
 }) {
     const { id } = await params;
     const { t: token } = await searchParams;
+    const wanted = safeDecode(id).trim();
 
-    const stored = await passportStore().get(decodeURIComponent(id));
-    const fromToken = token ? (readPassportToken(token) as Passport | null) : null;
+    const stored = await passportStore()
+        .get(wanted)
+        .catch(() => null);
 
-    const passport =
-        stored ?? (fromToken ? { ...fromToken, status: "issued" as const } : null);
+    const fromToken = token ? readPassportToken(token) : null;
+    const proven = fromToken && fromToken.id === wanted ? fromToken : null;
 
-    if (!passport) {
-        return (
-            <div className="mx-auto max-w-2xl">
-                <div className="eyebrow">Tidak ditemukan</div>
-                <h1 className="mt-4">{t.verifyMissing}</h1>
-                <p className="mt-4 max-w-[48ch] text-[17px] text-muted-foreground">
-                    {t.verifyMissingNote}{" "}
-                    <span className="data text-ink">DPP-BT0042-0001-XXXX</span>.
-                </p>
-                <Link
-                    href="/"
-                    className="mt-6 inline-block text-[14px] text-muted-foreground hover:text-ink"
-                >
-                    ← {t.backToRecords}
-                </Link>
-            </div>
-        );
-    }
+    const passport: Passport | null =
+        stored ?? (proven ? { ...proven, status: "issued" as const } : null);
+
+    if (!passport) notFound();
 
     const record = getRecord(passport.code);
+    const alreadyHeld = (await heldIds()).includes(passport.id);
 
     return (
         <div className="mx-auto max-w-2xl space-y-7">
             <div className="flex flex-wrap items-center gap-2">
+                <h1 className="eyebrow">{t.verifyEyebrow}</h1>
                 <Badge variant={stored ? "positive" : "amber"}>
                     {stored ? t.verifyStored : t.verifySignature}
                 </Badge>
-                {passport.status === "revoked" && <Badge>Dicabut</Badge>}
+                {passport.status === "revoked" && <Badge>Revoked</Badge>}
             </div>
 
             <PassportCard passport={passport} record={record} />
+
+            {!alreadyHeld && (
+                <div>
+                    <HoldButton id={passport.id} token={token} />
+                    <p className="mt-1 text-[13px] text-muted-foreground">
+                        Save it so this passport appears in your collection on this device.
+                    </p>
+                </div>
+            )}
 
             <section className="rounded-lg bg-card p-6 shadow-[var(--ring)]">
                 <div className="flex items-start justify-between gap-6">
@@ -73,8 +83,8 @@ export default async function VerifyPage({
                 </div>
                 <p className="mt-3 max-w-[62ch] text-[16px] text-muted-foreground">
                     {stored
-                        ? "Paspor ini terbit dari aplikasi ini, atas nama yang tertera. Jejak yang ditunjuknya ada di berkas data, jadi keduanya bisa dicocokkan."
-                        : "Daftar sedang tidak menjawab, tapi tanda tangan di tautannya membuktikan paspor ini terbit dari aplikasi ini. Buka jejaknya untuk mencocokkan pemegangnya."}
+                        ? "This passport was issued by this app, under the name shown. The record it points at is in the data file, so the two can be checked against each other."
+                        : "The register is not answering, but the signature on the link proves this passport was issued by this app. Open the record to match the holder."}
                 </p>
                 {record && (
                     <Link

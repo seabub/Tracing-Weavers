@@ -48,7 +48,10 @@ function sign(data: string) {
 
 export function passportId(code: string, serial: number) {
     const stem = code.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
-    const check = b64url(randomBytes(3)).slice(0, 4).toUpperCase();
+    /* 6 random bytes (48 bits), not 3: /verify/<id> is public and the rest of an
+       id is guessable (record code + serial), so the random tail is the only
+       thing standing between an id and an enumeration script. */
+    const check = b64url(randomBytes(6)).slice(0, 8).toUpperCase();
     return `DPP-${stem}-${String(serial).padStart(4, "0")}-${check}`;
 }
 
@@ -58,6 +61,11 @@ export function passportToken(payload: PassportPayload) {
 }
 
 export function readPassportToken(token: string): PassportPayload | null {
+    /* Without a key we cannot verify a signature, and that is not an error: the
+       verification page simply falls back to the store. Throwing here used to
+       500 /verify/<id>?t=… on a deployment whose secret was missing. */
+    if (!SECRET) return null;
+
     const [body, mac] = token.split(".");
     if (!body || !mac) return null;
 

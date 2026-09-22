@@ -2,8 +2,7 @@ import { WeftCrossing } from "@/components/motif/marks";
 
 type Attribute = { trait_type?: string; value?: unknown };
 
-/* Indonesian first, English kept as the gloss — the design system's rule for
-   terms a visitor may not read in Indonesian. */
+/* The interface speaks English, so the craft's own word follows as a gloss. */
 const GLOSS: Record<string, string> = {
     maker: "Penenun",
     origin: "Asal",
@@ -13,14 +12,14 @@ const GLOSS: Record<string, string> = {
     "weeks on the loom": "Lama di alat tenun",
     "dye baths": "Kali celup",
     "journey step": "Tahap",
-    "record type": "Jenis jejak",
-    season: "Musim",
+    "record type": "Jenis",
+    season: "Musim panen",
 };
 
 function label(traitType: string | undefined) {
     if (!traitType) return "";
     const gloss = GLOSS[traitType.trim().toLowerCase()];
-    return gloss ? `${gloss} · ${traitType}` : traitType;
+    return gloss ? `${traitType} · ${gloss}` : traitType;
 }
 
 /* The fact table of the record: hairline rows, label caps left, value right.
@@ -31,7 +30,7 @@ export function RecordTraits({ attributes }: { attributes?: Attribute[] }) {
     return (
         <section>
             <div className="flex items-end justify-between gap-4">
-                <h2 className="eyebrow">Catatan kain · Traits</h2>
+                <h2 className="eyebrow">Cloth notes · Traits</h2>
                 <WeftCrossing className="h-4 w-20 text-stone" aria-hidden />
             </div>
 

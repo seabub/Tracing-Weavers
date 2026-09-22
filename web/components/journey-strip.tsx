@@ -18,7 +18,7 @@ export function JourneyStrip({
     className?: string;
 }) {
     const norm = (value: string) => value.trim().toLowerCase();
-    const activeIndex = t.steps.findIndex((s) => norm(s.label) === norm(activeStep ?? ""));
+    const activeIndex = t.steps.findIndex((s) => norm(s.id) === norm(activeStep ?? ""));
 
     return (
         <div className={className}>

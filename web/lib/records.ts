@@ -1,4 +1,5 @@
 import recordsJson from "@/data/records.json";
+import { safeDecode } from "@/lib/safe";
 
 /**
  * A record is the passport's subject: one product, one origin story.
@@ -31,7 +32,7 @@ export const records: ProductRecord[] = (recordsJson as { records: ProductRecord
     .records;
 
 export function getRecord(code: string): ProductRecord | undefined {
-    const wanted = decodeURIComponent(code).trim().toUpperCase();
+    const wanted = safeDecode(code).trim().toUpperCase();
     return records.find((r) => r.code.toUpperCase() === wanted);
 }
 

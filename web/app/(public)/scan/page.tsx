@@ -6,24 +6,24 @@ import { t } from "@/lib/copy";
 import { ThreadRule, WarpField, WeftCrossing } from "@/components/motif/marks";
 import { Reveal } from "@/components/ui/reveal";
 
-export const metadata = { title: "Tempel tag" };
+export const metadata = { title: "Read a tag" };
 
 const STEPS = [
     {
-        title: "Cari tag-nya",
-        body: "Chip NTAG213 dijahit di tepi kain; QR cadangan ada di kemasan.",
+        title: "Find the tag",
+        body: "An NTAG213 chip is sewn into the edge of the cloth; a backup QR is on the packaging.",
     },
     {
-        title: "Tempelkan ponsel",
-        body: "iPhone membacanya dari layar kunci. Android: aktifkan NFC, tempel, lalu tap notifikasi.",
+        title: "Hold your phone to it",
+        body: "iPhone reads it from the lock screen. Android: turn NFC on, hold, then tap the notification.",
     },
     {
-        title: "Tap banner-nya",
-        body: "Isinya tautan ke jejak kainnya. Tanpa aplikasi, tanpa akun.",
+        title: "Tap the banner",
+        body: "It is a link to the cloth's record. No app to install, no account.",
     },
     {
-        title: "Baca, lalu klaim",
-        body: "Penenunnya siapa, bahannya apa, berapa lama. Taruh namamu di sana, paspornya jadi milikmu.",
+        title: "Read it, then claim it",
+        body: "Who wove it, from what, for how long. Put your name on it and the passport is yours.",
     },
 ];
 
@@ -65,9 +65,9 @@ export default function ScanPage() {
                 <NfcReader />
 
                 <div className="rounded-lg bg-card p-6 shadow-[var(--ring)]">
-                    <div className="eyebrow">Kode tag</div>
+                    <div className="eyebrow">Tag code</div>
                     <p className="mt-3 text-[17px] text-muted-foreground">
-                        Tag tidak terbaca? Ketik kode yang tercetak di sebelahnya.
+                        Tag not reading? Type the code printed beside it.
                     </p>
                     <TagLookupForm className="mt-5 max-w-md" />
                 </div>
@@ -78,19 +78,19 @@ export default function ScanPage() {
                 >
                     <WarpField className="pointer-events-none absolute inset-0 h-full w-full text-white/10" />
                     <div className="relative">
-                        <div className="eyebrow">Untuk tim lapangan</div>
+                        <div className="eyebrow">For the field team</div>
                         <p className="mt-3 max-w-[60ch] text-[16px] text-white/75">
-                            Satu tag, satu URL, satu baris di berkas tag.
+                            One tag, one URL, one line in the tag file.
                         </p>
-                        <Reveal tone="ink" summary="Cara menulis tag" className="mt-4">
+                        <Reveal tone="ink" summary="How to write a tag" className="mt-4">
                             <p>
-                                Tulis tiap tag dengan{" "}
+                                Write each tag with{" "}
                                 <code className="data text-salmon">
-                                    {siteUrl}/t/&lt;KODE_TAG&gt;
+                                    {siteUrl}/t/&lt;TAG_CODE&gt;
                                 </code>{" "}
-                                sebagai NDEF URI, lalu tambahkan kodenya ke{" "}
+                                as an NDEF URI, then add its code to{" "}
                                 <code className="data text-salmon">data/tags.json</code>.
-                                Daftar URL-nya keluar dari{" "}
+                                The list of URLs comes from{" "}
                                 <code className="data text-salmon">npm run nfc:urls</code>.
                             </p>
                         </Reveal>

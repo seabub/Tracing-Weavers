@@ -80,6 +80,7 @@ export async function GET() {
         site: siteUrl,
         data: { records: records.length, tags: tagCount, passports: issued },
         problems,
-        runtime: { node: process.version, vercel: Boolean(process.env.VERCEL) },
+        /* No runtime/version here on purpose: /api/health is public, and the
+           node version plus the deployment flag is free reconnaissance. */
     });
 }

@@ -4,6 +4,7 @@ import { currentIdentity } from "@/lib/session";
 import { brand } from "@/lib/brand";
 import { t } from "@/lib/copy";
 import { Button } from "@/components/ui/button";
+import { SignOutButton } from "@/components/sign-out-button";
 
 /* Solid ground, hairline rule, and a selvedge under it — the header's only
    ornament. No blur, no glass: the cloth is opaque. */
@@ -31,16 +32,28 @@ export default async function Header() {
                     </Link>
 
                     {identity ? (
-                        <Link href="/collection">
-                            <Button variant="ghost" size="sm" className="gap-2 text-ink">
-                                <LayoutGrid className="h-4 w-4" />
-                                <span className="hidden sm:inline">{t.myPassports}</span>
+                        <>
+                            {/* asChild: a <button> inside an <a> is invalid HTML and
+                                makes one control take two Tab stops. */}
+                            <Button
+                                asChild
+                                variant="ghost"
+                                size="sm"
+                                className="gap-2 text-ink"
+                            >
+                                <Link href="/collection">
+                                    <LayoutGrid className="h-4 w-4" />
+                                    <span className="hidden sm:inline">
+                                        {t.myPassports}
+                                    </span>
+                                </Link>
                             </Button>
-                        </Link>
+                            <SignOutButton />
+                        </>
                     ) : (
-                        <Link href="/login">
-                            <Button size="sm">{t.openPassport}</Button>
-                        </Link>
+                        <Button asChild size="sm">
+                            <Link href="/login">{t.openPassport}</Link>
+                        </Button>
                     )}
                 </nav>
             </div>

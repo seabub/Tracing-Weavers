@@ -44,7 +44,7 @@ export function PassportClaim({
         setError(null);
 
         if (!name.trim() || !email.trim()) {
-            setError("Nama dan email diperlukan untuk menerbitkan paspor.");
+            setError("A name and an email are needed to issue the passport.");
             return;
         }
 
@@ -69,7 +69,7 @@ export function PassportClaim({
             if (!res.ok || !body.passport) {
                 setError(
                     [
-                        body.error ?? `Paspor gagal diterbitkan (HTTP ${res.status}).`,
+                        body.error ?? `The passport could not be issued (HTTP ${res.status}).`,
                         body.detail,
                         body.hint,
                     ]
@@ -84,8 +84,8 @@ export function PassportClaim({
         } catch {
             setError(
                 navigator.onLine
-                    ? "Permintaan tidak sampai ke server. Coba lagi; kalau tetap gagal, buka /api/health di deployment ini."
-                    : "Ponsel sedang tanpa sambungan internet.",
+                    ? "The request did not reach the server. Try again; if it keeps failing, open /api/health on this deployment."
+                    : "This phone has no internet connection.",
             );
         } finally {
             setBusy(false);
@@ -103,9 +103,8 @@ export function PassportClaim({
                 <p className="mt-2 text-[16px] text-muted-foreground">{t.claimLead}</p>
 
                 <dl className="mt-5">
-                    <Row label="Jejak" value={code} mono />
-                    <Row
-                        label="Kuota"
+                    <Row label="Record" value={code} mono />
+                    <Row label="Supply"
                         value={
                             supply > 1
                                 ? t.supplyShared.replace("{n}", String(supply))
@@ -144,7 +143,7 @@ export function PassportClaim({
                             type="email"
                             value={email}
                             onChange={setEmail}
-                            placeholder="nama@contoh.org"
+                            placeholder="name@example.org"
                             autoComplete="email"
                             required
                         />
@@ -152,7 +151,7 @@ export function PassportClaim({
                             label={t.claimOutlet}
                             value={outlet}
                             onChange={setOutlet}
-                            placeholder="Yayasan, studio, toko"
+                            placeholder="Foundation, studio, shop"
                             autoComplete="organization"
                         />
 
@@ -204,7 +203,7 @@ export function PassportClaim({
                             <div className="eyebrow">{t.claimedEyebrow}</div>
                             <h3 className="mt-3 text-[26px]">{title.split(" · ")[0]}</h3>
                             <p className="mt-2 text-[15px] text-muted-foreground">
-                                Tercatat atas nama{" "}
+                                Recorded under{" "}
                                 <span className="text-ink">{name}</span>.
                             </p>
                             <p className="data mt-4 text-[15px] text-ink">{issued.id}</p>

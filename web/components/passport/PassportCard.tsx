@@ -41,11 +41,11 @@ export function PassportCard({
             )}
             <header className="flex items-start justify-between gap-4 border-b border-border px-5 py-4">
                 <div>
-                    <div className="eyebrow">{revoked ? "Dicabut" : "Paspor"}</div>
+                    <div className="eyebrow">{revoked ? "Revoked" : "Passport"}</div>
                     <p className="data mt-2 text-[15px] text-ink">{passport.id}</p>
                 </div>
                 <Badge variant={revoked ? "default" : "accent"}>
-                    {revoked ? "Dicabut" : "Terbit"}
+                    {revoked ? "Revoked" : "Issued"}
                 </Badge>
             </header>
 
@@ -62,7 +62,7 @@ export function PassportCard({
                     />
                     {record?.subtitle && <Row label={t.fieldOrigin} value={record.subtitle} />}
                     <Row
-                        label="Urutan"
+                        label="Position"
                         value={`${passport.serial} / ${record?.supply ?? "—"}`}
                     />
                     <Row label={t.claimedIssued} value={issuedOn(passport.issuedAt)} />
@@ -77,14 +77,14 @@ export function PassportCard({
                     href={`/verify/${passport.id}`}
                     className="text-[14px] font-medium text-ink hover:text-bt-red"
                 >
-                    Periksa paspor →
+                    Check the passport →
                 </Link>
                 {record && (
                     <Link
                         href={`/record/${record.code}`}
                         className="text-[14px] text-muted-foreground hover:text-ink"
                     >
-                        Baca jejaknya →
+                        Read the record →
                     </Link>
                 )}
                 <span className="data ml-auto hidden text-muted-foreground sm:inline">

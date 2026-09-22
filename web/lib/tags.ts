@@ -1,5 +1,6 @@
 import tagsJson from "@/data/tags.json";
 import { getRecord, type ProductRecord } from "@/lib/records";
+import { safeDecode } from "@/lib/safe";
 
 /**
  * The tag registry — the only thing that turns a physical object into a
@@ -25,7 +26,7 @@ export const tags: Record<string, TagEntry> = (
 /** Tags get written by hand and by different tools, so normalise before
  *  lookup: "bt-0042 ", "04:a1:b2" and "04A1B2" all have to hit. */
 export function normalizeTagCode(raw: string) {
-    return decodeURIComponent(raw)
+    return safeDecode(raw)
         .trim()
         .replace(/[\s:._-]/g, "")
         .toUpperCase();

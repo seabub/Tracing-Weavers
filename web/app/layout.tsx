@@ -28,14 +28,14 @@ const caveat = Caveat({
 export const metadata: Metadata = {
     title: { default: brand, template: `%s | ${brand}` },
     description:
-        "Akte lahir untuk kain tenun: siapa penenunnya, dari apa bahannya, berapa lama dikerjakan. Tempel tag di tepi kain untuk membacanya.",
+        "A birth record for a handwoven cloth: who wove it, what from, how long it took. Hold your phone to the tag to read it.",
 };
 
 export default function RootLayout({
     children,
 }: Readonly<{ children: React.ReactNode }>) {
     return (
-        <html lang="id">
+        <html lang="en">
             <body
                 className={`${hanken.variable} ${archivo.variable} ${caveat.variable} antialiased`}
                 style={{

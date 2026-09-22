@@ -12,10 +12,10 @@ import { Reveal } from "@/components/ui/reveal";
 /* The four dyestuffs the weavers actually use — the brand's reserved dye
    colours, so each swatch is a material, not a decoration. */
 const DYES = [
-    { name: "Nila", en: "Indigo", hex: "#2B3A67", note: "daun indigo, direndam berhari-hari" },
-    { name: "Mengkudu", en: "Morinda", hex: "#AE1800", note: "akar mengkudu, merah yang tahan lama" },
-    { name: "Kunyit", en: "Turmeric", hex: "#ECA406", note: "kunyit, kuning hangat" },
-    { name: "Tanah", en: "Clay", hex: "#F29A6A", note: "tanah liat dan kulit kayu" },
+    { name: "Nila", en: "Indigo", hex: "#2B3A67", note: "indigo leaf, steeped for days" },
+    { name: "Mengkudu", en: "Morinda", hex: "#AE1800", note: "morinda root, a red that lasts" },
+    { name: "Kunyit", en: "Turmeric", hex: "#ECA406", note: "turmeric, a warm yellow" },
+    { name: "Tanah", en: "Clay", hex: "#F29A6A", note: "clay and tree bark" },
 ];
 
 /**
@@ -135,19 +135,19 @@ export default function Home() {
                         </dl>
 
                         {/* the story earns its length, so it is offered, not imposed */}
-                        <Reveal tone="ink" summary="Kenapa ini penting" className="mt-6">
+                        <Reveal tone="ink" summary="Why this matters" className="mt-6">
                             <p>
-                                Di Adonara, nama penenun jarang muncul di mana pun:
-                                Kainnya dijual, motifnya difoto, harganya dicatat,
-                                namanya tidak. Padahal satu helai bisa berarti sebelas
-                                minggu kerja, tiga kali celup, dan motif yang hanya boleh
-                                dipakai keluarga tertentu.
+                                In Adonara a weaver's name rarely appears anywhere:
+                                the cloth is sold, the motifs are photographed, the
+                                price is noted, the name is not. Yet one length can mean
+                                eleven weeks of work, three dye baths, and a motif only
+                                certain families may wear.
                             </p>
                             <p>
-                                Jejak ini menuliskannya. Setiap kain yang keluar dari kebun
-                                dan alat tenun membawa satu halaman: siapa yang
-                                mengerjakannya, dari bahan apa, berapa lama. Halaman itu
-                                ikut ke mana kainnya pergi.
+                                This record writes the name down. Every cloth that
+                                leaves the garden and the loom carries one page: who
+                                made it, from what, for how long. That page goes wherever
+                                the cloth goes.
                             </p>
                         </Reveal>
                     </div>
@@ -163,7 +163,7 @@ export default function Home() {
                 </div>
 
                 <p className="mt-10 border-t border-white/18 pt-4 text-[12px] uppercase tracking-[.12em] text-white/50">
-                    {brand} · tiga tahun yang diukur, bukan janji.
+                    {brand} · three years measured, not promised.
                 </p>
             </section>
 

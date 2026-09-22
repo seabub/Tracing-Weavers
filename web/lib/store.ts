@@ -27,6 +27,23 @@ import type { Identity, Passport, PassportPayload } from "@/lib/types";
 
 export type { Passport, Identity } from "@/lib/types";
 
+export type IssueDraft = {
+    code: string;
+    holder: string;
+    email?: string;
+    outlet?: string;
+    issuedAt: string;
+    tags?: string[];
+    /** How many passports this record may ever issue. */
+    supply: number;
+    /** How many one holder (email) may take. */
+    perHolder: number;
+};
+
+export type IssueOutcome =
+    | { ok: true; passport: Passport }
+    | { ok: false; reason: "sold_out" | "one_per_holder" };
+
 export interface PassportStore {
     backend: "file" | "kv";
     issuableCount(code: string): Promise<number>;
@@ -35,6 +52,14 @@ export interface PassportStore {
     all(): Promise<Passport[]>;
     get(id: string): Promise<Passport | null>;
     save(passport: Passport): Promise<void>;
+    /**
+     * Reserve the serial and write the passport in ONE atomic step.
+     *
+     * Issuing must not be check-then-write: two holders racing for the last
+     * slot both pass a separate check and both get a passport (measured: three
+     * parallel claims on a supply-1 record all returned 201 with serial 1).
+     */
+    issue(draft: IssueDraft, makeId: (serial: number) => string): Promise<IssueOutcome>;
 }
 
 /* ───────────────────────── file backend ───────────────────────── */
@@ -48,16 +73,29 @@ async function readFileStore(): Promise<FileShape> {
         const raw = await fs.readFile(FILE, "utf8");
         const parsed = JSON.parse(raw) as FileShape;
         return { ...parsed, passports: parsed.passports ?? [] };
-    } catch {
-        return { passports: [] };
+    } catch (cause) {
+        /* A missing file is a fresh store. A file we cannot parse is NOT an
+           empty store: treating it as empty resets the supply and lets a
+           one-of-one cloth be claimed twice. Fail instead of guessing. */
+        if ((cause as NodeJS.ErrnoException)?.code === "ENOENT") {
+            return { passports: [] };
+        }
+        throw new Error(
+            `The passport store at ${FILE} could not be read, so issuing stopped instead of resetting the supply: ${(cause as Error)?.message}`,
+        );
     }
 }
 
 async function writeFileStore(data: FileShape) {
+    const tmp = `${FILE}.tmp`;
     try {
         await fs.mkdir(path.dirname(FILE), { recursive: true });
-        await fs.writeFile(FILE, `${JSON.stringify(data, null, 2)}\n`, "utf8");
+        /* Write beside the target, then rename: a reader never sees half a file
+           and two writers cannot interleave. */
+        await fs.writeFile(tmp, `${JSON.stringify(data, null, 2)}\n`, "utf8");
+        await fs.rename(tmp, FILE);
     } catch (cause) {
+        await fs.rm(tmp, { force: true }).catch(() => {});
         const detail = (cause as Error)?.message ?? "unknown error";
         throw new Error(
             process.env.VERCEL
@@ -66,6 +104,32 @@ async function writeFileStore(data: FileShape) {
         );
     }
 }
+
+/* One writer at a time inside this process. A serverless deployment runs many
+   processes, so the file backend stays a local/self-hosted convenience; the kv
+   backend is the one that is correct under real concurrency. */
+let fileLock: Promise<unknown> = Promise.resolve();
+
+function withFileLock<T>(work: () => Promise<T>): Promise<T> {
+    const run = fileLock.then(work, work);
+    fileLock = run.then(
+        () => undefined,
+        () => undefined,
+    );
+    return run;
+}
+
+const issuedIn = (passports: Passport[], code: string) =>
+    passports.filter((p) => p.code === code && p.status === "issued");
+
+const heldBy = (passports: Passport[], code: string, email: string | undefined) =>
+    passports.filter(
+        (p) =>
+            p.code === code &&
+            p.status === "issued" &&
+            Boolean(email) &&
+            (p.email ?? "").trim().toLowerCase() === email,
+    );
 
 const fileStore: PassportStore = {
     backend: "file",
@@ -94,12 +158,52 @@ const fileStore: PassportStore = {
         return passports.find((p) => p.id === id) ?? null;
     },
     async save(passport) {
-        const data = await readFileStore();
-        data.passports = [
-            ...data.passports.filter((p) => p.id !== passport.id),
-            passport,
-        ];
-        await writeFileStore(data);
+        await withFileLock(async () => {
+            const data = await readFileStore();
+            data.passports = [
+                ...data.passports.filter((p) => p.id !== passport.id),
+                passport,
+            ];
+            await writeFileStore(data);
+        });
+    },
+    async issue(draft, makeId) {
+        return withFileLock(async () => {
+            const data = await readFileStore();
+            const email = draft.email?.trim().toLowerCase();
+
+            if (issuedIn(data.passports, draft.code).length >= draft.supply) {
+                return { ok: false, reason: "sold_out" } as IssueOutcome;
+            }
+            if (heldBy(data.passports, draft.code, email).length >= draft.perHolder) {
+                return { ok: false, reason: "one_per_holder" } as IssueOutcome;
+            }
+
+            const highest = data.passports
+                .filter((p) => p.code === draft.code)
+                .reduce((max, p) => Math.max(max, p.serial ?? 0), 0);
+            const serial =
+                Math.max(highest, issuedIn(data.passports, draft.code).length) + 1;
+
+            const passport: Passport = {
+                id: makeId(serial),
+                code: draft.code,
+                holder: draft.holder,
+                email: draft.email,
+                outlet: draft.outlet,
+                issuedAt: draft.issuedAt,
+                serial,
+                status: "issued",
+                tags: draft.tags,
+            };
+
+            data.passports = [
+                ...data.passports.filter((p) => p.id !== passport.id),
+                passport,
+            ];
+            await writeFileStore(data);
+            return { ok: true, passport } as IssueOutcome;
+        });
     },
 };
 
@@ -153,6 +257,11 @@ async function kvCommand<T>(command: (string | number)[]): Promise<T> {
 const PASSPORT_KEY = (id: string) => `dpp:passport:${id}`;
 const RECORD_SET = (code: string) => `dpp:record:${code}`;
 const HOLDER_SET = (email: string) => `dpp:holder:${email.trim().toLowerCase()}`;
+const CLAIMER_SET = (code: string) => `dpp:claimer:${code}`;
+const SERIAL_KEY = (code: string) => `dpp:serial:${code}`;
+/* an index of ids, so listing never needs KEYS (which blocks Redis and walks
+   the whole keyspace) */
+const INDEX_SET = "dpp:index";
 
 const kvStore: PassportStore = {
     backend: "kv",
@@ -166,8 +275,8 @@ const kvStore: PassportStore = {
         return readIds(await kvCommand<string[]>(["SMEMBERS", RECORD_SET(code)]));
     },
     async all() {
-        const ids = await kvCommand<string[]>(["KEYS", "dpp:passport:*"]);
-        return readIds((ids ?? []).map((k) => k.replace("dpp:passport:", "")));
+        const ids = await kvCommand<string[]>(["SMEMBERS", INDEX_SET]);
+        return readIds(ids ?? []);
     },
     async get(id) {
         const raw = await kvCommand<string | null>(["GET", PASSPORT_KEY(id)]);
@@ -176,10 +285,63 @@ const kvStore: PassportStore = {
     async save(passport) {
         await kvCommand(["SET", PASSPORT_KEY(passport.id), JSON.stringify(passport)]);
         await kvCommand(["SADD", RECORD_SET(passport.code), passport.id]);
+        await kvCommand(["SADD", INDEX_SET, passport.id]);
         const holderKey = passport.email ?? passport.holder;
         if (holderKey) {
             await kvCommand(["SADD", HOLDER_SET(holderKey), passport.id]);
         }
+    },
+    async issue(draft, makeId) {
+        const email = draft.email?.trim().toLowerCase();
+
+        /* One SADD decides the per-holder rule atomically: it returns 0 when the
+           member was already there, so two parallel requests cannot both pass. */
+        if (email) {
+            const added = Number(
+                await kvCommand<number>(["SADD", CLAIMER_SET(draft.code), email]),
+            );
+            if (!added) return { ok: false, reason: "one_per_holder" };
+        }
+
+        /* The serial comes from an atomic INCR. Seed the counter first from what
+           already exists, so a store that predates it never re-issues serial 1. */
+        await kvCommand([
+            "SETNX",
+            SERIAL_KEY(draft.code),
+            Number(await kvCommand<number>(["SCARD", RECORD_SET(draft.code)])) || 0,
+        ]);
+        const serial = Number(await kvCommand<number>(["INCR", SERIAL_KEY(draft.code)]));
+
+        if (serial > draft.supply) {
+            await kvCommand(["DECR", SERIAL_KEY(draft.code)]);
+            if (email) await kvCommand(["SREM", CLAIMER_SET(draft.code), email]);
+            return { ok: false, reason: "sold_out" };
+        }
+
+        const passport: Passport = {
+            id: makeId(serial),
+            code: draft.code,
+            holder: draft.holder,
+            email: draft.email,
+            outlet: draft.outlet,
+            issuedAt: draft.issuedAt,
+            serial,
+            status: "issued",
+            tags: draft.tags,
+        };
+
+        try {
+            await kvStore.save(passport);
+        } catch (cause) {
+            /* Give the slot back, so a failed write does not burn a serial. */
+            await kvCommand(["DECR", SERIAL_KEY(draft.code)]).catch(() => {});
+            if (email) {
+                await kvCommand(["SREM", CLAIMER_SET(draft.code), email]).catch(() => {});
+            }
+            throw cause;
+        }
+
+        return { ok: true, passport };
     },
 };
 

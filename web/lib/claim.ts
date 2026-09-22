@@ -1,17 +1,17 @@
-import { cookies } from "next/headers";
 import { getRecord } from "@/lib/records";
 import { passportStore } from "@/lib/store";
 import { passportId, passportToken, signingConfigured } from "@/lib/passport";
-import { encodeIdentity, sessionCookieName } from "@/lib/session";
-import type { Passport } from "@/lib/types";
+import { holdPassports, setSession } from "@/lib/session";
+import type { Passport, PassportPayload } from "@/lib/types";
 
 /**
  * Issuing a passport — the one write in the app.
  *
- * Rules, in order: the record must exist; a name and an email are required;
- * the record's supply must not be exhausted; one person cannot take more than
- * the record allows. The serial is the position within the supply, so the
- * first holder of a single-item record is always serial 1 of 1.
+ * Order of checks: signing must be possible; the record must exist; name and
+ * email must be sane and bounded (an unbounded name let a 5 MB value be written
+ * into the store); then the store reserves the serial atomically, which is
+ * where supply and per-holder limits are actually enforced. Two holders racing
+ * for the last slot can no longer both win.
  */
 
 export type IssueInput = {
@@ -28,6 +28,9 @@ export type IssueResult =
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+/* Every field that reaches the store has a ceiling. */
+const LIMIT = { name: 100, email: 254, outlet: 100, tag: 32 };
+
 export async function issuePassport(input: IssueInput): Promise<IssueResult> {
     /* Pre-flight: signing is what makes the passport and the session cookie
        meaningful. Without the secret we must fail BEFORE writing, otherwise a
@@ -38,7 +41,7 @@ export async function issuePassport(input: IssueInput): Promise<IssueResult> {
             ok: false,
             status: 503,
             error:
-                "Paspor belum bisa diterbitkan: PASSPORT_SIGNING_SECRET belum diset di deployment ini. Tambahkan variabel itu di Vercel (nilai: hasil `openssl rand -hex 32`), lalu redeploy.",
+                "The passport cannot be issued yet: PASSPORT_SIGNING_SECRET is not set on this deployment. Add that variable in Vercel (value: the output of `openssl rand -hex 32`), then redeploy.",
         };
     }
 
@@ -47,70 +50,70 @@ export async function issuePassport(input: IssueInput): Promise<IssueResult> {
         return { ok: false, status: 404, error: "That record does not exist." };
     }
 
-    const name = input.name?.trim();
-    const email = input.email?.trim().toLowerCase();
+    const name = (input.name ?? "").trim();
+    const email = (input.email ?? "").trim().toLowerCase();
+    const outlet = input.outlet?.trim() || undefined;
+    const tag = input.tag?.trim().toUpperCase() || undefined;
 
-    if (!name || name.length < 2) {
-        return { ok: false, status: 400, error: "A name is needed to put the passport in your name." };
+    if (name.length < 2 || name.length > LIMIT.name) {
+        return {
+            ok: false,
+            status: 400,
+            error: "A name is needed, between 2 and 100 characters.",
+        };
     }
-    if (!email || !EMAIL.test(email)) {
-        return { ok: false, status: 400, error: "A valid email address is needed." };
+    if (!EMAIL.test(email) || email.length > LIMIT.email) {
+        return { ok: false, status: 400, error: "That email address does not look right." };
+    }
+    if (outlet && outlet.length > LIMIT.outlet) {
+        return { ok: false, status: 400, error: "The organisation name is too long." };
+    }
+    if (tag && tag.length > LIMIT.tag) {
+        return { ok: false, status: 400, error: "The tag code is too long." };
     }
 
-    const store = passportStore();
+    const outcome = await passportStore().issue(
+        {
+            code: record.code,
+            holder: name,
+            email,
+            outlet,
+            issuedAt: new Date().toISOString(),
+            tags: tag ? [tag] : undefined,
+            supply: record.supply,
+            perHolder: record.perHolder ?? 1,
+        },
+        (serial) => passportId(record.code, serial),
+    );
 
-    const issued = await store.issuableCount(record.code);
-    if (issued >= record.supply) {
+    if (!outcome.ok) {
         return {
             ok: false,
             status: 409,
             error:
-                record.supply === 1
-                    ? "This record has already been claimed — it belongs to one product."
-                    : "All passports for this record have been issued.",
+                outcome.reason === "one_per_holder"
+                    ? "You already hold the passport for this cloth. Open your collection to see it."
+                    : record.supply === 1
+                      ? "This record has been claimed. There is only one passport for the cloth."
+                      : "All passports for this record have been issued.",
         };
     }
 
-    const perHolder = record.perHolder ?? 1;
-    const mine = (await store.listByHolder(email)).filter(
-        (p) => p.code === record.code && p.status === "issued",
-    );
-    if (mine.length >= perHolder) {
-        return {
-            ok: false,
-            status: 409,
-            error: "You already hold this passport. Open your collection to see it.",
-        };
-    }
-
-    const serial = issued + 1;
-    const payload = {
-        id: passportId(record.code, serial),
-        code: record.code,
-        holder: name,
-        email,
-        outlet: input.outlet?.trim() || undefined,
-        issuedAt: new Date().toISOString(),
-        serial,
+    const passport = outcome.passport;
+    const payload: PassportPayload = {
+        id: passport.id,
+        code: passport.code,
+        holder: passport.holder,
+        email: passport.email,
+        outlet: passport.outlet,
+        issuedAt: passport.issuedAt,
+        serial: passport.serial,
     };
 
-    const passport: Passport = {
-        ...payload,
-        status: "issued",
-        tags: input.tag ? [input.tag.toUpperCase()] : undefined,
-    };
-
-    await store.save(passport);
-
-    // Signing the holder in means the passport is waiting for them next visit.
-    const jar = await cookies();
-    jar.set(sessionCookieName, encodeIdentity({ name, email, outlet: passport.outlet }), {
-        httpOnly: true,
-        sameSite: "lax",
-        secure: process.env.NODE_ENV === "production",
-        path: "/",
-        maxAge: 60 * 60 * 24 * 180,
-    });
+    /* The holder keeps it: the session for the greeting, the held cookie for the
+       listing. Nothing here grants access to anybody else's passports. */
+    await setSession({ name, email, outlet: passport.outlet });
+    await holdPassports([passport.id]);
 
     return { ok: true, passport, token: passportToken(payload) };
 }

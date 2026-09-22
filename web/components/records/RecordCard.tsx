@@ -32,7 +32,7 @@ export default function RecordCard({
                     {record.supply > 1 && (
                         <div className="absolute top-3 right-3">
                             <Badge variant="ink" className="bg-ink/80 backdrop-blur-none">
-                                Bersama · {record.supply}
+                                Shared · {record.supply}
                             </Badge>
                         </div>
                     )}
@@ -41,7 +41,7 @@ export default function RecordCard({
                 <div className="mt-4 flex items-baseline justify-between gap-3">
                     <span className="data text-bt-red">{record.code}</span>
                     <span className="text-[13px] text-muted-foreground">
-                        {record.collection ?? "Jejak"}
+                        {record.collection ?? "Record"}
                     </span>
                 </div>
 
@@ -56,7 +56,7 @@ export default function RecordCard({
                 )}
 
                 <div className="mt-4 flex items-center gap-2 border-t border-border pt-3 text-[15px] text-ink group-hover:text-bt-red">
-                    Baca jejaknya
+                    Read the record
                     <span
                         aria-hidden
                         className="transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-x-1 motion-reduce:transition-none"
