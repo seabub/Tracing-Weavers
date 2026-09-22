@@ -7,7 +7,7 @@ import { resolveTag } from "@/lib/tags";
 import { t } from "@/lib/copy";
 import { safeDecode } from "@/lib/safe";
 import { PassportClaim } from "@/components/passport/PassportClaim";
-import { PassportCard } from "@/components/passport/PassportCard";
+import { PassportLeaf } from "@/components/passport/passport-leaf";
 import { ClaimBar } from "@/components/passport/claim-bar";
 import { RecordTraits } from "@/components/records/RecordTraits";
 import { ClothTabs } from "@/components/cloth-tabs";
@@ -201,7 +201,7 @@ export default async function RecordPage({
                     {mine ? (
                         <div className="space-y-4">
                             <div className="eyebrow">{t.yourPassport}</div>
-                            <PassportCard passport={mine} record={record} />
+                            <PassportLeaf passport={mine} record={record} className="max-w-md" />
                         </div>
                     ) : (
                         <PassportClaim
@@ -216,39 +216,7 @@ export default async function RecordPage({
 
                     <RecordTraits attributes={record.attributes} />
 
-                    {/* the record sheet: what print, QR and the passport carry */}
-                    <section className="rounded-lg bg-card p-4 shadow-[var(--ring)]">
-                        <div className="flex items-baseline justify-between gap-4">
-                            <h2 className="eyebrow">Record sheet</h2>
-                            <a
-                                href={record.image}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-[13px] text-muted-foreground hover:text-ink"
-                            >
-                                Open for print →
-                            </a>
-                        </div>
-                        <div className="mt-3 overflow-hidden rounded-md bg-ink">
-                            <div className="relative">
-                                <CornerBrackets
-                                    aria-hidden
-                                    className="pointer-events-none absolute inset-2 h-[calc(100%-1rem)] w-[calc(100%-1rem)] text-white/45"
-                                />
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                    src={record.image}
-                                    alt={`Record sheet ${record.code}`}
-                                    className="w-full"
-                                    draggable={false}
-                                />
-                            </div>
-                        </div>
-                        <p className="mt-2 text-[13px] text-muted-foreground">
-                            This sheet is what gets printed on the packaging, encoded as the label's QR, and carried on the passport.
-                        </p>
-                    </section>
-                </div>
+                                    </div>
             </div>
 
             {/* where this piece sits in the three-year path */}

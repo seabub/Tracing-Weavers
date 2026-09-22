@@ -22,33 +22,13 @@ export const metadata = { title: "My passport" };
 export default async function CollectionPage() {
     const [identity, ids] = await Promise.all([currentIdentity(), heldIds()]);
     const store = passportStore();
-    const found = await Promise.all(
-        ids.map((id) => store.get(id).catch(() => null)),
-    );
+    const found = await Promise.all(ids.map((id) => store.get(id).catch(() => null)));
     const issued = found.filter((passport): passport is Passport => Boolean(passport));
 
+    /* Only shown when the holder has nothing to show: a sign-in prompt next to a
+       personalized book would be contradictory. */
     const emptyState = (
-        <div className="rounded-lg px-6 py-14 text-center shadow-[var(--ring)]">
-            <p className="display text-2xl">{t.collectionEmpty}</p>
-            <p className="mx-auto mt-3 max-w-[52ch] text-[17px] text-muted-foreground">
-                {t.collectionEmptyNote}
-            </p>
-            <TagLookupForm className="mx-auto mt-6 max-w-sm text-left" />
-        </div>
-    );
-
-    return (
         <div className="space-y-9">
-            <header className="border-b border-border pb-5">
-                <div className="eyebrow">{t.collectionEyebrow}</div>
-                <h1 className="mt-3">{t.collectionTitle}</h1>
-                <p className="mt-3 max-w-[52ch] text-[17px] text-muted-foreground">
-                    {identity
-                        ? `Tercatat atas ${identity.email}.`
-                        : t.collectionSignInNote}
-                </p>
-            </header>
-
             {!identity && (
                 <div className="rounded-lg bg-card p-6 shadow-[var(--ring)]">
                     <div className="eyebrow">{t.signInEyebrow}</div>
@@ -60,6 +40,28 @@ export default async function CollectionPage() {
                     </Link>
                 </div>
             )}
+
+            <div className="rounded-lg px-6 py-14 text-center shadow-[var(--ring)]">
+                <p className="display text-2xl">{t.collectionEmpty}</p>
+                <p className="mx-auto mt-3 max-w-[52ch] text-[17px] text-muted-foreground">
+                    {t.collectionEmptyNote}
+                </p>
+                <TagLookupForm className="mx-auto mt-6 max-w-sm text-left" />
+            </div>
+        </div>
+    );
+
+    return (
+        <div className="space-y-9">
+            <header className="border-b border-border pb-5">
+                <div className="eyebrow">{t.collectionEyebrow}</div>
+                <h1 className="mt-3">{t.collectionTitle}</h1>
+                <p className="mt-3 max-w-[52ch] text-[17px] text-muted-foreground">
+                    {identity
+                        ? `Kept under ${identity.email}.`
+                        : t.collectionSignInNote}
+                </p>
+            </header>
 
             <PassportShelf issued={issued} records={records} emptyState={emptyState} />
 
@@ -74,7 +76,8 @@ export default async function CollectionPage() {
 
             {identity && (
                 <p className="max-w-[52ch] text-[13px] text-muted-foreground">
-                    A passport issued on another device arrives here once you open its verification link and press “Save to my collection”.
+                    A passport issued on another device arrives here once you open its
+                    verification link and press “Save to my collection”.
                 </p>
             )}
         </div>

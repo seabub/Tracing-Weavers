@@ -5,7 +5,7 @@ import { passportStore } from "@/lib/store";
 import { readPassportToken } from "@/lib/passport";
 import { heldIds } from "@/lib/session";
 import { safeDecode } from "@/lib/safe";
-import { PassportCard } from "@/components/passport/PassportCard";
+import { PassportLeaf } from "@/components/passport/passport-leaf";
 import { HoldButton } from "@/components/passport/hold-button";
 import { Badge } from "@/components/ui/badge";
 import { t } from "@/lib/copy";
@@ -65,7 +65,7 @@ export default async function VerifyPage({
                 {passport.status === "revoked" && <Badge>Revoked</Badge>}
             </div>
 
-            <PassportCard passport={passport} record={record} />
+            <PassportLeaf passport={passport} record={record} className="mx-auto max-w-md" />
 
             {!alreadyHeld && (
                 <div>

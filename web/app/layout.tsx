@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Archivo_Narrow, Caveat, Hanken_Grotesk } from "next/font/google";
 import "./globals.css";
+import { ScrollThread } from "@/components/motif/scroll-thread";
 import { brand } from "@/lib/brand";
 
 /* Beyond Tenun type: Telegraf Black → Hanken Grotesk 900, Archivo Narrow is
@@ -43,6 +44,7 @@ export default function RootLayout({
                         "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
                 }}
             >
+                                <ScrollThread />
                 {children}
             </body>
         </html>

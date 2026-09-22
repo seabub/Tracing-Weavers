@@ -8,6 +8,8 @@ import { JourneyStrip } from "@/components/journey-strip";
 import { ThreadRule, WarpField } from "@/components/motif/marks";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
+import { RecordsTicker } from "@/components/records/records-ticker";
+import { StatCounter } from "@/components/records/stat-counter";
 
 /* The four dyestuffs the weavers actually use — the brand's reserved dye
    colours, so each swatch is a material, not a decoration. */
@@ -72,9 +74,11 @@ export default function Home() {
                         <h2 className="mt-2">{t.recordsTitle}</h2>
                     </div>
                     <span className="data shrink-0 pb-1 text-muted-foreground">
-                        {records.length} {t.recordsCount} · {tagCount} {t.tagsCount}
+                        <StatCounter value={records.length} label={t.recordsCount} /> ·
+                        <StatCounter value={tagCount} label={t.tagsCount} />
                     </span>
                 </div>
+                <RecordsTicker records={records} className="mb-2" />
                 <RecordGrid records={records} />
             </section>
 

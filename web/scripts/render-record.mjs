@@ -260,7 +260,15 @@ function render(record) {
         record.title,
     )}">
   <rect width="${W}" height="${H}" fill="#201E1D"/>
-  <g>${warpGround()}</g>
+  <defs>
+    <linearGradient id="warp" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#000"/>
+      <stop offset="0.17" stop-color="#000"/>
+      <stop offset="0.27" stop-color="#fff"/>
+    </linearGradient>
+    <mask id="warp-mask"><rect width="${W}" height="${H}" fill="url(#warp)"/></mask>
+  </defs>
+  <g mask="url(#warp-mask)">${warpGround()}</g>
 
   <text x="${M}" y="${M + 22}" font-family="${FONT_BODY}" font-size="22" letter-spacing="8" fill="#FF9783">CLOTH RECORD · DIGITAL PRODUCT PASSPORT</text>
   <text x="${W - M}" y="${M + 22}" text-anchor="end" font-family="${FONT_BODY}" font-size="22" letter-spacing="5" fill="#FFFFFF" fill-opacity=".62">${esc(
@@ -271,7 +279,7 @@ function render(record) {
   ${wovenBand(M + 60)}
   <g>${tally(M, M + 178, 4)}</g>
 
-  <text x="${M}" y="${M + 122}" font-family="${FONT_BODY}" font-size="23" letter-spacing="7" fill="#FFFFFF" fill-opacity=".62">CATATAN SATU HELAI</text>
+  <text x="${M}" y="${M + 122}" font-family="${FONT_BODY}" font-size="23" letter-spacing="7" fill="#FFFFFF" fill-opacity=".62">RECORD OF ONE LENGTH</text>
 
   ${headLines}
   ${table.svg}

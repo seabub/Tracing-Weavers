@@ -214,6 +214,24 @@
 @keyframes rise { to { opacity: 1; transform: translateY(0); } }
 
 @media (hover: hover) and (pointer: fine) {
+    /* The cloth catching the light as you pass over it. Hover devices only, and
+     it costs nothing on a phone because it never runs there. */
+  .sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, .16) 50%, transparent 62%);
+    transform: translateX(-120%);
+    transition: transform 900ms var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .group:hover .sheen::after { transform: translateX(120%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .group:hover .sheen::after { transform: none; }
+  }
+
   .lift {
     transition: box-shadow var(--dur-base) var(--ease-out),
                 transform var(--dur-base) var(--ease-out);
