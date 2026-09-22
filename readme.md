@@ -79,6 +79,7 @@ Intentional additions beyond a standard set: Eyebrow, Stat, Step and Quote — t
 - `ui_kits/deck/` — slide archetypes + click-through deck
 - `ui_kits/traceable-weaver/` — mobile demo prototype (`index.html` click-through; `stage.html` animated conference showpiece: explain → scan → record → journey → claim a Cloth Record)
 - `ui_kits/lead-capture/` — QR landing form
+- `web/` — **Digital Product Passport**, the production app this system feeds: Next.js + NFC/QR tags, a record per product, passports claimed by name and email. No wallet and no chain. See `web/README.md`.
 - `templates/pitch-deck/PitchDeck.dc.html` — four-slide deck template consuming projects can start from
 - `templates/poster/Poster.dc.html` — main announcement poster, 1240×1754 (A-series at 150dpi; scales to A2/A1)
 - `templates/booklet/Booklet.dc.html` — eight-page A5 conference booklet (874×1240 per page, print-enabled)

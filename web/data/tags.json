@@ -1,0 +1,39 @@
+{
+  "_comment": "NFC / QR tag registry. Key = the code physically written to the tag (or the tag's own 7-byte UID in hex, no colons). Value.record = which record that tag opens; several tags can point at the same record and a tag can be re-pointed without touching the physical object. Nothing secret lives here: it ships to the browser so a tap resolves without a round trip.",
+  "tags": {
+    "BT-0042": {
+      "record": "BT-0042",
+      "label": "Cloth no. 0042",
+      "weaver": "Mama Ina Dida",
+      "site": "Adonara",
+      "position": "Selvedge, 4 cm from the fringe"
+    },
+    "BT-0043": {
+      "record": "BT-0043",
+      "label": "Cloth no. 0043",
+      "weaver": "Mama Yosefina",
+      "site": "Lembata",
+      "position": "Selvedge, 4 cm from the fringe"
+    },
+    "BT-0101": {
+      "record": "BT-0101",
+      "label": "Cloth no. 0101",
+      "weaver": "Mama Klara",
+      "site": "Manggarai",
+      "position": "Selvedge, 4 cm from the fringe"
+    },
+    "KC-0007": {
+      "record": "KC-0007",
+      "label": "Cotton plot 07",
+      "site": "Adonara",
+      "position": "Woven label on the sack"
+    },
+    "04A1B2C3D4E5F6": {
+      "record": "BT-0042",
+      "label": "Cloth no. 0042",
+      "weaver": "Mama Ina Dida",
+      "site": "Adonara",
+      "position": "Sewn in as a raw-UID tag (no printed code)"
+    }
+  }
+}

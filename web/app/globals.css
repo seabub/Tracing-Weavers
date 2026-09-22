@@ -1,0 +1,218 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* ═══════════════════════════════════════════════════════════════
+   Digital Product Passport — theme
+   A blend of two systems:
+   · Beyond Tenun (the design system in this repo): ink / paper grounds,
+     one red accent (salmon on ink), letterspaced eyebrows, hairline rules,
+     Hanken Grotesk 900 + Archivo Narrow.
+   · Alto Project (the app this one is modelled on): rounded surfaces,
+     soft shadows, warm tinted background, gradient headlines, motion.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root{
+  /* Beyond Tenun base */
+  --bt-ink:#201E1D;
+  --bt-ink-2:#605D5D;
+  --bt-ink-3:#7B7B7B;
+  --bt-white:#FFFFFF;
+  --bt-paper:#F3F2F2;
+  --bt-paper-2:#F5F5F5;
+  --bt-stone:#CFC8BB;
+  --bt-red:#AE1800;
+  --bt-red-bright:#EC3013;
+  --bt-salmon:#FF9783;
+  --bt-blush:#FFF2EF;
+  --bt-clay:#F29A6A;
+  --bt-amber:#ECA406;
+  --bt-indigo:#2B3A67;
+
+  /* Alto's warmth, mixed in */
+  --ap-magenta:#8B2A6B;
+  --ap-magenta-soft:#B8478F;
+  --ap-pink-tint:#FBF6F9;
+
+  /* brand gradient: natural-dye indigo → tenun red → natural-dye gold */
+  --gradient-brand:linear-gradient(90deg,var(--bt-indigo) 0%,var(--bt-red) 52%,var(--bt-amber) 100%);
+  --gradient-warm:linear-gradient(135deg,var(--bt-blush) 0%,var(--ap-pink-tint) 100%);
+
+  --shadow-none:none;
+  --shadow-soft:0 2px 10px rgba(32,30,29,.05);
+  --shadow-lift:0 12px 32px rgba(32,30,29,.12);
+  --shadow-float:0 18px 44px rgba(32,30,29,.18);
+
+  --scrim-bottom:linear-gradient(180deg,rgba(32,30,29,0) 35%,rgba(32,30,29,.78) 100%);
+  --photo-filter:saturate(.92) contrast(1.04);
+  --ease-out:cubic-bezier(.2,.7,.2,1);
+  --duration-fast:120ms;
+  --duration-base:220ms;
+}
+
+/* semantic — light */
+:root{
+  --background:var(--ap-pink-tint);
+  --foreground:var(--bt-ink);
+  --card:var(--bt-white);
+  --card-foreground:var(--bt-ink);
+  --popover:var(--bt-white);
+  --popover-foreground:var(--bt-ink);
+  --primary:var(--bt-red);
+  --primary-foreground:var(--bt-white);
+  --secondary:var(--bt-paper-2);
+  --secondary-foreground:var(--bt-ink);
+  --muted:var(--bt-paper-2);
+  --muted-foreground:var(--bt-ink-2);
+  --accent:var(--bt-blush);
+  --accent-foreground:var(--bt-red);
+  --destructive:var(--bt-red-bright);
+  --destructive-foreground:var(--bt-white);
+  --border:var(--bt-stone);
+  --input:var(--bt-stone);
+  --ring:var(--bt-red-bright);
+  --success:#3E6B2E;
+  --warning:var(--bt-amber);
+  /* Alto's rounded surfaces, softened from the design system's square rule */
+  --radius:12px;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-ink: var(--bt-ink);
+  --color-ink-2: var(--bt-ink-2);
+  --color-ink-3: var(--bt-ink-3);
+  --color-paper: var(--bt-paper);
+  --color-stone: var(--bt-stone);
+  --color-bt-red: var(--bt-red);
+  --color-bt-red-bright: var(--bt-red-bright);
+  --color-salmon: var(--bt-salmon);
+  --color-blush: var(--bt-blush);
+  --color-clay: var(--bt-clay);
+  --color-amber-bt: var(--bt-amber);
+  --color-indigo-bt: var(--bt-indigo);
+  --color-magenta: var(--ap-magenta);
+
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display-family);
+  --font-script: var(--font-script-family);
+
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+}
+
+/* dark ground — the stage / showpiece mood */
+[data-theme="dark"]{
+  --background:var(--bt-ink);
+  --foreground:var(--bt-white);
+  --card:#2A2827;
+  --card-foreground:var(--bt-white);
+  --popover:#2A2827;
+  --popover-foreground:var(--bt-white);
+  --primary:var(--bt-salmon);
+  --primary-foreground:var(--bt-ink);
+  --secondary:#332F2E;
+  --secondary-foreground:var(--bt-white);
+  --muted:#332F2E;
+  --muted-foreground:rgba(255,255,255,.72);
+  --accent:#332F2E;
+  --accent-foreground:var(--bt-salmon);
+  --border:rgba(255,255,255,.18);
+  --input:rgba(255,255,255,.18);
+  --ring:var(--bt-salmon);
+}
+
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    font-size: 19px;
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+    text-wrap: pretty;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    letter-spacing: -.025em;
+    line-height: 1.08;
+  }
+  a { color: var(--primary); transition: color var(--duration-fast) var(--ease-out); }
+  a:hover { color: var(--bt-red-bright); }
+  button, input, select, textarea { font: inherit; color: inherit; }
+}
+
+@layer utilities {
+  /* the deck's opening device: uppercase, letterspaced, red */
+  .eyebrow {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: .42em;
+    text-transform: uppercase;
+    color: var(--bt-red);
+  }
+  [data-theme="dark"] .eyebrow { color: var(--bt-salmon); }
+
+  .footnote {
+    font-family: var(--font-body);
+    font-size: 13px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 900;
+    letter-spacing: -.025em;
+    line-height: 1;
+  }
+
+  /* Alto's gradient headline, set in tenun dye colours */
+  .text-gradient {
+    background: var(--gradient-brand);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .rule-step { border-top: 2px solid var(--bt-red); }
+  .rule-hair { border-top: 1px solid var(--border); }
+
+  .ink-band { background: var(--bt-ink); color: var(--bt-white); }
+
+  /* soft lift on hover — Alto's motion, quiet enough for the brand */
+  .lift {
+    transition: box-shadow var(--duration-base) var(--ease-out),
+                transform var(--duration-base) var(--ease-out);
+  }
+  .lift:hover { box-shadow: var(--shadow-lift); transform: translateY(-3px); }
+
+  .warm-panel { background: var(--gradient-warm); }
+}
