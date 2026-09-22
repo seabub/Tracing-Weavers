@@ -33,7 +33,7 @@ export function Reveal({
         >
             <summary
                 className={cn(
-                    "flex w-fit cursor-pointer list-none items-center gap-2 text-[14px] transition-colors duration-[160ms] ease-[cubic-bezier(0.23,1,0.32,1)] [&::-webkit-details-marker]:hidden",
+                    "flex w-fit min-h-6 cursor-pointer list-none items-center gap-2 py-1.5 text-[14px] transition-colors duration-[160ms] ease-[cubic-bezier(0.23,1,0.32,1)] [&::-webkit-details-marker]:hidden",
                     tone === "ink"
                         ? "text-white/70 hover:text-white"
                         : "text-muted-foreground hover:text-ink",

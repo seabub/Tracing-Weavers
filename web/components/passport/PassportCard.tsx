@@ -6,10 +6,14 @@ import type { Passport } from "@/lib/types";
 import type { ProductRecord } from "@/lib/records";
 
 const issuedOn = (iso: string) =>
-    new Date(iso).toLocaleDateString("id-ID", {
+    /* The holder reads this in WIB, so format in WIB. Without the time zone the
+       server formatted in UTC and a passport issued between 00:00 and 06:59
+       Jakarta time showed yesterday's date (and mismatched on hydration). */
+    new Date(iso).toLocaleDateString("en-GB", {
         day: "2-digit",
         month: "long",
         year: "numeric",
+        timeZone: "Asia/Jakarta",
     });
 
 /**

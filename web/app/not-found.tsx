@@ -13,7 +13,7 @@ export default function NotFound() {
             <ThreadRule className="mt-9 h-2 w-full text-stone" aria-hidden />
             <Link
                 href="/"
-                className="mt-6 inline-block text-[14px] text-muted-foreground hover:text-ink"
+                className="mt-6 inline-block min-h-6 py-1 text-[14px] text-muted-foreground hover:text-ink"
             >
                 ← {t.backToRecords}
             </Link>

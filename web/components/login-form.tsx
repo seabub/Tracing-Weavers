@@ -67,7 +67,7 @@ export default function LoginForm() {
             {error && (
                 <p
                     role="alert"
-                    className="rounded-md bg-destructive/8 p-3 text-[15px] text-destructive shadow-[0_0_0_1px_rgba(236,48,19,.25)]"
+                    className="rounded-md bg-bt-red/6 p-3 text-[15px] text-bt-red shadow-[0_0_0_1px_rgba(174,24,0,.28)]"
                 >
                     {error}
                 </p>
@@ -107,7 +107,7 @@ function Field({
                 placeholder={placeholder}
                 autoComplete={autoComplete}
                 onChange={(e) => onChange(e.target.value)}
-                className="mt-1.5 h-11 w-full rounded-md bg-white px-3 text-[17px] outline-none shadow-[var(--ring)] transition-shadow duration-[160ms] ease-[cubic-bezier(0.23,1,0.32,1)] focus:shadow-[0_0_0_1px_var(--bt-red)]"
+                className="mt-1.5 h-11 w-full rounded-md bg-white px-3 text-[17px] shadow-[var(--ring)] transition-shadow duration-[160ms] ease-[cubic-bezier(0.23,1,0.32,1)] focus-visible:shadow-[0_0_0_2px_var(--bt-red)]"
             />
         </label>
     );

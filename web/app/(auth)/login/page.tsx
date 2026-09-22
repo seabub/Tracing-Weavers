@@ -20,9 +20,9 @@ export default function Login() {
                 </div>
 
                 <div className="relative max-w-md">
-                    <h1 className="text-[clamp(2rem,3.4vw,2.75rem)] text-white">
+                    <p className="display text-[clamp(2rem,3.4vw,2.75rem)] leading-tight text-white">
                         A weaver's knowledge, written down with a name.
-                    </h1>
+                    </p>
                     <p className="mt-5 text-[17px] text-white/75">
                         Sign in to read a cloth's record and keep the passport issued to you.
                     </p>
@@ -39,7 +39,7 @@ export default function Login() {
             <div className="flex flex-col justify-center px-6 py-14 sm:px-12">
                 <div className="mx-auto w-full max-w-sm">
                     <div className="eyebrow">{t.signInEyebrow}</div>
-                    <h2 className="mt-3">{t.signInTitle}</h2>
+                    <h1 className="mt-3">{t.signInTitle}</h1>
                     <p className="mt-3 text-[17px] text-muted-foreground">{t.signInLead}</p>
 
                     <div className="mt-7 rounded-lg bg-card p-6 shadow-[var(--ring)]">

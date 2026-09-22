@@ -26,7 +26,7 @@ export default function RecordCard({
                     <img
                         src={recordVisual(record)}
                         alt={record.title}
-                        className="aspect-4/5 w-full object-cover transition-transform duration-[400ms] ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02] motion-reduce:transition-none"
+                        className="aspect-4/5 w-full object-cover transition-transform duration-[400ms] ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02] motion-reduce:transition-none"
                         draggable={false}
                     />
                     {record.supply > 1 && (

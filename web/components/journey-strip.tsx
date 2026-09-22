@@ -60,7 +60,8 @@ export function JourneyStrip({
                                 >
                                     {step.id_label}
                                 </span>
-                                <span
+                                                                <span
+                                    lang="id"
                                     className={cn(
                                         "ml-2 text-[12px] uppercase tracking-[.14em]",
                                         tone === "ink" ? "text-white/50" : "text-muted-foreground",
@@ -75,7 +76,7 @@ export function JourneyStrip({
                                             tone === "ink" ? "text-salmon" : "text-bt-red",
                                         )}
                                     >
-                                        · jejak ini
+                                                                                · this record
                                     </span>
                                 )}
                                 <span

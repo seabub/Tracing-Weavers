@@ -72,7 +72,7 @@ export default async function RecordPage({
             <div className="flex flex-wrap items-center justify-between gap-3">
                 <Link
                     href="/"
-                    className="text-[14px] text-muted-foreground hover:text-ink"
+                    className="inline-block min-h-6 py-1 text-[14px] text-muted-foreground hover:text-ink"
                 >
                     ← {t.backToRecords}
                 </Link>

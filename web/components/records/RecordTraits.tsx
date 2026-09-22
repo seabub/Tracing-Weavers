@@ -16,10 +16,17 @@ const GLOSS: Record<string, string> = {
     season: "Musim panen",
 };
 
-function label(traitType: string | undefined) {
+function label(traitType: string | undefined): React.ReactNode {
     if (!traitType) return "";
     const gloss = GLOSS[traitType.trim().toLowerCase()];
-    return gloss ? `${traitType} · ${gloss}` : traitType;
+    if (!gloss) return traitType;
+    /* The gloss is Indonesian inside an English interface, so it is marked as
+       such (WCAG 3.1.2) instead of leaving the reader to guess. */
+    return (
+        <>
+            {traitType} · <span lang="id">{gloss}</span>
+        </>
+    );
 }
 
 /* The fact table of the record: hairline rows, label caps left, value right.

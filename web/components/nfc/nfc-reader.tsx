@@ -93,7 +93,11 @@ export function NfcReader() {
                 >
                     {listening ? "Waiting for a tag…" : "Start reading"}
                 </Button>
-                {error && <p className="mt-4 text-[15px] text-destructive">{error}</p>}
+                {error && (
+                    <p role="alert" className="mt-4 text-[15px] text-bt-red">
+                        {error}
+                    </p>
+                )}
             </div>
         </div>
     );

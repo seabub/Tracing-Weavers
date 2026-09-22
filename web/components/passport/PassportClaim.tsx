@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+
 import { Button } from "@/components/ui/button";
 import { rememberLocalPassport } from "@/lib/local-passports";
 import { t } from "@/lib/copy";
@@ -35,7 +35,7 @@ export function PassportClaim({
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [issued, setIssued] = useState<Passport | null>(null);
-    const reduce = useReducedMotion();
+    
 
     const soldOut = remaining !== null && remaining <= 0;
 
@@ -123,7 +123,13 @@ export function PassportClaim({
                         <div className="text-[11px] uppercase tracking-[.2em] text-success">
                             {t.claimedEyebrow}
                         </div>
-                        <p className="data mt-2 text-[15px] text-ink">{issued.id}</p>
+                                                <p className="data mt-2 text-[15px] text-ink">{issued.id}</p>
+                        <Link
+                            href={`/verify/${issued.id}`}
+                            className="mt-3 inline-block min-h-6 py-1 text-[14px] font-medium text-ink hover:text-bt-red"
+                        >
+                            {t.viewPassport} →
+                        </Link>
                         <p className="mt-2 text-[15px] text-muted-foreground">
                             {t.claimedNote}
                         </p>
@@ -156,7 +162,8 @@ export function PassportClaim({
                         />
 
                         {error && (
-                            <p className="rounded-md bg-destructive/8 p-3 text-[15px] text-destructive shadow-[0_0_0_1px_rgba(236,48,19,.25)]">
+                            <p role="alert"
+                                className="rounded-md bg-bt-red/6 p-3 text-[15px] text-bt-red shadow-[0_0_0_1px_rgba(174,24,0,.28)]">
                                 {error}
                             </p>
                         )}
@@ -177,52 +184,6 @@ export function PassportClaim({
                 </p>
             </section>
 
-            <AnimatePresence>
-                {issued && (
-                    <motion.div
-                        initial={reduce ? false : { opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0, transition: { duration: 0.16 } }}
-                        transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-                        className="fixed inset-0 z-50 flex items-center justify-center bg-ink/60 p-4"
-                        onClick={() => setIssued(null)}
-                    >
-                        <motion.div
-                            initial={reduce ? false : { opacity: 0, scale: 0.96, y: 8 }}
-                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{
-                                opacity: 0,
-                                scale: 0.98,
-                                transition: { duration: 0.16, ease: [0.23, 1, 0.32, 1] },
-                            }}
-                            transition={{ duration: 0.24, ease: [0.23, 1, 0.32, 1] }}
-                            className="w-full max-w-sm rounded-xl bg-card p-6 text-center"
-                            style={{ boxShadow: "var(--shadow-float)" }}
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            <div className="eyebrow">{t.claimedEyebrow}</div>
-                            <h3 className="mt-3 text-[26px]">{title.split(" · ")[0]}</h3>
-                            <p className="mt-2 text-[15px] text-muted-foreground">
-                                Recorded under{" "}
-                                <span className="text-ink">{name}</span>.
-                            </p>
-                            <p className="data mt-4 text-[15px] text-ink">{issued.id}</p>
-                            <div className="mt-5 grid gap-2">
-                                <Link href={`/verify/${issued.id}`}>
-                                    <Button className="w-full">{t.viewPassport}</Button>
-                                </Link>
-                                <Button
-                                    variant="ghost"
-                                    className="w-full"
-                                    onClick={() => setIssued(null)}
-                                >
-                                    {t.stayHere}
-                                </Button>
-                            </div>
-                        </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
         </>
     );
 }
@@ -263,7 +224,7 @@ function Field({
                 placeholder={placeholder}
                 autoComplete={autoComplete}
                 onChange={(e) => onChange(e.target.value)}
-                className="mt-1.5 h-11 w-full rounded-md bg-white px-3 text-[17px] outline-none shadow-[var(--ring)] transition-shadow duration-[160ms] ease-[cubic-bezier(0.23,1,0.32,1)] focus:shadow-[0_0_0_1px_var(--bt-red)]"
+                className="mt-1.5 h-11 w-full rounded-md bg-white px-3 text-[17px] shadow-[var(--ring)] transition-shadow duration-[160ms] ease-[cubic-bezier(0.23,1,0.32,1)] focus-visible:shadow-[0_0_0_2px_var(--bt-red)]"
             />
         </label>
     );
