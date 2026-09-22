@@ -7,7 +7,7 @@ import { ThreadRule, TallyMarks } from "@/components/motif/marks";
 import { Reveal } from "@/components/ui/reveal";
 
 export default function Footer() {
-    const year = new Date().getFullYear();
+    
 
     return (
         <footer className="mt-20 border-t border-border">
@@ -43,7 +43,7 @@ export default function Footer() {
 
                 <div className="mt-6 flex flex-col gap-2 text-[13px] uppercase tracking-[.12em] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
                     <span>
-                        © {year} {brand} · ICM × TBN × Torajamelo
+                        © {brand} · ICM × TBN × Torajamelo
                     </span>
                     <span>Adonara · Lembata · Manggarai</span>
                 </div>

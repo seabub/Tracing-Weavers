@@ -134,6 +134,10 @@ export function PassportClaim({
                             {t.claimedNote}
                         </p>
                     </div>
+                                ) : soldOut ? (
+                    <p className="mt-6 rounded-md bg-card p-4 text-[16px] text-muted-foreground shadow-[var(--ring)]">
+                        {t.claimSoldOut}. {t.claimOnePerCloth}.
+                    </p>
                 ) : (
                     <form onSubmit={submit} className="mt-6 space-y-4">
                         <Field

@@ -47,9 +47,14 @@ export default async function RecordPage({
     const record = getRecord(code);
     if (!record) notFound();
 
-    const store = passportStore();
+        const store = passportStore();
+    /* Two queries on purpose: `issued` is the row list the holder is matched
+       against (any status), while the quota counts only what the claim path
+       counts — a revoked passport must not read as "sold out" while the API
+       would still issue. */
     const issued = await store.listByRecord(record.code);
-    const remaining = Math.max(record.supply - issued.length, 0);
+    const issuedCount = await store.issuableCount(record.code);
+    const remaining = Math.max(record.supply - issuedCount, 0);
     const identity = await currentIdentity();
 
     const tagCode = tag ? safeDecode(tag).trim().toUpperCase() : undefined;
@@ -189,8 +194,8 @@ export default async function RecordPage({
                         })}
                         <div className="flex items-baseline justify-between gap-6 border-t border-border py-3">
                             <dt className="label">{t.issued}</dt>
-                            <dd className="num text-right text-[17px]">
-                                {issued.length} / {record.supply}
+                                                        <dd className="num text-right text-[17px]">
+                                {issuedCount} / {record.supply}
                             </dd>
                         </div>
                     </dl>

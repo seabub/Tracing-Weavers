@@ -30,6 +30,9 @@ export function TagLookupForm({ className }: { className?: string }) {
                     onChange={(e) => setCode(e.target.value)}
                     placeholder="BT-0042"
                     autoComplete="off"
+                    autoCapitalize="characters"
+                    spellCheck={false}
+                    enterKeyHint="go"
                     className="data mt-1.5 h-11 w-full rounded-md bg-white px-3 text-[15px] shadow-[var(--ring)] transition-shadow duration-[160ms] ease-[cubic-bezier(0.23,1,0.32,1)] focus-visible:shadow-[0_0_0_2px_var(--bt-red)]"
                 />
             </label>
