@@ -1,11 +1,11 @@
 {
-  "_comment": "Records are the passport's subjects — one product, one origin story. This file IS the passport data: no chain, no dashboard, no API key. `photo` is the documentary image used on the page (hands, cloth, looms); `image` is the record sheet drawn by `npm run record:svg`, used on the passport and for print.  Prose fields (description, subtitle, attribute values) are ENGLISH: the interface speaks English, and the craft's own words (ikat, tenun, mengkudu) are the ones that stay untranslated. The 'Journey step' attribute value must equal a step label in lib/copy.ts (Seed, Loom, Trace, Teach, Regenerate, Hub, Flourish), because JourneyRail matches on it to mark the active step. PHOTO CAVEAT: photos in public/imagery/ come from the design system uploads and include AI-generated reference images — replace them with licensed community photography before publication (brief §6). Never invent figures: leave a field out rather than guessing it.  Data sourced from the Pungkas / List Tenun exhibition spreadsheet (27 handwoven cloths across 6 installation locations).  Weaver name defaults to Mama Ina Dida until real names are recorded.",
+  "_comment": "Records are the passport's subjects. Data from Pungkas / List Tenun exhibition spreadsheet. 29 handwoven cloths. Weaver defaults to Mama Ina Dida.",
   "records": [
     {
       "code": "1/JM",
       "title": "Gringsing Tenganan / Gringsing Wayang · Mama Ina Dida",
       "subtitle": "Karangasem, Bali · 2025",
-      "description": "Handspun Cotton. woven in double ikat. from Karangasem/Bali.",
+      "description": "Handspun cotton, natural dyes. woven in double ikat. from Karangasem/Bali.",
       "photo": "/imagery/cloth-hanging.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/1-JM.svg",
@@ -27,11 +27,11 @@
         },
         {
           "trait_type": "Material",
-          "value": "Handspun Cotton"
+          "value": "Handspun cotton, natural dyes"
         },
         {
           "trait_type": "Size",
-          "value": "Natural dyes"
+          "value": "198 × 54"
         },
         {
           "trait_type": "Journey step",
@@ -43,10 +43,48 @@
       "code": "2/GW",
       "title": "Tais Feto Biboki · Mama Ina Dida",
       "subtitle": "Timor Tengah Utara (TTU), NTT · 2025",
-      "description": "Buna. woven in warp ikat. from Timor Tengah Utara (TTU)/NTT.",
+      "description": "Cotton, natural dyes. woven in warp ikat, buna. from Timor Tengah Utara (TTU)/NTT.",
       "photo": "/imagery/cloth-hanging.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/2-GW.svg",
+      "collection": "Gallery Wall",
+      "supply": 1,
+      "perHolder": 1,
+      "attributes": [
+        {
+          "trait_type": "Maker",
+          "value": "Mama Ina Dida"
+        },
+        {
+          "trait_type": "Origin",
+          "value": "Timor Tengah Utara (TTU)/NTT"
+        },
+        {
+          "trait_type": "Technique",
+          "value": "Warp ikat, Buna"
+        },
+        {
+          "trait_type": "Material",
+          "value": "Cotton, natural dyes"
+        },
+        {
+          "trait_type": "Size",
+          "value": "137 × 57"
+        },
+        {
+          "trait_type": "Journey step",
+          "value": "Trace"
+        }
+      ]
+    },
+    {
+      "code": "3/GW",
+      "title": "Beti Naek Biboki · Mama Ina Dida",
+      "subtitle": "Timor Tengah Utara (TTU), NTT · 2025",
+      "description": "Cotton, natural dyes. woven in warp ikat. from Timor Tengah Utara (TTU)/NTT.",
+      "photo": "/imagery/cloth-hanging.jpg",
+      "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
+      "image": "/records/3-GW.svg",
       "collection": "Gallery Wall",
       "supply": 1,
       "perHolder": 1,
@@ -65,49 +103,11 @@
         },
         {
           "trait_type": "Material",
-          "value": "Buna"
+          "value": "Cotton, natural dyes"
         },
         {
           "trait_type": "Size",
-          "value": "Cotton - Natural dyes"
-        },
-        {
-          "trait_type": "Journey step",
-          "value": "Trace"
-        }
-      ]
-    },
-    {
-      "code": "3/GW",
-      "title": "Beti Naek Biboki · Mama Ina Dida",
-      "subtitle": "Timor Tengah Utara (TTU), NTT · 2025",
-      "description": "Cotton - Natural dyes. woven in warp ikat. from Timor Tengah Utara (TTU)/NTT.",
-      "photo": "/imagery/cloth-hanging.jpg",
-      "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
-      "image": "/records/3-GW.svg",
-      "collection": "Gallery Wall",
-      "supply": 1,
-      "perHolder": 1,
-      "attributes": [
-        {
-          "trait_type": "Maker",
-          "value": "Mama Ina Dida"
-        },
-        {
-          "trait_type": "Origin",
-          "value": "Timor Tengah Utara (TTU)/NTT"
-        },
-        {
-          "trait_type": "Technique",
-          "value": "Warp Ikat"
-        },
-        {
-          "trait_type": "Material",
-          "value": "Cotton - Natural dyes"
-        },
-        {
-          "trait_type": "Size",
-          "value": "180 x 97"
+          "value": "180 × 97"
         },
         {
           "trait_type": "Journey step",
@@ -119,7 +119,7 @@
       "code": "4/TM",
       "title": "Penetoten · Mama Ina Dida",
       "subtitle": "Adonara, NTT · 2025",
-      "description": "Cotton - Chemical dyes. woven in supplementary warp. from Adonara/NTT.",
+      "description": "Cotton, chemical dyes. woven in supplementary warp. from Adonara/NTT.",
       "photo": "/imagery/cloth-hanging.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/4-TM.svg",
@@ -141,11 +141,11 @@
         },
         {
           "trait_type": "Material",
-          "value": "Cotton - Chemical dyes"
+          "value": "Cotton, chemical dyes"
         },
         {
           "trait_type": "Size",
-          "value": "182 x 74"
+          "value": "182 × 74"
         },
         {
           "trait_type": "Journey step",
@@ -183,7 +183,7 @@
         },
         {
           "trait_type": "Size",
-          "value": "174 x 58.5"
+          "value": "174 × 58.5"
         },
         {
           "trait_type": "Journey step",
@@ -221,7 +221,7 @@
         },
         {
           "trait_type": "Size",
-          "value": "118 x 64"
+          "value": "118 × 64"
         },
         {
           "trait_type": "Journey step",
@@ -259,7 +259,37 @@
         },
         {
           "trait_type": "Size",
-          "value": "144 x 65"
+          "value": "144 × 65"
+        },
+        {
+          "trait_type": "Journey step",
+          "value": "Trace"
+        }
+      ]
+    },
+    {
+      "code": "21/JM",
+      "title": "Tapis Inuh Lampung · Mama Ina Dida",
+      "subtitle": "Lampung, Sumatera Selatan · 2025",
+      "description": "from Lampung/Sumatera Selatan.",
+      "photo": "/imagery/cloth-hanging.jpg",
+      "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
+      "image": "/records/21-JM.svg",
+      "collection": "Jejak Masters",
+      "supply": 1,
+      "perHolder": 1,
+      "attributes": [
+        {
+          "trait_type": "Maker",
+          "value": "Mama Ina Dida"
+        },
+        {
+          "trait_type": "Origin",
+          "value": "Lampung/Sumatera Selatan"
+        },
+        {
+          "trait_type": "Size",
+          "value": "120 × 130"
         },
         {
           "trait_type": "Journey step",
@@ -309,7 +339,7 @@
       "code": "9/TM",
       "title": "Ikat Langa · Mama Ina Dida",
       "subtitle": "Bajawa, NTT · 2025",
-      "description": "Cotton - Natural dyes. woven in warp ikat. from Bajawa/NTT.",
+      "description": "Cotton, natural dyes. woven in warp ikat. from Bajawa/NTT.",
       "photo": "/imagery/cloth-hanging.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/9-TM.svg",
@@ -331,11 +361,11 @@
         },
         {
           "trait_type": "Material",
-          "value": "Cotton - Natural dyes"
+          "value": "Cotton, natural dyes"
         },
         {
           "trait_type": "Size",
-          "value": "150 x 56"
+          "value": "150 × 56"
         },
         {
           "trait_type": "Journey step",
@@ -347,7 +377,7 @@
       "code": "10/TM",
       "title": "Gringsing · Mama Ina Dida",
       "subtitle": "Karangasem, Bali · 2025",
-      "description": "Handspun Cotton - Natural dyes. woven in double ikat. from Karangasem/Bali.",
+      "description": "Handspun cotton, natural dyes. woven in double ikat. from Karangasem/Bali.",
       "photo": "/imagery/cloth-hanging.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/10-TM.svg",
@@ -369,11 +399,11 @@
         },
         {
           "trait_type": "Material",
-          "value": "Handspun Cotton - Natural dyes"
+          "value": "Handspun cotton, natural dyes"
         },
         {
           "trait_type": "Size",
-          "value": "236 x 43"
+          "value": "236 × 43"
         },
         {
           "trait_type": "Journey step",
@@ -385,7 +415,7 @@
       "code": "11/TM",
       "title": "Penetoten · Mama Ina Dida",
       "subtitle": "Lembata, NTT · 2025",
-      "description": "Cotton. woven in supplementary warp. from Lembata/NTT.",
+      "description": "Cotton, chemical dyes. woven in supplementary warp. from Lembata/NTT.",
       "photo": "/imagery/cloth-hanging.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/11-TM.svg",
@@ -407,11 +437,11 @@
         },
         {
           "trait_type": "Material",
-          "value": "Cotton"
+          "value": "Cotton, chemical dyes"
         },
         {
           "trait_type": "Size",
-          "value": "Chemical dyes"
+          "value": "189 × 68"
         },
         {
           "trait_type": "Journey step",
@@ -423,7 +453,7 @@
       "code": "12/TM",
       "title": "Songket · Mama Ina Dida",
       "subtitle": "Sukarara, NTB · 2025",
-      "description": "Cotton - Natural dyes. woven in supplementary weft. from Sukarara/NTB.",
+      "description": "Cotton, natural dyes. woven in supplementary weft. from Sukarara/NTB.",
       "photo": "/imagery/cloth-hanging.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/12-TM.svg",
@@ -445,11 +475,11 @@
         },
         {
           "trait_type": "Material",
-          "value": "Cotton - Natural dyes"
+          "value": "Cotton, natural dyes"
         },
         {
           "trait_type": "Size",
-          "value": "183 x 106"
+          "value": "183 × 106"
         },
         {
           "trait_type": "Journey step",
@@ -461,7 +491,7 @@
       "code": "13/GW",
       "title": "Lau Witikau · Mama Ina Dida",
       "subtitle": "Sumba Timur, NTT · 2025",
-      "description": "Cotton - Nassa shells - beads. woven in plain weave. from Sumba Timur/NTT.",
+      "description": "Cotton, Nassa shells, beads. woven in plain weave. from Sumba Timur/NTT.",
       "photo": "/imagery/cloth-hanging.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/13-GW.svg",
@@ -483,11 +513,11 @@
         },
         {
           "trait_type": "Material",
-          "value": "Cotton - Nassa shells - beads"
+          "value": "Cotton, Nassa shells, beads"
         },
         {
           "trait_type": "Size",
-          "value": "97 x 54"
+          "value": "97 × 54"
         },
         {
           "trait_type": "Journey step",
@@ -499,7 +529,7 @@
       "code": "14/GW",
       "title": "Ei Worapi · Mama Ina Dida",
       "subtitle": "Sawu, NTT · 2025",
-      "description": "Cotton - Natural dyes. woven in warp ikat. from Sawu/NTT.",
+      "description": "Cotton, natural dyes. woven in warp ikat. from Sawu/NTT.",
       "photo": "/imagery/cloth-hanging.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/14-GW.svg",
@@ -521,11 +551,11 @@
         },
         {
           "trait_type": "Material",
-          "value": "Cotton - Natural dyes"
+          "value": "Cotton, natural dyes"
         },
         {
           "trait_type": "Size",
-          "value": "160 x 58"
+          "value": "160 × 58"
         },
         {
           "trait_type": "Journey step",
@@ -537,7 +567,7 @@
       "code": "15/JM",
       "title": "Kewatek Nai Telo · Mama Ina Dida",
       "subtitle": "Lembata, NTT · 2025",
-      "description": "Handspun Cotton - Natural dyes. woven in warp ikat. from Lembata/NTT.",
+      "description": "Handspun cotton, natural dyes. woven in warp ikat. from Lembata/NTT.",
       "photo": "/imagery/cloth-hanging.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/15-JM.svg",
@@ -559,11 +589,11 @@
         },
         {
           "trait_type": "Material",
-          "value": "Handspun Cotton - Natural dyes"
+          "value": "Handspun cotton, natural dyes"
         },
         {
           "trait_type": "Size",
-          "value": "180 x 78"
+          "value": "180 × 78"
         },
         {
           "trait_type": "Journey step",
@@ -575,7 +605,7 @@
       "code": "16/JM",
       "title": "Amanuban · Mama Ina Dida",
       "subtitle": "Timor Tengah Selatan (TTS), NTT · 2025",
-      "description": "Cotton - Mix dyes. woven in warp ikat. from Timor Tengah Selatan (TTS)/NTT.",
+      "description": "Cotton, mix dyes. woven in warp ikat. from Timor Tengah Selatan (TTS)/NTT.",
       "photo": "/imagery/cloth-hanging.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/16-JM.svg",
@@ -597,11 +627,11 @@
         },
         {
           "trait_type": "Material",
-          "value": "Cotton - Mix dyes"
+          "value": "Cotton, mix dyes"
         },
         {
           "trait_type": "Size",
-          "value": "180 x 92"
+          "value": "180 × 92"
         },
         {
           "trait_type": "Journey step",
@@ -613,7 +643,7 @@
       "code": "18/GW",
       "title": "Hinggi Kawiru · Mama Ina Dida",
       "subtitle": "Sumba Timur, NTT · 2025",
-      "description": "Cotton. woven in warp ikat. from Sumba Timur/NTT.",
+      "description": "Cotton, natural dyes. woven in warp ikat. from Sumba Timur/NTT.",
       "photo": "/imagery/cloth-hanging.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/18-GW.svg",
@@ -635,11 +665,11 @@
         },
         {
           "trait_type": "Material",
-          "value": "Cotton"
+          "value": "Cotton, natural dyes"
         },
         {
           "trait_type": "Size",
-          "value": "Natural dyes"
+          "value": "232 × 123.5"
         },
         {
           "trait_type": "Journey step",
@@ -651,7 +681,7 @@
       "code": "17/GW",
       "title": "Hanggi · Mama Ina Dida",
       "subtitle": "Sumba Barat, NTT · 2025",
-      "description": "Cotton. woven in warp ikat. from Sumba Barat/NTT.",
+      "description": "Cotton, chemical dyes. woven in warp ikat. from Sumba Barat/NTT.",
       "photo": "/imagery/cloth-hanging.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/17-GW.svg",
@@ -673,11 +703,11 @@
         },
         {
           "trait_type": "Material",
-          "value": "Cotton"
+          "value": "Cotton, chemical dyes"
         },
         {
           "trait_type": "Size",
-          "value": "Chemical dyes"
+          "value": "252 × 112.5"
         },
         {
           "trait_type": "Journey step",
@@ -715,7 +745,7 @@
         },
         {
           "trait_type": "Size",
-          "value": "448 x 48.5"
+          "value": "448 × 48.5"
         },
         {
           "trait_type": "Journey step",
@@ -753,37 +783,7 @@
         },
         {
           "trait_type": "Size",
-          "value": "530 x 37"
-        },
-        {
-          "trait_type": "Journey step",
-          "value": "Trace"
-        }
-      ]
-    },
-    {
-      "code": "21/JM",
-      "title": "Tapis Inuh Lampung · Mama Ina Dida",
-      "subtitle": "Lampung, Sumatera Selatan · 2025",
-      "description": "from Lampung/Sumatera Selatan.",
-      "photo": "/imagery/cloth-hanging.jpg",
-      "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
-      "image": "/records/21-JM.svg",
-      "collection": "Jejak Masters",
-      "supply": 1,
-      "perHolder": 1,
-      "attributes": [
-        {
-          "trait_type": "Maker",
-          "value": "Mama Ina Dida"
-        },
-        {
-          "trait_type": "Origin",
-          "value": "Lampung/Sumatera Selatan"
-        },
-        {
-          "trait_type": "Size",
-          "value": "120 x 130"
+          "value": "530 × 37"
         },
         {
           "trait_type": "Journey step",
@@ -821,7 +821,7 @@
         },
         {
           "trait_type": "Size",
-          "value": "864 x 44"
+          "value": "864 × 44"
         },
         {
           "trait_type": "Journey step",
@@ -851,7 +851,7 @@
         },
         {
           "trait_type": "Technique",
-          "value": "Supplementary Warp"
+          "value": "Supplementary warp"
         },
         {
           "trait_type": "Material",
@@ -859,7 +859,7 @@
         },
         {
           "trait_type": "Size",
-          "value": "960 x 46"
+          "value": "960 × 46"
         },
         {
           "trait_type": "Journey step",
@@ -889,7 +889,7 @@
         },
         {
           "trait_type": "Technique",
-          "value": "Supplementary Warp"
+          "value": "Supplementary warp"
         },
         {
           "trait_type": "Material",
@@ -897,7 +897,7 @@
         },
         {
           "trait_type": "Size",
-          "value": "1000 x 46"
+          "value": "1000 × 46"
         },
         {
           "trait_type": "Journey step",
@@ -927,7 +927,7 @@
         },
         {
           "trait_type": "Technique",
-          "value": "Supplementary Warp"
+          "value": "Supplementary warp"
         },
         {
           "trait_type": "Material",
@@ -935,7 +935,7 @@
         },
         {
           "trait_type": "Size",
-          "value": "1010 x 48"
+          "value": "1010 × 48"
         },
         {
           "trait_type": "Journey step",
@@ -945,7 +945,7 @@
     },
     {
       "code": "28/TM-NFS",
-      "title": "Sakka - Red & White - Long · Mama Ina Dida",
+      "title": "Sakka - Red & White (Long) · Mama Ina Dida",
       "subtitle": "Mamasa, Sulawesi Barat · 2025",
       "description": "Polyester. woven in supplementary warp. from Mamasa/Sulawesi Barat.",
       "photo": "/imagery/cloth-hanging.jpg",
@@ -965,7 +965,7 @@
         },
         {
           "trait_type": "Technique",
-          "value": "Supplementary Warp"
+          "value": "Supplementary warp"
         },
         {
           "trait_type": "Material",
@@ -979,7 +979,7 @@
     },
     {
       "code": "29/TM-NFS",
-      "title": "Sakka - Red & White - Short · Mama Ina Dida",
+      "title": "Sakka - Red & White (Short) · Mama Ina Dida",
       "subtitle": "Mamasa, Sulawesi Barat · 2025",
       "description": "Wool. woven in supplementary warp. from Mamasa/Sulawesi Barat.",
       "photo": "/imagery/cloth-hanging.jpg",
@@ -999,11 +999,87 @@
         },
         {
           "trait_type": "Technique",
-          "value": "Supplementary Warp"
+          "value": "Supplementary warp"
         },
         {
           "trait_type": "Material",
           "value": "Wool"
+        },
+        {
+          "trait_type": "Journey step",
+          "value": "Trace"
+        }
+      ]
+    },
+    {
+      "code": "26/TM",
+      "title": "Pa'borong - Blue · Mama Ina Dida",
+      "subtitle": "Toraja, Sulawesi Selatan · 2025",
+      "description": "Cotton, chemical dye. woven in plain weave. from Toraja/Sulawesi Selatan.",
+      "photo": "/imagery/cloth-hanging.jpg",
+      "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
+      "image": "/records/26-TM.svg",
+      "collection": "Tenun Masters",
+      "supply": 1,
+      "perHolder": 1,
+      "attributes": [
+        {
+          "trait_type": "Maker",
+          "value": "Mama Ina Dida"
+        },
+        {
+          "trait_type": "Origin",
+          "value": "Toraja/Sulawesi Selatan"
+        },
+        {
+          "trait_type": "Technique",
+          "value": "Plain weave"
+        },
+        {
+          "trait_type": "Material",
+          "value": "Cotton, chemical dye"
+        },
+        {
+          "trait_type": "Size",
+          "value": "340 × 55"
+        },
+        {
+          "trait_type": "Journey step",
+          "value": "Trace"
+        }
+      ]
+    },
+    {
+      "code": "27/TM",
+      "title": "Pa'borong - Green · Mama Ina Dida",
+      "subtitle": "Toraja, Sulawesi Selatan · 2025",
+      "description": "Cotton, chemical dye. woven in plain weave. from Toraja/Sulawesi Selatan.",
+      "photo": "/imagery/cloth-hanging.jpg",
+      "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
+      "image": "/records/27-TM.svg",
+      "collection": "Tenun Masters",
+      "supply": 1,
+      "perHolder": 1,
+      "attributes": [
+        {
+          "trait_type": "Maker",
+          "value": "Mama Ina Dida"
+        },
+        {
+          "trait_type": "Origin",
+          "value": "Toraja/Sulawesi Selatan"
+        },
+        {
+          "trait_type": "Technique",
+          "value": "Plain weave"
+        },
+        {
+          "trait_type": "Material",
+          "value": "Cotton, chemical dye"
+        },
+        {
+          "trait_type": "Size",
+          "value": "352 × 55"
         },
         {
           "trait_type": "Journey step",
