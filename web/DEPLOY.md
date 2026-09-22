@@ -37,9 +37,9 @@ Vercel → Project → **Settings → Environment Variables**. Add each to
 | `NEXT_PUBLIC_SITE_URL` | `https://passport.example.org` | the domain you will put the tags on — **set this before burning tags** |
 | `NEXT_PUBLIC_BRAND` | `Digital Product Passport` | shown in the shell |
 | `PASSPORT_SIGNING_SECRET` | `openssl rand -hex 32` | your machine; changing it invalidates session cookies, not stored passports |
-| `PASSPORT_STORE` | `kv` | see step 3 |
-| `KV_REST_API_URL` | auto | injected when KV is connected |
-| `KV_REST_API_TOKEN` | auto | injected when KV is connected |
+| `PASSPORT_STORE` | `kv` | see step 3 (Upstash from the Vercel Marketplace) |
+| `KV_REST_API_URL` | injected | Upstash / KV integration |
+| `KV_REST_API_TOKEN` | injected | Upstash / KV integration |
 
 After adding them: **Deployments → ⋯ → Redeploy** (env changes only apply to new
 deployments).
@@ -49,10 +49,21 @@ deployments).
 `PASSPORT_STORE=file` writes `data/passports.json`, which works locally and on a
 self-hosted box but **not on Vercel** (read-only filesystem).
 
-1. Vercel → **Storage → Create Database → KV (Upstash)** → pick a region close to
-   Indonesia (Singapore).
+Vercel → **Storage** opens a Marketplace; the choice that needs **no extra code**
+here is:
+
+| Provider in the list | Use it? | Notes |
+| --- | --- | --- |
+| **Upstash** — Serverless DB (Redis, Vector, Queue, Search) | **yes, recommended** | Redis over REST. `lib/store.ts` already speaks it, no SDK. |
+| Redis (official) | yes | Redis protocol, not REST — would need the `redis` client instead of plain fetch. |
+| Neon · Supabase · Prisma Postgres · Nile | possible | SQL. Swap the adapter in `lib/store.ts`; the table schema is in the comment at the top of that file. |
+| Turso (SQLite) · MongoDB Atlas · Convex · MotherDuck · Mem0 | possible | Same seam, different driver. |
+
+1. Storage → Marketplace → **Upstash** → create, region **Singapore**.
 2. **Connect** it to this project, both Production and Preview.
-3. Vercel injects `KV_REST_API_URL` and `KV_REST_API_TOKEN` — keep them, and set
+3. The integration injects the REST url + token. Either naming works:
+   `KV_REST_API_URL` / `KV_REST_API_TOKEN` (legacy) or
+   `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN`. Set
    `PASSPORT_STORE=kv`.
 4. Redeploy. `/api/passports` returns `"backend":"kv"` when it is wired up.
 
@@ -144,12 +155,13 @@ Then, in a browser:
 
 | symptom | cause | fix |
 | --- | --- | --- |
-| Build fails with `Missing NEXT_PUBLIC_SITE_URL` — no, it does not: the app defaults to localhost. Wrong links on tags | `NEXT_PUBLIC_SITE_URL` still the default | set it, redeploy |
-| `/record/...` says "No record for this token" (404 page) | `code` in `data/records.json` does not match the tag's `record` value | `npm run publish` lists orphans |
+| Links on tags still point at localhost | `NEXT_PUBLIC_SITE_URL` left at the default | set it, redeploy |
+| `/record/...` shows "no record" (404 page) | `code` in `data/records.json` does not match the tag's `record` value | `npm run publish` lists orphans |
 | Tag opens the site but not a record | tag's URL has no `/t/`, or the code is not in `data/tags.json` | rewrite the tag / add the row |
-| Claim succeeds but `/collection` is empty | store not configured (`file` on Vercel), or you signed in with a different email | connect KV, `PASSPORT_STORE=kv`; use the claiming email |
+| Claim succeeds but `/collection` is empty | store not configured (`file` on Vercel), or you signed in with a different email | connect Upstash, `PASSPORT_STORE=kv`; use the claiming email |
 | In-page "Start reading" button missing | browser is not Android Chrome, or the origin is not HTTPS | expected — use the camera or the QR |
-| Passport id verifies but "signature only" | `PASSPORT_STORE` not `kv`, or the KV env vars are missing on that deployment | connect KV, redeploy |
+| Passport id verifies but "signature only" | store is `file` on Vercel, or the Redis env vars are missing on that deployment | connect Upstash, redeploy |
+| `npm run record:svg` exits 1 | a trait label would reach its value, or the copy overruns the footer | shorten the value in `data/records.json`; the message names the row |
 
 ## 9. What is public
 

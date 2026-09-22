@@ -5,15 +5,16 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { rememberLocalPassport } from "@/lib/local-passports";
+import { t } from "@/lib/copy";
 import type { Passport } from "@/lib/types";
 
-type ClaimResponse = {
-    passport?: Passport;
-    error?: string;
-};
+type ClaimResponse = { passport?: Passport; error?: string };
 
 /* The claim form — the whole point of the product. No wallet, no signature
-   prompt: a name and an email, then the server issues a signed passport. */
+   prompt: a name and an email, then the server issues a signed passport.
+   The dialog enters in 240ms and leaves in 160ms (exits are always faster),
+   scales from 0.96 rather than 0, and stays centred because a modal has no
+   trigger to grow out of. */
 export function PassportClaim({
     code,
     title,
@@ -43,7 +44,7 @@ export function PassportClaim({
         setError(null);
 
         if (!name.trim() || !email.trim()) {
-            setError("A name and an email are needed to put the passport in your name.");
+            setError("Nama dan email diperlukan untuk menerbitkan paspor.");
             return;
         }
 
@@ -57,14 +58,14 @@ export function PassportClaim({
             const body = (await res.json()) as ClaimResponse;
 
             if (!res.ok || !body.passport) {
-                setError(body.error ?? "The passport could not be issued. Try again.");
+                setError(body.error ?? "Paspor gagal diterbitkan. Coba lagi.");
                 return;
             }
 
             rememberLocalPassport(body.passport);
             setIssued(body.passport);
         } catch {
-            setError("The network dropped before the passport was issued.");
+            setError("Sambungan terputus sebelum paspor terbit.");
         } finally {
             setBusy(false);
         }
@@ -72,52 +73,61 @@ export function PassportClaim({
 
     return (
         <>
-            <div className="rounded-xl border border-border bg-card p-6 shadow-[0_2px_10px_rgba(32,30,29,.05)]">
-                <div className="eyebrow">The passport</div>
+            <div className="cloth rounded-xl border border-border bg-card p-6 shadow-[0_2px_10px_rgba(32,30,29,.05)]">
+                <div className="eyebrow">{t.claimEyebrow}</div>
 
-                <div className="mt-4 space-y-3 text-sm">
-                    <Row label="Record" value={code} />
-                    <Row label="Issued from" value={supply > 1 ? `up to ${supply}` : "single item"} />
+                <div className="mt-4 space-y-0 text-sm">
+                    <Row label="Jejak" value={code} />
                     <Row
-                        label="Still available"
+                        label="Kuota"
+                        value={supply > 1 ? t.supplyShared.replace("{n}", String(supply)) : t.supplyUnique}
+                    />
+                    <Row
+                        label={t.remaining}
                         value={remaining === null ? "—" : String(Math.max(remaining, 0))}
                     />
-                    {tagCode && <Row label="Tag read" value={tagCode} />}
+                    {tagCode && <Row label={t.tagRead} value={tagCode} />}
                 </div>
 
                 {issued ? (
-                    <div className="mt-5 rounded-lg border border-success/40 bg-success/5 p-4">
+                    <div className="mt-6 rounded-lg border border-success/40 bg-success/5 p-4">
                         <div className="text-[11px] uppercase tracking-[.2em] text-success">
-                            Issued
+                            {t.claimedEyebrow}
                         </div>
                         <p className="display mt-2 text-lg">{issued.id}</p>
                         <p className="mt-2 text-sm text-muted-foreground">
-                            Held by {issued.holder}. This passport is verifiable
-                            at the link below, and it stays in your collection.
+                            {t.claimedNote}
                         </p>
                     </div>
                 ) : (
-                    <form onSubmit={submit} className="mt-5 space-y-4">
+                    <form onSubmit={submit} className="mt-6 space-y-5">
+                        <p className="text-[15px] leading-relaxed text-muted-foreground">
+                            {t.claimLead}
+                        </p>
+
                         <Field
-                            label="Full name"
+                            label={t.claimName}
                             value={name}
                             onChange={setName}
                             placeholder="Dinny Jusuf"
+                            autoComplete="name"
                             required
                         />
                         <Field
-                            label="Email"
+                            label={t.claimEmail}
                             type="email"
                             value={email}
                             onChange={setEmail}
-                            placeholder="you@example.com"
+                            placeholder="nama@contoh.org"
+                            autoComplete="email"
                             required
                         />
                         <Field
-                            label="Organisation · optional"
+                            label={t.claimOutlet}
                             value={outlet}
                             onChange={setOutlet}
-                            placeholder="Foundation, studio, store"
+                            placeholder="Yayasan, studio, toko"
+                            autoComplete="organization"
                         />
 
                         {error && (
@@ -128,39 +138,17 @@ export function PassportClaim({
 
                         <Button
                             type="submit"
+                            size="lg"
                             className="w-full"
                             disabled={busy || soldOut}
                         >
-                            {soldOut
-                                ? "All passports issued"
-                                : busy
-                                  ? "Issuing your passport…"
-                                  : "Claim this record"}
+                            {soldOut ? t.claimSoldOut : busy ? t.claimBusy : t.claimButton}
                         </Button>
                     </form>
                 )}
 
-                <div className="mt-5 flex flex-wrap gap-4">
-                    {issued && (
-                        <Link
-                            href={`/verify/${issued.id}`}
-                            className="text-[12px] uppercase tracking-[.18em]"
-                        >
-                            Verify this passport →
-                        </Link>
-                    )}
-                    <Link
-                        href={issued ? "/collection" : "/login"}
-                        className="text-[12px] uppercase tracking-[.18em]"
-                    >
-                        {issued ? "My passports →" : "Already claimed? Sign in →"}
-                    </Link>
-                </div>
-
                 <p className="mt-5 text-[13px] leading-relaxed text-muted-foreground">
-                    This is not ownership of the physical product, and not an
-                    investment. The record travels with the product; the object
-                    and its design stay with the maker.
+                    {t.claimFine}
                 </p>
             </div>
 
@@ -169,34 +157,43 @@ export function PassportClaim({
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
+                        exit={{ opacity: 0, transition: { duration: 0.16 } }}
+                        transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
                         className="fixed inset-0 z-50 flex items-center justify-center bg-ink/60 p-4"
+                        onClick={() => setIssued(null)}
                     >
                         <motion.div
-                            initial={{ opacity: 0, y: 14 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.35, ease: [0.2, 0.7, 0.2, 1] }}
-                            className="w-full max-w-sm rounded-2xl border border-border bg-card p-6 text-center shadow-[var(--shadow-float,0_18px_44px_rgba(32,30,29,.18))]"
+                            initial={{ opacity: 0, scale: 0.96, y: 10 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{
+                                opacity: 0,
+                                scale: 0.98,
+                                transition: { duration: 0.16, ease: [0.23, 1, 0.32, 1] },
+                            }}
+                            transition={{ duration: 0.24, ease: [0.23, 1, 0.32, 1] }}
+                            className="w-full max-w-sm rounded-2xl border border-border bg-card p-6 text-center"
+                            style={{ boxShadow: "var(--shadow-float)" }}
+                            onClick={(e) => e.stopPropagation()}
                         >
-                            <div className="eyebrow">Claimed</div>
+                            <div className="eyebrow">{t.claimedEyebrow}</div>
                             <h3 className="display mt-3 text-2xl">
                                 {title.split(" · ")[0]}
                             </h3>
                             <p className="mt-2 text-sm text-muted-foreground">
-                                is now on the passport of{" "}
+                                kini tersimpan di paspor{" "}
                                 <span className="font-medium text-foreground">{name}</span>.
                             </p>
                             <p className="display mt-4 text-base">{issued.id}</p>
                             <div className="mt-5 grid gap-2">
                                 <Link href={`/verify/${issued.id}`}>
-                                    <Button className="w-full">See the passport</Button>
+                                    <Button className="w-full">{t.viewPassport}</Button>
                                 </Link>
                                 <Button
                                     variant="outline"
                                     className="w-full"
                                     onClick={() => setIssued(null)}
                                 >
-                                    Stay on this record
+                                    {t.stayHere}
                                 </Button>
                             </div>
                         </motion.div>
@@ -209,8 +206,10 @@ export function PassportClaim({
 
 function Row({ label, value }: { label: string; value: string }) {
     return (
-        <div className="flex justify-between gap-4 border-t border-border pt-2.5">
-            <span className="text-muted-foreground">{label}</span>
+        <div className="flex items-baseline justify-between gap-4 border-t border-border py-2.5 first:border-t-0">
+            <span className="text-[11px] uppercase tracking-[.18em] text-muted-foreground">
+                {label}
+            </span>
             <span className="font-medium">{value}</span>
         </div>
     );
@@ -223,6 +222,7 @@ function Field({
     placeholder,
     type = "text",
     required,
+    autoComplete,
 }: {
     label: string;
     value: string;
@@ -230,6 +230,7 @@ function Field({
     placeholder?: string;
     type?: string;
     required?: boolean;
+    autoComplete?: string;
 }) {
     return (
         <label className="block">
@@ -241,8 +242,9 @@ function Field({
                 required={required}
                 value={value}
                 placeholder={placeholder}
+                autoComplete={autoComplete}
                 onChange={(e) => onChange(e.target.value)}
-                className="mt-2 h-11 w-full rounded-lg border border-border bg-white px-3 text-base outline-none transition-colors focus:border-bt-red"
+                className="mt-2 h-11 w-full rounded-lg border border-border bg-white px-3 text-base outline-none transition-colors duration-[160ms] ease-[cubic-bezier(0.23,1,0.32,1)] focus:border-bt-red"
             />
         </label>
     );

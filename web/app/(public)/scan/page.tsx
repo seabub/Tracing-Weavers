@@ -1,82 +1,96 @@
 import { NfcReader } from "@/components/nfc/nfc-reader";
 import { TagLookupForm } from "@/components/nfc/tag-lookup-form";
 import { tagCount } from "@/lib/tags";
-import { siteUrl } from "@/lib/brand";
+import { siteUrl, brand } from "@/lib/brand";
+import { t } from "@/lib/copy";
+import { WarpField, WeftCrossing, ThreadRule } from "@/components/motif/marks";
 
-export const metadata = { title: "Read a tag" };
+export const metadata = { title: "Tempel tag" };
 
 const STEPS = [
     {
-        title: "Find the tag",
-        body: "An NTAG213 chip is sewn into the piece, or printed into the label; a spare QR sits on the packaging.",
+        title: "Cari tag-nya",
+        body: "Chip NTAG213 dijahit di tepi kain atau dicetak di label; QR cadangan ada di kemasan.",
     },
     {
-        title: "Hold the phone to it",
-        body: "iPhone reads it from the lock screen with no app. Android needs NFC on, and reads from the home screen.",
+        title: "Tempelkan ponsel",
+        body: "iPhone membaca dari layar kunci tanpa aplikasi. Android perlu NFC aktif, lalu tempel dan tap notifikasi.",
     },
     {
-        title: "Tap the banner",
-        body: "The phone offers a link. It carries the record code and nothing else — no app install, no account yet.",
+        title: "Tap banner-nya",
+        body: "Ponsel menawarkan tautan. Isinya hanya kode jejak — tanpa pemasangan aplikasi, tanpa akun.",
     },
     {
-        title: "Read it, then claim it",
-        body: "The record opens: the maker, the material, the time it took. Put your name on it and the passport is yours.",
+        title: "Baca, lalu klaim",
+        body: "Jejaknya terbuka: penenun, bahan, lama pengerjaan. Taruh namamu di sana dan paspornya jadi milikmu.",
     },
 ];
 
 export default function ScanPage() {
     return (
-        <div className="max-w-3xl">
-            <div className="eyebrow">Reading a tag</div>
+        <div className="mx-auto max-w-3xl">
+            <div className="eyebrow">{t.scanEyebrow}</div>
             <h1 className="display mt-5 text-3xl sm:text-5xl">
-                Hold the phone
+                {t.scanTitleA}
                 <br />
-                to the <span className="text-gradient">tag</span>.
+                <span className="text-gradient">{t.scanTitleB}</span>
             </h1>
             <p className="mt-6 max-w-[54ch] text-base text-muted-foreground">
-                {tagCount} tags are registered. Each one opens the record of one
-                product — and only that one.
+                {tagCount} {t.scanLead}
             </p>
 
-            <div className="mt-12 grid gap-8 sm:grid-cols-2">
+            <WeftCrossing className="mt-10 h-16 w-full text-stone" aria-hidden />
+
+            <ol className="mt-10 grid gap-8 sm:grid-cols-2">
                 {STEPS.map((step, i) => (
-                    <div key={step.title} className="border-t border-border pt-4">
+                    <li
+                        key={step.title}
+                        className="rise border-t border-border pt-4"
+                        style={{ ["--i" as string]: String(i) }}
+                    >
                         <div className="text-[11px] uppercase tracking-[.2em] text-bt-red">
                             {"0" + (i + 1)}
                         </div>
-                        <div className="display mt-2 text-xl uppercase tracking-[.06em]">
-                            {step.title}
-                        </div>
+                        <div className="display mt-2 text-xl">{step.title}</div>
                         <p className="mt-2 text-base text-muted-foreground">{step.body}</p>
-                    </div>
+                    </li>
                 ))}
-            </div>
+            </ol>
 
             <div className="mt-12 grid gap-6">
                 <NfcReader />
 
-                <div className="rounded-xl border border-border bg-card p-6">
-                    <div className="eyebrow">Tag code</div>
+                <div className="cloth rounded-xl border border-border bg-card p-6">
+                    <div className="eyebrow">Kode tag</div>
                     <p className="mt-3 text-base text-muted-foreground">
-                        No tag reader? Type the code printed next to the tag.
+                        Tidak bisa membaca tag? Ketik kode yang tercetak di
+                        sebelahnya.
                     </p>
                     <TagLookupForm className="mt-5 max-w-md" />
                 </div>
 
-                <div className="ink-band rounded-xl p-6" data-theme="dark">
-                    <div className="eyebrow">For the field team</div>
-                    <p className="mt-3 max-w-[60ch] text-base text-white/75">
-                        Write each tag with{" "}
-                        <code className="text-salmon">
-                            {siteUrl}/t/&lt;TAG_CODE&gt;
-                        </code>{" "}
-                        as an NDEF URI record, then add the code to{" "}
-                        <code className="text-salmon">data/tags.json</code>.
-                        Generate the list with{" "}
-                        <code className="text-salmon">npm run nfc:urls</code>.
-                    </p>
+                <div className="ink-band cloth relative overflow-hidden rounded-xl p-6" data-theme="dark">
+                    <WarpField className="pointer-events-none absolute inset-0 h-full w-full text-white/10" />
+                    <div className="relative">
+                        <div className="eyebrow">Untuk tim lapangan</div>
+                        <p className="mt-3 max-w-[60ch] text-base text-white/75">
+                            Tulis tiap tag dengan{" "}
+                            <code className="text-salmon">
+                                {siteUrl}/t/&lt;KODE_TAG&gt;
+                            </code>{" "}
+                            sebagai NDEF URI, lalu tambahkan kodenya ke{" "}
+                            <code className="text-salmon">data/tags.json</code>.
+                            Daftar URL-nya keluar dari{" "}
+                            <code className="text-salmon">npm run nfc:urls</code>.
+                        </p>
+                    </div>
                 </div>
             </div>
+
+            <ThreadRule className="mt-14 h-2 w-full text-stone" aria-hidden />
+            <p className="footnote mt-6">
+                {brand} · satu tag, satu jejak, satu kain
+            </p>
         </div>
     );
 }

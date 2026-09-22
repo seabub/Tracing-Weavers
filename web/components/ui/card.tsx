@@ -1,16 +1,18 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-/* White surface on the tinted ground, hairline stone border, Alto's radius
-   and a soft shadow on hover. */
+/* White surface on the tinted ground, hairline stone border, Alto's radius.
+   `cloth` lets the warp/weft ground show through at under 5% so the card
+   reads as woven paper rather than as a texture swatch. */
 const Card = React.forwardRef<
     HTMLDivElement,
-    React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+    React.HTMLAttributes<HTMLDivElement> & { cloth?: boolean }
+>(({ className, cloth, ...props }, ref) => (
     <div
         ref={ref}
         className={cn(
             "bg-card text-card-foreground border border-border rounded-xl shadow-[0_2px_10px_rgba(32,30,29,.05)] flex flex-col overflow-hidden",
+            cloth && "cloth",
             className,
         )}
         {...props}

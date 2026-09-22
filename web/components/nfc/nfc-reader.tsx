@@ -3,19 +3,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { WarpField } from "@/components/motif/marks";
 
 /* Web NFC is Android Chrome only, so this is progressive enhancement: if the
    browser has no NDEFReader the block renders nothing and the visitor uses the
    system camera / QR path instead. */
 
-type NdefRecordLike = {
-    recordType: string;
-    data?: DataView;
-    toText?: () => string;
-};
-
+type NdefRecordLike = { recordType: string; data?: DataView; toText?: () => string };
 type NdefReadingEventLike = { message: { records: NdefRecordLike[] } };
-
 type NdefReaderLike = {
     scan: (options?: { signal?: AbortSignal }) => Promise<void>;
     onreading: ((event: NdefReadingEventLike) => void) | null;
@@ -67,14 +62,14 @@ export function NfcReader() {
                 }
                 const code = text.trim().replace(/[^A-Za-z0-9._~-]/g, "");
                 if (code) router.push(`/t/${code}`);
-                else setError("That tag carries no readable code.");
+                else setError("Tag ini tidak membawa kode yang bisa dibaca.");
             };
             reader.onreadingerror = () =>
-                setError("The tag could not be read. Try again, or type the code.");
+                setError("Tag gagal dibaca. Coba lagi, atau ketik kodenya.");
             setListening(true);
         } catch {
             setError(
-                "NFC scanning was blocked. Open the phone camera and point it at the tag instead.",
+                "Pemindaian NFC diblokir. Buka kamera ponsel dan arahkan ke tag sebagai gantinya.",
             );
             setListening(false);
         }
@@ -83,15 +78,24 @@ export function NfcReader() {
     if (!supported) return null;
 
     return (
-        <div className="rounded-xl border border-border bg-card p-6">
-            <div className="eyebrow">Tap it here</div>
-            <p className="mt-3 text-base text-muted-foreground">
-                This browser can read the tag directly. Hold the phone against it.
-            </p>
-            <Button className="mt-5 w-full sm:w-auto" onClick={start} disabled={listening}>
-                {listening ? "Listening for a tag…" : "Start reading"}
-            </Button>
-            {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
+        <div className="cloth relative overflow-hidden rounded-xl border border-border bg-card p-6">
+            <WarpField className="pointer-events-none absolute inset-x-0 top-0 h-24 w-full text-bt-red/25" />
+            <div className="relative">
+                <div className="eyebrow">Tempel di sini</div>
+                <p className="mt-3 text-base text-muted-foreground">
+                    Peramban ini bisa membaca tag langsung. Tempelkan ponsel ke
+                    tepi kain.
+                </p>
+                <Button
+                    size="lg"
+                    className="mt-5 w-full sm:w-auto"
+                    onClick={start}
+                    disabled={listening}
+                >
+                    {listening ? "Menunggu tag…" : "Mulai membaca"}
+                </Button>
+                {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
+            </div>
         </div>
     );
 }

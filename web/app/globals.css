@@ -3,16 +3,21 @@
 
 /* ═══════════════════════════════════════════════════════════════
    Digital Product Passport — theme
-   A blend of two systems:
-   · Beyond Tenun (the design system in this repo): ink / paper grounds,
-     one red accent (salmon on ink), letterspaced eyebrows, hairline rules,
-     Hanken Grotesk 900 + Archivo Narrow.
-   · Alto Project (the app this one is modelled on): rounded surfaces,
-     soft shadows, warm tinted background, gradient headlines, motion.
+
+   Two layers:
+   · Beyond Tenun (the design system in this repo): ink / paper grounds, one
+     red accent (morinda, salmon on ink), letterspaced eyebrows, hairline
+     rules, Hanken Grotesk 900 + Archivo Narrow, the ten line marks.
+   · Alto Project (the app this is modelled on): rounded surfaces, soft
+     shadows, warm tinted ground, gradient headings, motion.
+
+   Motion follows Emil Kowalski's rules: strong custom easing, UI durations
+   under 300ms, transform/opacity only, hover gated behind a real pointer,
+   press feedback on every pressable, reduced motion respected.
    ═══════════════════════════════════════════════════════════════ */
 
 :root{
-  /* Beyond Tenun base */
+  /* Beyond Tenun base — ink, paper, one accent */
   --bt-ink:#201E1D;
   --bt-ink-2:#605D5D;
   --bt-ink-3:#7B7B7B;
@@ -20,33 +25,41 @@
   --bt-paper:#F3F2F2;
   --bt-paper-2:#F5F5F5;
   --bt-stone:#CFC8BB;
-  --bt-red:#AE1800;
+  --bt-red:#AE1800;          /* morinda root */
   --bt-red-bright:#EC3013;
   --bt-salmon:#FF9783;
   --bt-blush:#FFF2EF;
   --bt-clay:#F29A6A;
-  --bt-amber:#ECA406;
-  --bt-indigo:#2B3A67;
+  --bt-amber:#ECA406;        /* kunyit, natural-dye gold */
+  --bt-indigo:#2B3A67;       /* nila, indigo */
 
   /* Alto's warmth, mixed in */
   --ap-magenta:#8B2A6B;
-  --ap-magenta-soft:#B8478F;
   --ap-pink-tint:#FBF6F9;
 
-  /* brand gradient: natural-dye indigo → tenun red → natural-dye gold */
   --gradient-brand:linear-gradient(90deg,var(--bt-indigo) 0%,var(--bt-red) 52%,var(--bt-amber) 100%);
   --gradient-warm:linear-gradient(135deg,var(--bt-blush) 0%,var(--ap-pink-tint) 100%);
 
-  --shadow-none:none;
   --shadow-soft:0 2px 10px rgba(32,30,29,.05);
   --shadow-lift:0 12px 32px rgba(32,30,29,.12);
   --shadow-float:0 18px 44px rgba(32,30,29,.18);
 
   --scrim-bottom:linear-gradient(180deg,rgba(32,30,29,0) 35%,rgba(32,30,29,.78) 100%);
   --photo-filter:saturate(.92) contrast(1.04);
-  --ease-out:cubic-bezier(.2,.7,.2,1);
-  --duration-fast:120ms;
-  --duration-base:220ms;
+
+  /* motion — custom curves, never the browser defaults */
+  --ease-out:cubic-bezier(0.23,1,0.32,1);
+  --ease-in-out:cubic-bezier(0.77,0,0.175,1);
+  --ease-drawer:cubic-bezier(0.32,0.72,0,1);
+  --dur-press:140ms;
+  --dur-fast:160ms;
+  --dur-base:200ms;
+  --dur-modal:260ms;
+  --stagger:60ms;
+
+  /* the cloth itself: warp + weft at 3–5% — a ground, never a pattern */
+  --cloth-warp:repeating-linear-gradient(90deg,rgba(32,30,29,.055) 0 1px,transparent 1px 11px);
+  --cloth-weft:repeating-linear-gradient(0deg,rgba(32,30,29,.03) 0 1px,transparent 1px 13px);
 }
 
 /* semantic — light */
@@ -72,7 +85,6 @@
   --ring:var(--bt-red-bright);
   --success:#3E6B2E;
   --warning:var(--bt-amber);
-  /* Alto's rounded surfaces, softened from the design system's square rule */
   --radius:12px;
 }
 
@@ -124,7 +136,7 @@
   --radius-3xl: calc(var(--radius) + 12px);
 }
 
-/* dark ground — the stage / showpiece mood */
+/* dark ground — the cloth under a single bulb */
 [data-theme="dark"]{
   --background:var(--bt-ink);
   --foreground:var(--bt-white);
@@ -143,6 +155,8 @@
   --border:rgba(255,255,255,.18);
   --input:rgba(255,255,255,.18);
   --ring:var(--bt-salmon);
+  --cloth-warp:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,transparent 1px 11px);
+  --cloth-weft:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 13px);
 }
 
 @layer base {
@@ -161,9 +175,20 @@
     letter-spacing: -.025em;
     line-height: 1.08;
   }
-  a { color: var(--primary); transition: color var(--duration-fast) var(--ease-out); }
-  a:hover { color: var(--bt-red-bright); }
+  a { color: var(--primary); transition: color var(--dur-fast) var(--ease); }
   button, input, select, textarea { font: inherit; color: inherit; }
+
+  /* one visible focus treatment for the whole app, keyboard only */
+  :where(a, button, input, select, [tabindex]):focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* hover only where there is a real pointer: a tap must not fake a hover */
+  @media (hover: hover) and (pointer: fine) {
+    a:hover { color: var(--bt-red-bright); }
+  }
 }
 
 @layer utilities {
@@ -173,7 +198,7 @@
     font-size: 13px;
     font-weight: 400;
     line-height: 1;
-    letter-spacing: .42em;
+    letter-spacing: .38em;
     text-transform: uppercase;
     color: var(--bt-red);
   }
@@ -194,7 +219,6 @@
     line-height: 1;
   }
 
-  /* Alto's gradient headline, set in tenun dye colours */
   .text-gradient {
     background: var(--gradient-brand);
     -webkit-background-clip: text;
@@ -202,17 +226,59 @@
     color: transparent;
   }
 
+  /* the cloth: warp + weft on the ground, under 5% contrast */
+  .cloth { background-image: var(--cloth-warp), var(--cloth-weft); }
+
+  /* selvedge: the finished edge of the weave, a heavy frayed line */
+  .selvedge {
+    height: 3px;
+    background-image: repeating-linear-gradient(90deg, var(--border) 0 6px, transparent 6px 8px);
+  }
+
+  .ink-band { background: var(--bt-ink); color: var(--bt-white); }
   .rule-step { border-top: 2px solid var(--bt-red); }
   .rule-hair { border-top: 1px solid var(--border); }
 
-  .ink-band { background: var(--bt-ink); color: var(--bt-white); }
-
-  /* soft lift on hover — Alto's motion, quiet enough for the brand */
-  .lift {
-    transition: box-shadow var(--duration-base) var(--ease-out),
-                transform var(--duration-base) var(--ease-out);
+  /* press feedback — every pressable answers the finger */
+  .pressable {
+    transition-property: transform, background-color, border-color, color, box-shadow;
+    transition-duration: var(--dur-press);
+    transition-timing-function: var(--ease-out);
   }
-  .lift:hover { box-shadow: var(--shadow-lift); transform: translateY(-3px); }
+  .pressable:active { transform: scale(.975); }
+
+  /* entrance: 10px rise + fade, staggered by --i (60ms per item) */
+  .rise {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: rise 420ms var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * var(--stagger));
+  }
 
   .warm-panel { background: var(--gradient-warm); }
 }
+
+@keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+/* card lift — real pointer only, transform + shadow only */
+@media (hover: hover) and (pointer: fine) {
+  .lift {
+    transition: box-shadow var(--dur-base) var(--ease-out),
+                transform var(--dur-base) var(--ease-out);
+  }
+  .lift:hover { box-shadow: var(--shadow-lift); transform: translateY(-3px); }
+}
+
+/* fewer and gentler, not zero: keep colour and opacity, drop movement */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 120ms !important;
+  }
+  .rise { animation: fade-only 120ms var(--ease) both; transform: none; }
+  .pressable:active { transform: none; }
+  .lift:hover { transform: none; }
+}
+
+@keyframes fade-only { from { opacity: 0 } to { opacity: 1 } }

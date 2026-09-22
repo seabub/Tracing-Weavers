@@ -1,37 +1,27 @@
-"use client";
-
-import { motion } from "framer-motion";
 import RecordCard from "./RecordCard";
 import type { ProductRecord } from "@/lib/records";
 
-const container = {
-    hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.07, delayChildren: 0.08 } },
-};
-
+/* Entrance stagger is CSS (animation-delay via --i): it runs off the main
+   thread, so it stays smooth while the page is still loading, and it never
+   blocks interaction. 60ms between items. */
 export default function RecordGrid({ records }: { records: ProductRecord[] }) {
     if (!records.length) {
         return (
             <div className="rounded-xl border border-dashed border-border px-6 py-16 text-center">
-                <p className="display text-2xl">No records yet</p>
+                <p className="display text-2xl">Belum ada jejak</p>
                 <p className="mx-auto mt-3 max-w-[46ch] text-base text-muted-foreground">
-                    Records appear here as soon as the first products are
-                    published from the field.
+                    Jejak muncul di sini begitu kain pertama didaftarkan dari
+                    Adonara, Lembata dan Manggarai.
                 </p>
             </div>
         );
     }
 
     return (
-        <motion.div
-            variants={container}
-            initial="hidden"
-            animate="show"
-            className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-        >
-            {records.map((record) => (
-                <RecordCard key={record.code} record={record} />
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {records.map((record, i) => (
+                <RecordCard key={record.code} record={record} index={i} />
             ))}
-        </motion.div>
+        </div>
     );
 }

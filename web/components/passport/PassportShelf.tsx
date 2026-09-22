@@ -7,7 +7,7 @@ import type { Passport } from "@/lib/types";
 import type { ProductRecord } from "@/lib/records";
 
 /** Server-issued passports plus anything this browser was handed and the
- *  store has not returned yet (or cannot, when no KV is configured). */
+ *  store has not returned yet (or cannot, when no store is configured). */
 export function PassportShelf({
     issued,
     records,
@@ -18,15 +18,12 @@ export function PassportShelf({
     const [merged, setMerged] = useState<Passport[]>(issued);
 
     useEffect(() => {
-        const local = readLocalPassports();
         const byId = new Map<string, Passport>();
-        for (const passport of [...issued, ...local]) {
+        for (const passport of [...issued, ...readLocalPassports()]) {
             byId.set(passport.id, passport);
         }
         setMerged(
-            [...byId.values()].sort((a, b) =>
-                a.issuedAt < b.issuedAt ? 1 : -1,
-            ),
+            [...byId.values()].sort((a, b) => (a.issuedAt < b.issuedAt ? 1 : -1)),
         );
     }, [issued]);
 
@@ -34,12 +31,13 @@ export function PassportShelf({
 
     return (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            {merged.map((passport) => (
-                <PassportCard
-                    key={passport.id}
-                    passport={passport}
-                    record={records.find((r) => r.code === passport.code)}
-                />
+            {merged.map((passport, i) => (
+                <div key={passport.id} className="rise" style={{ ["--i" as string]: String(i) }}>
+                    <PassportCard
+                        passport={passport}
+                        record={records.find((r) => r.code === passport.code)}
+                    />
+                </div>
             ))}
         </div>
     );

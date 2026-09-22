@@ -8,13 +8,21 @@ import type { Identity, Passport, PassportPayload } from "@/lib/types";
  *   file (default)  data/passports.json — zero setup for local dev and for a
  *                   self-hosted box. NOT usable on Vercel: its filesystem is
  *                   read-only apart from /tmp.
- *   kv              Vercel KV / Upstash over REST. No SDK, plain fetch, so
- *                   nothing extra to install. Set PASSPORT_STORE=kv and the
- *                   two KV_REST_API_* values.
+ *   kv              Redis over REST — the Upstash integration from Vercel's
+ *                   Marketplace (Storage → Upstash). No SDK, plain fetch, so
+ *                   nothing extra to install. Set PASSPORT_STORE=kv and let the
+ *                   integration inject the url + token.
  *
- * A passport is small and append-only, which is why a KV list is enough; if
- * you later want search by holder, put the same rows in Postgres/Supabase and
- * keep this interface.
+ * Postgres (Neon, Supabase, Prisma Postgres, Nile, Turso) is not wired up: the
+ * storage interface below is the seam. A passport is one append-only table —
+ *
+ *   create table passports (
+ *     id text primary key, code text not null, holder text not null,
+ *     email text, outlet text, issued_at timestamptz not null,
+ *     serial int not null, status text not null default 'issued', tags text[]
+ *   );
+ *
+ * — and the five methods below become SQL. Nothing outside this file changes.
  */
 
 export type { Passport, Identity } from "@/lib/types";
@@ -88,12 +96,24 @@ const fileStore: PassportStore = {
 
 /* ─────────────────────────── kv backend ─────────────────────────── */
 
+/* Vercel's KV product is served by Upstash now, and the Marketplace install
+   injects either the legacy KV_REST_API_* names or the Upstash ones. Accept
+   both — it is the same REST endpoint either way, and no SDK is needed. */
 function kvConfig() {
-    const url = process.env.KV_REST_API_URL?.replace(/\/$/, "");
-    const token = process.env.KV_REST_API_TOKEN;
+    const url = (
+        process.env.KV_REST_API_URL ??
+        process.env.UPSTASH_REDIS_REST_URL ??
+        ""
+    ).replace(/\/$/, "");
+    const token =
+        process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
+
     if (!url || !token) {
         throw new Error(
-            "PASSPORT_STORE=kv needs KV_REST_API_URL and KV_REST_API_TOKEN (Vercel → Storage → KV).",
+            "PASSPORT_STORE=kv needs a Redis REST url + token. Install Upstash from " +
+                "Vercel → Storage → Marketplace, connect it to this project, then set " +
+                "KV_REST_API_URL / KV_REST_API_TOKEN (or UPSTASH_REDIS_REST_URL / " +
+                "UPSTASH_REDIS_REST_TOKEN).",
         );
     }
     return { url, token };

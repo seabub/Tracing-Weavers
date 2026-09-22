@@ -3,23 +3,22 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-/* One accent (tenun red, salmon on ink), uppercase letterspaced label,
-   rounded like the Alto app, brightening to #EC3013 on hover. */
+/* One accent (morinda red, salmon on ink), uppercase letterspaced label,
+   rounded like the Alto app. Press feedback comes from `.pressable` —
+   scale(.975) on :active — and hover only fires on a real pointer. */
 const buttonVariants = cva(
-    "inline-flex items-center justify-center gap-2.5 whitespace-nowrap rounded-lg font-medium uppercase tracking-[.12em] transition-[background-color,border-color,color,transform,box-shadow] duration-[120ms] ease-[cubic-bezier(.2,.7,.2,1)] active:translate-y-px disabled:pointer-events-none disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+    "pressable inline-flex items-center justify-center gap-2.5 whitespace-nowrap rounded-lg font-medium uppercase tracking-[.12em] disabled:pointer-events-none disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:shrink-0",
     {
         variants: {
             variant: {
                 primary:
-                    "bg-bt-red text-white border border-bt-red hover:bg-bt-red-bright hover:border-bt-red-bright hover:shadow-[0_8px_20px_rgba(174,24,0,.18)]",
-                secondary:
-                    "bg-transparent text-ink border border-ink hover:bg-ink/6",
+                    "bg-bt-red text-white border border-bt-red hover:bg-bt-red-bright hover:border-bt-red-bright",
+                secondary: "bg-transparent text-ink border border-ink hover:bg-ink/6",
                 outline:
                     "bg-transparent text-ink border border-stone hover:border-ink hover:bg-white",
                 ghost:
                     "bg-transparent text-bt-red border border-transparent hover:text-bt-red-bright",
-                inverse:
-                    "bg-salmon text-ink border border-salmon hover:bg-[#FFB3A4] hover:border-[#FFB3A4]",
+                inverse: "bg-salmon text-ink border border-salmon hover:bg-[#FFB3A4] hover:border-[#FFB3A4]",
                 inverseGhost:
                     "bg-transparent text-white border border-white/45 hover:bg-white/10",
             },

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { t } from "@/lib/copy";
 
 /** The whole sign-in: a name and an email. No password, no wallet. */
 export default function LoginForm() {
@@ -27,59 +28,24 @@ export default function LoginForm() {
             const body = await res.json();
 
             if (!res.ok) {
-                setError(body.error ?? "Could not sign you in.");
+                setError(body.error ?? "Tidak bisa masuk. Coba lagi.");
                 return;
             }
 
             router.push("/collection");
             router.refresh();
         } catch {
-            setError("The network dropped. Try again.");
+            setError("Sambungan terputus. Coba lagi.");
         } finally {
             setBusy(false);
         }
     }
 
     return (
-        <form onSubmit={submit} className="space-y-4">
-            <label className="block">
-                <span className="text-[11px] uppercase tracking-[.18em] text-muted-foreground">
-                    Full name
-                </span>
-                <input
-                    required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Dinny Jusuf"
-                    className="mt-2 h-11 w-full rounded-lg border border-border bg-white px-3 text-base outline-none transition-colors focus:border-bt-red"
-                />
-            </label>
-
-            <label className="block">
-                <span className="text-[11px] uppercase tracking-[.18em] text-muted-foreground">
-                    Email
-                </span>
-                <input
-                    required
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="you@example.com"
-                    className="mt-2 h-11 w-full rounded-lg border border-border bg-white px-3 text-base outline-none transition-colors focus:border-bt-red"
-                />
-            </label>
-
-            <label className="block">
-                <span className="text-[11px] uppercase tracking-[.18em] text-muted-foreground">
-                    Organisation · optional
-                </span>
-                <input
-                    value={outlet}
-                    onChange={(e) => setOutlet(e.target.value)}
-                    placeholder="Foundation, studio, store"
-                    className="mt-2 h-11 w-full rounded-lg border border-border bg-white px-3 text-base outline-none transition-colors focus:border-bt-red"
-                />
-            </label>
+        <form onSubmit={submit} className="space-y-5">
+            <Field label={t.claimName} value={name} onChange={setName} placeholder="Dinny Jusuf" autoComplete="name" required />
+            <Field label={t.claimEmail} value={email} onChange={setEmail} placeholder="nama@contoh.org" type="email" autoComplete="email" required />
+            <Field label={t.claimOutlet} value={outlet} onChange={setOutlet} placeholder="Yayasan, studio, toko" autoComplete="organization" />
 
             {error && (
                 <p className="rounded-lg border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
@@ -87,9 +53,44 @@ export default function LoginForm() {
                 </p>
             )}
 
-            <Button type="submit" className="w-full" disabled={busy}>
-                {busy ? "Opening…" : "Open my passports"}
+            <Button type="submit" size="lg" className="w-full" disabled={busy}>
+                {busy ? "Membuka…" : t.signInButton}
             </Button>
         </form>
+    );
+}
+
+function Field({
+    label,
+    value,
+    onChange,
+    placeholder,
+    type = "text",
+    required,
+    autoComplete,
+}: {
+    label: string;
+    value: string;
+    onChange: (value: string) => void;
+    placeholder?: string;
+    type?: string;
+    required?: boolean;
+    autoComplete?: string;
+}) {
+    return (
+        <label className="block">
+            <span className="text-[11px] uppercase tracking-[.18em] text-muted-foreground">
+                {label}
+            </span>
+            <input
+                type={type}
+                required={required}
+                value={value}
+                placeholder={placeholder}
+                autoComplete={autoComplete}
+                onChange={(e) => onChange(e.target.value)}
+                className="mt-2 h-11 w-full rounded-lg border border-border bg-white px-3 text-base outline-none transition-colors duration-[160ms] ease-[cubic-bezier(0.23,1,0.32,1)] focus:border-bt-red"
+            />
+        </label>
     );
 }

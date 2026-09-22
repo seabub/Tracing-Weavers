@@ -3,51 +3,59 @@ import { records } from "@/lib/records";
 import { tagCount } from "@/lib/tags";
 import { passportStore } from "@/lib/store";
 import { brand } from "@/lib/brand";
+import { t } from "@/lib/copy";
+import { ThreadRule, TallyMarks } from "@/components/motif/marks";
 
 export default function Footer() {
     const year = new Date().getFullYear();
     const backend = passportStore().backend;
 
     return (
-        <footer className="border-t border-border bg-background">
-            <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-                <div className="grid gap-8 sm:grid-cols-3">
+        <footer className="mt-16 border-t border-border">
+            <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+                <div className="grid gap-10 sm:grid-cols-3">
                     <div>
-                        <div className="eyebrow">What this is</div>
+                        <div className="eyebrow">Jejak yang menempel</div>
                         <p className="mt-3 max-w-[34ch] text-base text-muted-foreground">
-                            {brand} — a record of provenance attached to a
-                            physical product. Tap the tag, read where it came
-                            from, claim it as yours.
+                            {brand} — jejak asal-usul yang menempel pada benda
+                            fisik. Tempel tag, baca jejaknya, klaim jadi milikmu.
                         </p>
                     </div>
 
                     <div>
-                        <div className="eyebrow">No chain</div>
+                        <div className="eyebrow">Tanpa rantai blok</div>
                         <p className="mt-3 text-base text-muted-foreground">
-                            No wallet, no token to trade, no gas. A passport is
-                            a signed record in this app, held against your name.
+                            Tidak ada dompet, tidak ada token untuk dijual, tidak
+                            ada gas. Paspor adalah catatan bertanda tangan di
+                            aplikasi ini, tersimpan atas namamu.
                         </p>
                     </div>
 
                     <div>
-                        <div className="eyebrow">Records</div>
-                        <p className="mt-3 text-base text-muted-foreground">
-                            {records.length} record
-                            {records.length === 1 ? "" : "s"} · {tagCount} tags
-                            registered · store: {backend}
-                        </p>
+                        <div className="eyebrow">Jejak tercatat</div>
+                        <div className="mt-3 flex items-center gap-3 text-base text-muted-foreground">
+                            <TallyMarks className="h-5 w-20 text-bt-red" />
+                            <span>
+                                {records.length} jejak · {tagCount}{" "}
+                                {t.tagsCount}
+                            </span>
+                        </div>
                         <Link
                             href="/scan"
-                            className="mt-3 inline-block text-[12px] uppercase tracking-[.18em]"
+                            className="mt-4 inline-block text-[12px] uppercase tracking-[.18em]"
                         >
-                            Read a tag →
+                            {t.readTag} →
                         </Link>
                     </div>
                 </div>
 
-                <div className="mt-10 flex flex-col gap-3 border-t border-border pt-6 text-[12px] uppercase tracking-[.12em] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-                    <span>© {year} {brand} · targets, not promises</span>
-                    <span>[CONTACT NAME · EMAIL]</span>
+                <ThreadRule className="mt-10 h-2 w-full text-stone" aria-hidden />
+
+                <div className="mt-6 flex flex-col gap-3 text-[12px] uppercase tracking-[.12em] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+                    <span>
+                        © {year} {brand} · ICM × TBN × Torajamelo
+                    </span>
+                    <span>Adonara · Lembata · Manggarai · [KONTAK · EMAIL]</span>
                 </div>
             </div>
         </footer>

@@ -1,19 +1,21 @@
 /**
- * Passport artwork — one SVG per record, in the Beyond Tenun language: ink
- * ground, a warp field drawn as structure (not decoration), letterspaced
- * salmon eyebrow, black display headline, hairline rows.
+ * Jejak kain — the record artwork, one SVG per record.
+ *
+ * Tenun structure first: warp pinstripes on an ink ground, a woven band where
+ * one weft thread is carried across, a selvedge edge, tally marks for the
+ * count, hairline rows where the label is Indonesian and the gloss is English.
  *
  *   npm run record:svg                 # every record in data/records.json
  *   npm run record:svg -- BT-0042      # one of them
  *
- * Writes public/records/<CODE>.svg. `image` in data/records.json points there,
- * so run this before publishing a new record. Rasterise to PNG at 2× if a
- * channel ever refuses SVG.
+ * Writes public/records/<CODE>.svg — `image` in data/records.json points there,
+ * so run this before publishing a new record.
  *
- * The layout adapts to the content: the trait table goes to two columns once
- * it would crowd the page, and the description only gets the lines that are
- * actually left above the footer. Every record is geometry-checked before it
- * is written, so a long description can never run off the card.
+ * The layout adapts: the trait table goes two-column once it would crowd the
+ * page, the description only takes the lines that fit above the footer, and
+ * the seal appears only when a free band is left. Every record is
+ * geometry-checked (nothing crosses the footer rule, no label collides with
+ * its value) before the file is written.
  */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -34,8 +36,8 @@ if (selected.length === 0) {
 const W = 1080;
 const H = 1350;
 const M = 96;
-const FOOTER_RULE = H - M - 96; // 1158
-const BODY_MAX = FOOTER_RULE - 24; // nothing may sit below this
+const FOOTER_RULE = H - M - 96;
+const BODY_MAX = FOOTER_RULE - 24;
 
 const esc = (s) =>
     String(s)
@@ -65,33 +67,81 @@ function wrap(text, max) {
     return lines;
 }
 
+/* Archivo Narrow is condensed: ~0.47em average advance. Good enough to catch a
+   label that would run into its value. */
+const textWidth = (text, size, letterSpacing = 0) =>
+    String(text).length * (size * 0.47 + letterSpacing);
+
 const FONT_DISPLAY = "Hanken Grotesk, Telegraf, Helvetica Neue, Arial, sans-serif";
 const FONT_BODY = "Archivo Narrow, Arial Narrow, Helvetica Neue, Arial, sans-serif";
 
-function warpField() {
+/* Indonesian label first, English word kept as the gloss. One column has room
+   for both; two columns use the Indonesian alone, which is the label a weaver
+   reads. `npm run record:svg` fails if any label would reach its value. */
+const ROWS = [
+    { id: "PENENUN", gloss: "Maker", key: "Maker" },
+    { id: "ASAL", gloss: "Origin", key: "Origin" },
+    { id: "BAHAN", gloss: "Material", key: "Material" },
+    { id: "TEKNIK", gloss: "Technique", key: "Technique" },
+    { id: "PEWARNA", gloss: "Dye", key: "Dye" },
+    { id: "LAMA DI ALAT TENUN", gloss: "Weeks", key: "Weeks on the loom" },
+    { id: "KALI CELUP", gloss: "Dye baths", key: "Dye baths" },
+    { id: "TAHAP", gloss: "Step", key: "Journey step" },
+];
+
+function warpGround() {
     const lines = [];
     for (let i = 0; i < 22; i++) {
         const x = i * 49 + 22;
         const heavy = i % 5 === 0;
         lines.push(
             `<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#FFFFFF" stroke-opacity="${
-                heavy ? 0.14 : 0.06
+                heavy ? 0.13 : 0.055
             }" stroke-width="${heavy ? 2 : 1}"/>`,
         );
     }
     return lines.join("");
 }
 
+/** Woven band: weft lines with one thread carried across — the record's
+ *  "how it works" mark, drawn as structure. */
+function wovenBand(y) {
+    const parts = [];
+    for (let i = 0; i < 4; i++) {
+        parts.push(
+            `<line x1="${M}" y1="${y + i * 12}" x2="${W - M}" y2="${y + i * 12}" stroke="#FFFFFF" stroke-opacity=".14" stroke-width="1"/>`,
+        );
+    }
+    parts.push(
+        `<line x1="${M}" y1="${y + 24}" x2="${W - M}" y2="${y + 24}" stroke="#AE1800" stroke-width="2.5"/>`,
+    );
+    return parts.join("");
+}
+
+function tally(x, y, groups = 4) {
+    const parts = [];
+    for (let g = 0; g < groups; g++) {
+        for (let i = 0; i < 5; i++) {
+            parts.push(
+                `<line x1="${x + g * 20 + i * 3.4}" y1="${i === 4 ? 2 : 5}" x2="${
+                    x + g * 20 + i * 3.4
+                }" y2="${y}" stroke="#FF9783" stroke-width="1.5"/>`,
+            );
+        }
+    }
+    return parts.join("");
+}
+
 function seal(cx, cy, r) {
     const parts = [
         `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#FF9783" stroke-width="1.5"/>`,
-        `<circle cx="${cx}" cy="${cy}" r="${r * 0.7}" fill="none" stroke="#FF9783" stroke-opacity=".7"/>`,
-        `<line x1="${cx - r * 0.44}" y1="${cy}" x2="${cx + r * 0.44}" y2="${cy}" stroke="#FF9783" stroke-width="2.5"/>`,
+        `<circle cx="${cx}" cy="${cy}" r="${r * 0.68}" fill="none" stroke="#FF9783" stroke-opacity=".65"/>`,
+        `<line x1="${cx - r * 0.42}" y1="${cy}" x2="${cx + r * 0.42}" y2="${cy}" stroke="#FF9783" stroke-width="2.5"/>`,
     ];
     for (let i = 0; i < 6; i++) {
         const a = ((-90 + i * 60) * Math.PI) / 180;
         parts.push(
-            `<line x1="${cx + r * 0.7 * Math.cos(a)}" y1="${cy + r * 0.7 * Math.sin(a)}" x2="${
+            `<line x1="${cx + r * 0.68 * Math.cos(a)}" y1="${cy + r * 0.68 * Math.sin(a)}" x2="${
                 cx + r * Math.cos(a)
             }" y2="${cy + r * Math.sin(a)}" stroke="#FF9783" stroke-width="2"/>`,
         );
@@ -99,57 +149,68 @@ function seal(cx, cy, r) {
     return parts.join("");
 }
 
-/** Rows of the trait table, laid out in one or two columns. */
 function traitTable(rows, top) {
     const columns = rows.length > 6 ? 2 : 1;
     const perColumn = Math.ceil(rows.length / columns);
     const rowHeight = columns === 2 ? 58 : 62;
-    const columnWidth = (W - M * 2 - 60) / columns;
+    const gap = 56;
+    const columnWidth = (W - M * 2 - (columns - 1) * gap) / columns;
 
     const parts = [];
+    const problems = [];
     let bottom = top;
 
     for (let c = 0; c < columns; c++) {
-        const x0 = M + c * (columnWidth + 60);
+        const x0 = M + c * (columnWidth + gap);
         const x1 = x0 + columnWidth;
         const slice = rows.slice(c * perColumn, (c + 1) * perColumn);
 
-        slice.forEach(([label, value], i) => {
+        slice.forEach((row, i) => {
             const ry = top + 44 + i * rowHeight;
+            const label = columns === 2 ? row.id : `${row.id} · ${row.gloss}`;
+            const labelSize = columns === 2 ? 20 : 24;
+            const valueSize = columns === 2 ? 24 : 29;
+            const tracking = columns === 2 ? 1.5 : 2.5;
+
+            const labelWidth = textWidth(label, labelSize, tracking);
+            const valueWidth = textWidth(row.value, valueSize, 0);
+            if (labelWidth + valueWidth + 16 > columnWidth) {
+                problems.push(
+                    `row "${label}" (${Math.round(labelWidth)}+${Math.round(
+                        valueWidth,
+                    )}px) is too wide for a ${Math.round(columnWidth)}px column`,
+                );
+            }
+
             parts.push(
                 `<line x1="${x0}" y1="${ry}" x2="${x1}" y2="${ry}" stroke="#FFFFFF" stroke-opacity=".18"/>` +
-                    `<text x="${x0}" y="${ry + 36}" font-family="${FONT_BODY}" font-size="${
-                        columns === 2 ? 22 : 26
-                    }" letter-spacing="3" fill="#FFFFFF" fill-opacity=".62">${esc(
-                        label.toUpperCase(),
+                    `<text x="${x0}" y="${ry + 35}" font-family="${FONT_BODY}" font-size="${labelSize}" letter-spacing="${tracking}" fill="#FFFFFF" fill-opacity=".62">${esc(
+                        label,
                     )}</text>` +
-                    `<text x="${x1}" y="${ry + 36}" text-anchor="end" font-family="${FONT_BODY}" font-size="${
-                        columns === 2 ? 25 : 30
-                    }" fill="#FFFFFF">${esc(value)}</text>`,
+                    `<text x="${x1}" y="${ry + 35}" text-anchor="end" font-family="${FONT_BODY}" font-size="${valueSize}" fill="#FFFFFF">${esc(
+                        row.value,
+                    )}</text>`,
             );
-            bottom = Math.max(bottom, ry + 36);
+            bottom = Math.max(bottom, ry + 35);
         });
     }
 
-    return { svg: parts.join(""), bottom };
+    return { svg: parts.join(""), bottom, problems };
 }
 
 function render(record) {
-    const rows = (record.attributes ?? [])
-        .slice(0, 10)
-        .map((a) => [String(a.trait_type), String(a.value)]);
+    const rows = ROWS.map((row) => ({
+        id: row.id,
+        gloss: row.gloss,
+        value: String(attr(record, row.key) ?? "—"),
+    }));
 
     const maker = attr(record, "Maker") ?? record.title.split(" · ")[0];
     const headline = wrap(maker, 17).slice(0, 2);
 
-    const contacts = [];
+    const contacts = [M + 22, M + 48, M + 122, M + 190];
 
-    /* eyebrow + rule */
-    contacts.push(M + 22, M + 48);
-    /* THE RECORD label */
-    contacts.push(M + 122);
-
-    let y = 470;
+    let y = 500;
     const headLines = headline
         .map(
             (line, i) =>
@@ -164,7 +225,6 @@ function render(record) {
     const table = traitTable(rows, y);
     y = table.bottom;
 
-    /* description takes whatever is left above the footer rule */
     const bodyTop = y + 74;
     const room = Math.floor((BODY_MAX - bodyTop) / 44) + 1;
     const wrapped = wrap(record.description, rows.length > 6 ? 74 : 62);
@@ -175,26 +235,20 @@ function render(record) {
     const body = kept
         .map(
             (line, i) =>
-                `<text x="${M}" y="${bodyTop + i * 44}" font-family="${FONT_BODY}" font-size="28" fill="#FFFFFF" fill-opacity=".75">${esc(
+                `<text x="${M}" y="${bodyTop + i * 44}" font-family="${FONT_BODY}" font-size="28" fill="#FFFFFF" fill-opacity=".74">${esc(
                     line,
                 )}</text>`,
         )
         .join("");
     contacts.push(bodyTop + Math.max(kept.length - 1, 0) * 44);
 
-    /* The seal is decoration, so it only appears when a genuinely free band is
-       left above the footer — never overlapping the table, the copy or a rule. */
+    /* the seal only appears when a genuinely free band is left above the rule */
     const lastContent = Math.max(...contacts);
     const band = BODY_MAX - lastContent;
-    const sealRadius = 70;
-    const sealY = lastContent + 30 + sealRadius;
-    const sealSvg =
-        band >= sealRadius * 2 + 30
-            ? `<g transform="translate(${W - M - sealRadius * 2}, ${
-                  sealY - sealRadius
-              })">${seal(sealRadius, sealRadius, sealRadius)}</g>`
-            : "";
-    if (sealSvg) contacts.push(sealY + sealRadius);
+    const sealRadius = 68;
+    const sealY = lastContent + 28 + sealRadius;
+    const hasSeal = band >= sealRadius * 2 + 28;
+    if (hasSeal) contacts.push(sealY + sealRadius);
 
     const site = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(
         /\/$/,
@@ -206,46 +260,50 @@ function render(record) {
         record.title,
     )}">
   <rect width="${W}" height="${H}" fill="#201E1D"/>
-  <g>${warpField()}</g>
+  <g>${warpGround()}</g>
 
-  <text x="${M}" y="${M + 22}" font-family="${FONT_BODY}" font-size="22" letter-spacing="9" fill="#FF9783">DIGITAL PRODUCT PASSPORT</text>
-  <text x="${W - M}" y="${M + 22}" text-anchor="end" font-family="${FONT_BODY}" font-size="22" letter-spacing="6" fill="#FFFFFF" fill-opacity=".62">${esc(
+  <text x="${M}" y="${M + 22}" font-family="${FONT_BODY}" font-size="22" letter-spacing="8" fill="#FF9783">JEJAK KAIN · DIGITAL PRODUCT PASSPORT</text>
+  <text x="${W - M}" y="${M + 22}" text-anchor="end" font-family="${FONT_BODY}" font-size="22" letter-spacing="5" fill="#FFFFFF" fill-opacity=".62">${esc(
         record.code,
     )}</text>
   <line x1="${M}" y1="${M + 48}" x2="${W - M}" y2="${M + 48}" stroke="#AE1800" stroke-width="2"/>
 
-  <text x="${M}" y="${M + 122}" font-family="${FONT_BODY}" font-size="24" letter-spacing="7" fill="#FFFFFF" fill-opacity=".62">THE RECORD</text>
+  ${wovenBand(M + 60)}
+  <g>${tally(M, M + 178, 4)}</g>
+
+  <text x="${M}" y="${M + 122}" font-family="${FONT_BODY}" font-size="23" letter-spacing="7" fill="#FFFFFF" fill-opacity=".62">CATATAN SATU HELAI</text>
 
   ${headLines}
   ${table.svg}
   ${body}
 
-  ${sealSvg}
+  ${
+      hasSeal
+          ? `<g transform="translate(${W - M - sealRadius * 2}, ${sealY - sealRadius})">${seal(
+                sealRadius,
+                sealRadius,
+                sealRadius,
+            )}</g>`
+          : ""
+  }
 
   <line x1="${M}" y1="${FOOTER_RULE}" x2="${W - M}" y2="${FOOTER_RULE}" stroke="#FFFFFF" stroke-opacity=".18"/>
-  <text x="${M}" y="${H - M + 4}" font-family="${FONT_BODY}" font-size="24" letter-spacing="3" fill="#FFFFFF" fill-opacity=".62">The record travels with the product. Value returns to the household that made it.</text>
-  <text x="${M}" y="${H - M + 44}" font-family="${FONT_BODY}" font-size="24" letter-spacing="3" fill="#FF9783">${site}/record/${esc(
+  <text x="${M}" y="${H - M + 4}" font-family="${FONT_BODY}" font-size="24" letter-spacing="2" fill="#FFFFFF" fill-opacity=".62">Jejaknya ikut bersama kain. Nilai kembali ke rumah yang menenumnya.</text>
+  <text x="${M}" y="${H - M + 44}" font-family="${FONT_BODY}" font-size="24" letter-spacing="2" fill="#FF9783">${site}/record/${esc(
         record.code,
     )}</text>
 </svg>
 `;
 
-    /* geometry check: nothing may cross the footer rule or leave the card */
-    const lowest = Math.max(...contacts);
-    const problems = [];
-    if (lowest > BODY_MAX) {
-        problems.push(`content reaches y=${lowest}, past the ${BODY_MAX} limit`);
-    }
-    if (H - M + 44 > H - 10) {
-        problems.push("footer link sits outside the card");
+    const problems = [...table.problems];
+    if (lastContent > BODY_MAX) {
+        problems.push(`content reaches y=${Math.round(lastContent)}, past ${BODY_MAX}`);
     }
     if (trimmed) {
-        problems.push(
-            `description trimmed to ${kept.length}/${wrapped.length} lines to fit`,
-        );
+        problems.push(`description trimmed to ${kept.length}/${wrapped.length} lines`);
     }
 
-    return { svg, problems, lowest };
+    return { svg, problems, lowest: lastContent };
 }
 
 mkdirSync(resolve(root, "public/records"), { recursive: true });
@@ -253,20 +311,19 @@ mkdirSync(resolve(root, "public/records"), { recursive: true });
 let failed = 0;
 for (const record of selected) {
     const { svg, problems, lowest } = render(record);
-    const out = resolve(root, "public/records", `${record.code}.svg`);
-    writeFileSync(out, svg);
+    writeFileSync(resolve(root, "public/records", `${record.code}.svg`), svg);
 
-    const notes = problems.filter((p) => !p.startsWith("description trimmed"));
+    const fatal = problems.filter((p) => !p.startsWith("description trimmed"));
     console.log(
-        `wrote public/records/${record.code}.svg  ·  lowest content y=${Math.round(lowest)} of ${BODY_MAX}${
+        `public/records/${record.code}.svg  ·  lowest y=${Math.round(lowest)}/${BODY_MAX}${
             problems.length ? `  ·  ${problems.join("; ")}` : ""
         }`,
     );
-    failed += notes.length;
+    failed += fatal.length;
 }
 
 if (failed) {
-    console.error(`\n${failed} layout problem(s) — shorten a description or drop traits.`);
+    console.error(`\n${failed} layout problem(s) — shorten a label or a value.`);
     process.exit(1);
 }
 console.log("");

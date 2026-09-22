@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { resolveTag } from "@/lib/tags";
+import { t } from "@/lib/copy";
+import { ThreadRule } from "@/components/motif/marks";
 
 export const dynamic = "force-dynamic";
 
@@ -25,48 +27,53 @@ export default async function TagPage({
 
     return (
         <div className="mx-auto max-w-2xl">
-            <div className="eyebrow">Tag not recognised</div>
+            <div className="eyebrow">Tag belum dikenali</div>
             <h1 className="display mt-5 text-3xl sm:text-4xl">
-                This tag is not attached
+                Tag ini belum tersambung
                 <br />
-                to a record yet.
+                ke sebuah jejak.
             </h1>
             <p className="mt-6 max-w-[52ch] text-base text-muted-foreground">
-                The tag read <span className="font-medium text-foreground">{tag}</span>.
-                It is either not in the registry, or the product has not been
-                written up yet.
+                Tag terbaca{" "}
+                <span className="font-medium text-foreground">{tag}</span>. Kodenya
+                belum ada di daftar, atau kainnya belum dicatat.
             </p>
 
             <div className="mt-10 rounded-xl border border-border bg-card p-6">
-                <div className="eyebrow">Read it another way</div>
+                <div className="eyebrow">Cara lain membacanya</div>
                 <p className="mt-3 text-base text-muted-foreground">
-                    Enter the code printed next to the tag.
+                    Ketik kode yang tercetak di sebelah tag.
                 </p>
-                <Link href="/scan" className="mt-5 inline-block text-[12px] uppercase tracking-[.18em]">
-                    Open the reader →
+                <Link
+                    href="/scan"
+                    className="mt-5 inline-block text-[12px] uppercase tracking-[.18em]"
+                >
+                    Buka pembacanya →
                 </Link>
             </div>
 
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
                 <div className="border-t border-border pt-4">
                     <div className="text-[11px] uppercase tracking-[.2em] text-bt-red">
-                        Field team
+                        Tim lapangan
                     </div>
                     <p className="mt-2 text-base text-muted-foreground">
-                        Add the code to{" "}
-                        <span className="font-medium">data/tags.json</span> with the
-                        record it should open, then redeploy.
+                        Tambahkan kodenya ke{" "}
+                        <span className="font-medium">data/tags.json</span> beserta
+                        jejak yang harus dibuka, lalu deploy ulang.
                     </p>
                 </div>
                 <div className="border-t border-border pt-4">
                     <div className="text-[11px] uppercase tracking-[.2em] text-bt-red">
-                        Browse instead
+                        Lihat yang lain
                     </div>
                     <p className="mt-2 text-base text-muted-foreground">
-                        <Link href="/">All records →</Link>
+                        <Link href="/">{t.backToRecords} →</Link>
                     </p>
                 </div>
             </div>
+
+            <ThreadRule className="mt-12 h-2 w-full text-stone" aria-hidden />
         </div>
     );
 }
