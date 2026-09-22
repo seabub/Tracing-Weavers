@@ -269,9 +269,9 @@
     },
     {
       "code": "8/TM",
-      "title": "Sandung · Mama Ina Dida",
-      "subtitle": "Ruit · 2025",
-      "description": "Sintang/Kalimantan Barat. woven in perahu. from Ruit.",
+      "title": "Sandung, Ruit, Perahu · Mama Ina Dida",
+      "subtitle": "Sintang, Kalimantan Barat · 2025",
+      "description": "Cotton, chemical dyes. woven in warp ikat. from Sintang/Kalimantan Barat.",
       "photo": "/imagery/cloth-hanging.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/8-TM.svg",
@@ -285,19 +285,19 @@
         },
         {
           "trait_type": "Origin",
-          "value": "Ruit"
-        },
-        {
-          "trait_type": "Technique",
-          "value": "Perahu"
-        },
-        {
-          "trait_type": "Material",
           "value": "Sintang/Kalimantan Barat"
         },
         {
-          "trait_type": "Size",
+          "trait_type": "Technique",
           "value": "Warp ikat"
+        },
+        {
+          "trait_type": "Material",
+          "value": "Cotton, chemical dyes"
+        },
+        {
+          "trait_type": "Size",
+          "value": "134 × 56"
         },
         {
           "trait_type": "Journey step",
