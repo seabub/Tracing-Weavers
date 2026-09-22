@@ -3,7 +3,7 @@
  *
  * Rewritten against the Ogilvy principles (skill: ogilvy-copywriting).
  * What changed and why:
- *  · one promise per surface, stated in plain words — "kain ini punya nama"
+ *  · one promise per surface, stated in plain words: "kain ini punya nama"
  *  · facts instead of praise: eleven minggu, tiga kali celup, dua tangan
  *  · the reader is spoken to, not briefed: second person, short sentences
  *  · nothing explains the machinery to a visitor before it earns it
@@ -27,7 +27,7 @@ export const t = {
     homeTitleA: "Kain ini",
     homeTitleB: "punya nama",
     homeLead:
-        "Mama Ina Dida menenumnya sebelas minggu di Adonara. Tempelkan ponsel ke tag di tepi kain — namanya terbaca.",
+        "Mama Ina Dida menenumnya sebelas minggu di Adonara. Tempelkan ponsel ke tag, dan akte lahir kainnya terbaca.",
     recordsEyebrow: "Jejak kain",
     recordsTitle: "Satu kain. Satu nama.",
     recordsCount: "jejak",
@@ -35,11 +35,11 @@ export const t = {
 
     /* what it is / is not — the trust block, one line each */
     beforeEyebrow: "Sebelum mengklaim",
-    beforeTitle: "Paspor ini bukan token.",
+    beforeTitle: "Akte lahir kain, bukan token.",
     explain: [
         {
             title: "Yang kamu klaim",
-            body: "Siapa penenunnya, dari apa bahannya, berapa lama dikerjakan.",
+            body: "Satu kain, satu halaman: siapa penenunnya, dari apa bahannya, berapa lama dikerjakan.",
         },
         {
             title: "Kenapa ada",
@@ -59,7 +59,7 @@ export const t = {
     journeyEyebrow: "Yang diikuti jejaknya",
     journeyTitle: "Benih ke tenun, lalu sesudahnya.",
     journeyLead:
-        "Tiga tahun, tujuh tahap, tiga kabupaten. Satu tahap hanya berdiri kalau tahap sebelumnya sudah ada.",
+        "Tiga tahun, tujuh tahap, tiga kabupaten. Tiap tahap berdiri di atas yang sebelumnya.",
     steps: [
         { id: "Seed", id_label: "Benih", label: "Seed", note: "Kapas ditanam di kebun rakyat" },
         { id: "Loom", id_label: "Tenun", label: "Loom", note: "Ditenun, satu helai satu penenun" },
@@ -110,7 +110,7 @@ export const t = {
     claimedWovenBy: "Ditenun oleh",
     claimedIssued: "Diterbitkan",
     claimedNote:
-        "Jejaknya ikut bersama kain, termasuk saat kainnya berpindah tangan. Dan setiap penjualan kembali ke rumah yang menenumnya.",
+        "Jejaknya ikut bersama kain, termasuk saat berpindah tangan. Tiap penjualan kembali ke rumah yang menenumnya.",
     viewPassport: "Lihat paspor",
     stayHere: "Tetap di jejak ini",
 
@@ -119,7 +119,7 @@ export const t = {
     collectionTitle: "Tersimpan atas namamu",
     collectionEmpty: "Belum ada paspor di sini",
     collectionEmptyNote:
-        "Terbitkan satu dan tempatnya sudah menunggu. Dari perangkat lain, masuk dengan email yang sama.",
+        "Terbitkan satu, tempatnya sudah menunggu. Dari perangkat lain, masuk dengan email yang sama.",
     collectionSignInNote:
         "Masuk dengan email yang kamu pakai saat mengklaim, dan paspornya muncul di sini.",
     signInEyebrow: "Masuk",
@@ -131,7 +131,7 @@ export const t = {
     verifySignature: "Terverifikasi dari tanda tangan",
     verifyMissing: "Tidak ada paspor dengan id ini.",
     verifyMissingNote:
-        "Periksa lagi karakternya, atau tempel tag sekali lagi di kainnya. Bentuk paspor seperti",
+        "Periksa lagi karakternya, atau tempel tag sekali lagi. Bentuk paspor seperti",
     verifyProves: "Yang dibuktikan halaman ini",
 
     /* scan */

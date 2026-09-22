@@ -51,7 +51,7 @@ export default function Footer() {
                 </div>
 
                 <Reveal summary="Catatan penerbitan" className="mt-4 border-border">
-                    Foto masih placeholder dari berkas design system — ganti dengan
+                    Foto masih placeholder dari berkas design system. Ganti dengan
                     fotografi komunitas berlisensi sebelum terbit (brief §6). Motif
                     hanya tampil dengan izin komunitas.
                 </Reveal>

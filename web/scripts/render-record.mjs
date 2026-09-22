@@ -202,7 +202,7 @@ function render(record) {
     const rows = ROWS.map((row) => ({
         id: row.id,
         gloss: row.gloss,
-        value: String(attr(record, row.key) ?? "—"),
+        value: String(attr(record, row.key) ?? "Belum dicatat"),
     }));
 
     const maker = attr(record, "Maker") ?? record.title.split(" · ")[0];

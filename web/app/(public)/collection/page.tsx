@@ -34,7 +34,7 @@ export default async function CollectionPage() {
                 <div className="rounded-lg bg-card p-6 shadow-[var(--ring)]">
                     <div className="eyebrow">{t.signInEyebrow}</div>
                     <p className="mt-3 text-[17px] text-muted-foreground">
-                        Tanpa kata sandi, tanpa dompet — emailnya saja.
+                        Tanpa kata sandi, tanpa dompet. Cukup email.
                     </p>
                     <Link href="/login" className="mt-5 inline-block">
                         <Button size="lg">{t.signIn}</Button>

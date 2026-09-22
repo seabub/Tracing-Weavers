@@ -138,7 +138,7 @@ export default function Home() {
                         <Reveal tone="ink" summary="Kenapa ini penting" className="mt-6">
                             <p>
                                 Di Adonara, nama penenun jarang muncul di mana pun:
-                                kainnya dijual, motifnya difoto, harganya dicatat —
+                                Kainnya dijual, motifnya difoto, harganya dicatat,
                                 namanya tidak. Padahal satu helai bisa berarti sebelas
                                 minggu kerja, tiga kali celup, dan motif yang hanya boleh
                                 dipakai keluarga tertentu.

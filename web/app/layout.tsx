@@ -28,7 +28,7 @@ const caveat = Caveat({
 export const metadata: Metadata = {
     title: { default: brand, template: `%s | ${brand}` },
     description:
-        "Tempel tag pada kain untuk membaca jejaknya: dari mana bahannya, siapa yang menenumnya, dan apa yang terjadi di sepanjang jalan.",
+        "Akte lahir untuk kain tenun: siapa penenunnya, dari apa bahannya, berapa lama dikerjakan. Tempel tag di tepi kain untuk membacanya.",
 };
 
 export default function RootLayout({

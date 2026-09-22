@@ -19,11 +19,11 @@ const STEPS = [
     },
     {
         title: "Tap banner-nya",
-        body: "Isinya tautan ke jejak kainnya — tanpa memasang aplikasi, tanpa akun.",
+        body: "Isinya tautan ke jejak kainnya. Tanpa aplikasi, tanpa akun.",
     },
     {
         title: "Baca, lalu klaim",
-        body: "Penenunnya siapa, bahannya apa, berapa lama. Taruh namamu di sana — paspornya jadi milikmu.",
+        body: "Penenunnya siapa, bahannya apa, berapa lama. Taruh namamu di sana, paspornya jadi milikmu.",
     },
 ];
 

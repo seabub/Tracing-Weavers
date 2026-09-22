@@ -123,10 +123,10 @@ export default async function RecordPage({
                                 body: (
                                     <>
                                         <span className="text-ink">
-                                            {String(attr(record, "Material") ?? "—")}
+                                            {String(attr(record, "Material") ?? "Belum dicatat")}
                                         </span>{" "}
-                                        — kapas dari kebun komunitas, dipintal tangan,
-                                        diwarnai tanpa benang sintetis.
+                                        dari kebun komunitas, diwarnai tanpa benang
+                                        sintetis.
                                     </>
                                 ),
                             },
@@ -137,11 +137,10 @@ export default async function RecordPage({
                                 body: (
                                     <>
                                         <span className="text-ink">
-                                            {String(attr(record, "Technique") ?? "—")}
-                                        </span>{" "}
-                                        — lusi diikat dan dicelup sebelum ditenun;
-                                        polanya muncul saat kainnya jadi. Satu penenun,
-                                        satu alat tenun, satu helai.
+                                            {String(attr(record, "Technique") ?? "Belum dicatat")}
+                                        </span>. Lusi diikat dan dicelup sebelum
+                                        ditenun, jadi polanya muncul saat kainnya jadi.
+                                        Satu penenun, satu alat tenun, satu helai.
                                     </>
                                 ),
                             },
