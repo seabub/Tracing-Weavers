@@ -1,12 +1,13 @@
 import Link from "next/link";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CornerBrackets } from "@/components/motif/marks";
-import { attr, type ProductRecord } from "@/lib/records";
+import { attr, recordVisual, type ProductRecord } from "@/lib/records";
 
-/* One mark per surface: the artwork gets corner brackets (the design system's
-   frame for photos), the card body gets the cloth ground. Nothing else. */
+/**
+ * Explore surface: the artwork does the work, the metadata sits under it in
+ * three registers — code (machine), title (display), maker · origin (warm
+ * grey) — and the action is a quiet text link. Four red buttons in a grid is
+ * noise; one hairline and an arrow is enough.
+ */
 export default function RecordCard({
     record,
     index = 0,
@@ -14,57 +15,56 @@ export default function RecordCard({
     record: ProductRecord;
     index?: number;
 }) {
-    const shared = record.supply > 1;
+    const maker = attr(record, "Maker");
     const origin = attr(record, "Origin");
 
     return (
-        <div
-            className="rise h-full"
-            style={{ ["--i" as string]: String(index % 6) }}
-        >
-            <Link href={`/record/${record.code}`} className="block h-full">
-                <Card cloth className="lift h-full pt-0">
-                    <CardHeader className="relative p-0">
-                        <div className="relative aspect-square w-full overflow-hidden bg-paper">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                                src={record.image}
-                                alt={record.title}
-                                className="h-full w-full object-cover"
-                                draggable={false}
-                            />
-                            <CornerBrackets className="pointer-events-none absolute inset-3 h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)] text-white/70" />
+        <article className="rise" style={{ ["--i" as string]: String(index % 6) }}>
+            <Link href={`/record/${record.code}`} className="group block">
+                <div className="relative overflow-hidden rounded-lg bg-ink shadow-[var(--ring)]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                        src={recordVisual(record)}
+                        alt={record.title}
+                        className="aspect-4/5 w-full object-cover transition-transform duration-[400ms] ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02] motion-reduce:transition-none"
+                        draggable={false}
+                    />
+                    {record.supply > 1 && (
+                        <div className="absolute top-3 right-3">
+                            <Badge variant="ink" className="bg-ink/80 backdrop-blur-none">
+                                Bersama · {record.supply}
+                            </Badge>
                         </div>
-                        {shared && (
-                            <div className="absolute top-3 right-3">
-                                <Badge variant="accent">Bersama · {record.supply}</Badge>
-                            </div>
-                        )}
-                    </CardHeader>
+                    )}
+                </div>
 
-                    <CardContent className="space-y-2 pt-5">
-                        <div className="flex items-baseline justify-between gap-3">
-                            <span className="eyebrow">{record.collection ?? "Jejak"}</span>
-                            <span className="footnote shrink-0">{record.code}</span>
-                        </div>
-                        <h3 className="display text-xl leading-tight">{record.title}</h3>
-                        {origin && (
-                            <p className="text-[15px] text-muted-foreground">
-                                {String(origin)}
-                            </p>
-                        )}
-                        <p className="line-clamp-2 text-sm text-muted-foreground">
-                            {record.description}
-                        </p>
-                    </CardContent>
+                <div className="mt-4 flex items-baseline justify-between gap-3">
+                    <span className="data text-bt-red">{record.code}</span>
+                    <span className="text-[13px] text-muted-foreground">
+                        {record.collection ?? "Jejak"}
+                    </span>
+                </div>
 
-                    <CardFooter className="pt-4">
-                        <Button className="pointer-events-none w-full">
-                            Baca jejaknya →
-                        </Button>
-                    </CardFooter>
-                </Card>
+                <h3 className="mt-1.5 text-[19px] leading-tight">
+                    {record.title.split(" · ")[0]}
+                </h3>
+
+                {(maker || origin) && (
+                    <p className="mt-1 text-[15px] text-muted-foreground">
+                        {[maker, origin].filter(Boolean).join(" · ")}
+                    </p>
+                )}
+
+                <div className="mt-4 flex items-center gap-2 border-t border-border pt-3 text-[15px] text-ink group-hover:text-bt-red">
+                    Baca jejaknya
+                    <span
+                        aria-hidden
+                        className="transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-x-1 motion-reduce:transition-none"
+                    >
+                        →
+                    </span>
+                </div>
             </Link>
-        </div>
+        </article>
     );
 }

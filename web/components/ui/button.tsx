@@ -3,29 +3,25 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-/* One accent (morinda red, salmon on ink), uppercase letterspaced label,
-   rounded like the Alto app. Press feedback comes from `.pressable` —
-   scale(.975) on :active — and hover only fires on a real pointer. */
+/* One accent (morinda red, salmon on ink). Labels are title case, not shouted
+   caps — the brand uses letterspaced caps for eyebrows only, so spending them
+   on every button wastes the signal. Press feedback is scale(.975). */
 const buttonVariants = cva(
-    "pressable inline-flex items-center justify-center gap-2.5 whitespace-nowrap rounded-lg font-medium uppercase tracking-[.12em] disabled:pointer-events-none disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+    "pressable inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium tracking-[.01em] disabled:pointer-events-none disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:shrink-0",
     {
         variants: {
             variant: {
-                primary:
-                    "bg-bt-red text-white border border-bt-red hover:bg-bt-red-bright hover:border-bt-red-bright",
-                secondary: "bg-transparent text-ink border border-ink hover:bg-ink/6",
-                outline:
-                    "bg-transparent text-ink border border-stone hover:border-ink hover:bg-white",
-                ghost:
-                    "bg-transparent text-bt-red border border-transparent hover:text-bt-red-bright",
-                inverse: "bg-salmon text-ink border border-salmon hover:bg-[#FFB3A4] hover:border-[#FFB3A4]",
-                inverseGhost:
-                    "bg-transparent text-white border border-white/45 hover:bg-white/10",
+                primary: "bg-bt-red text-white hover:bg-bt-red-bright",
+                secondary: "bg-ink text-white hover:bg-ink/90",
+                outline: "bg-card text-ink shadow-[var(--ring)] hover:shadow-[var(--ring-hover)]",
+                ghost: "bg-transparent text-ink-2 hover:text-ink hover:bg-ink/5",
+                inverse: "bg-salmon text-ink hover:bg-[#FFB3A4]",
+                inverseGhost: "bg-transparent text-white shadow-[0_0_0_1px_rgba(255,255,255,.35)] hover:bg-white/10",
             },
             size: {
-                sm: "h-9 px-3.5 text-sm",
+                sm: "h-9 px-3.5 text-[15px]",
                 md: "h-11 px-5 text-base",
-                lg: "h-14 px-7 text-lg",
+                lg: "h-13 px-6 text-[17px]",
                 icon: "h-11 w-11",
             },
         },

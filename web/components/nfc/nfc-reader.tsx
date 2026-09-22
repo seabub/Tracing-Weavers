@@ -60,8 +60,8 @@ export function NfcReader() {
                     router.push(`/t/${match[1]}`);
                     return;
                 }
-                const code = text.trim().replace(/[^A-Za-z0-9._~-]/g, "");
-                if (code) router.push(`/t/${code}`);
+                const fallback = text.trim().replace(/[^A-Za-z0-9._~-]/g, "");
+                if (fallback) router.push(`/t/${fallback}`);
                 else setError("Tag ini tidak membawa kode yang bisa dibaca.");
             };
             reader.onreadingerror = () =>
@@ -78,13 +78,13 @@ export function NfcReader() {
     if (!supported) return null;
 
     return (
-        <div className="cloth relative overflow-hidden rounded-xl border border-border bg-card p-6">
-            <WarpField className="pointer-events-none absolute inset-x-0 top-0 h-24 w-full text-bt-red/25" />
+        <div className="cloth relative overflow-hidden rounded-lg bg-card p-6 shadow-[var(--ring)]">
+            <WarpField className="pointer-events-none absolute inset-x-0 top-0 h-20 w-full text-bt-red/20" />
             <div className="relative">
                 <div className="eyebrow">Tempel di sini</div>
-                <p className="mt-3 text-base text-muted-foreground">
-                    Peramban ini bisa membaca tag langsung. Tempelkan ponsel ke
-                    tepi kain.
+                <p className="mt-3 text-[17px] text-muted-foreground">
+                    Peramban ini bisa membaca tag langsung. Tempelkan ponsel ke tepi
+                    kain.
                 </p>
                 <Button
                     size="lg"
@@ -94,7 +94,7 @@ export function NfcReader() {
                 >
                     {listening ? "Menunggu tag…" : "Mulai membaca"}
                 </Button>
-                {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
+                {error && <p className="mt-4 text-[15px] text-destructive">{error}</p>}
             </div>
         </div>
     );

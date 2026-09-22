@@ -21,18 +21,16 @@ export function TagLookupForm({ className }: { className?: string }) {
             }}
         >
             <label className="block">
-                <span className="text-[11px] uppercase tracking-[.18em] text-muted-foreground">
-                    Kode tag
-                </span>
+                <span className="label">Kode tag</span>
                 <input
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
                     placeholder="BT-0042"
                     autoComplete="off"
-                    className="mt-2 h-11 w-full rounded-lg border border-border bg-white px-3 text-base tracking-[.06em] outline-none transition-colors duration-[160ms] ease-[cubic-bezier(0.23,1,0.32,1)] focus:border-bt-red"
+                    className="data mt-1.5 h-11 w-full rounded-md bg-white px-3 text-[15px] outline-none shadow-[var(--ring)] transition-shadow duration-[160ms] ease-[cubic-bezier(0.23,1,0.32,1)] focus:shadow-[0_0_0_1px_var(--bt-red)]"
                 />
             </label>
-            <Button type="submit" size="lg" className="mt-5 w-full sm:w-auto">
+            <Button type="submit" size="lg" className="mt-4 w-full sm:w-auto">
                 Buka jejaknya
             </Button>
         </form>

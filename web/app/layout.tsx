@@ -4,7 +4,9 @@ import "./globals.css";
 import { brand } from "@/lib/brand";
 
 /* Beyond Tenun type: Telegraf Black → Hanken Grotesk 900, Archivo Narrow is
-   the real deck face, Biro Script Plus → Caveat for the single script use. */
+   the real deck face, Biro Script Plus → Caveat for the single script use.
+   Codes and ids use the system monospace (see the `.data` utility) so a
+   passport id reads as machine output rather than as prose. */
 const hanken = Hanken_Grotesk({
     variable: "--font-display-family",
     subsets: ["latin"],
@@ -26,16 +28,20 @@ const caveat = Caveat({
 export const metadata: Metadata = {
     title: { default: brand, template: `%s | ${brand}` },
     description:
-        "Tap the tag on the product to read where it came from, who made it and what happened along the way — then claim the record as your own passport.",
+        "Tempel tag pada kain untuk membaca jejaknya: dari mana bahannya, siapa yang menenumnya, dan apa yang terjadi di sepanjang jalan.",
 };
 
 export default function RootLayout({
     children,
 }: Readonly<{ children: React.ReactNode }>) {
     return (
-        <html lang="en">
+        <html lang="id">
             <body
                 className={`${hanken.variable} ${archivo.variable} ${caveat.variable} antialiased`}
+                style={{
+                    ["--font-mono-family" as string]:
+                        "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
+                }}
             >
                 {children}
             </body>

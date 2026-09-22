@@ -42,13 +42,13 @@ export default function LoginForm() {
     }
 
     return (
-        <form onSubmit={submit} className="space-y-5">
+        <form onSubmit={submit} className="space-y-4">
             <Field label={t.claimName} value={name} onChange={setName} placeholder="Dinny Jusuf" autoComplete="name" required />
             <Field label={t.claimEmail} value={email} onChange={setEmail} placeholder="nama@contoh.org" type="email" autoComplete="email" required />
             <Field label={t.claimOutlet} value={outlet} onChange={setOutlet} placeholder="Yayasan, studio, toko" autoComplete="organization" />
 
             {error && (
-                <p className="rounded-lg border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
+                <p className="rounded-md bg-destructive/8 p-3 text-[15px] text-destructive shadow-[0_0_0_1px_rgba(236,48,19,.25)]">
                     {error}
                 </p>
             )}
@@ -79,9 +79,7 @@ function Field({
 }) {
     return (
         <label className="block">
-            <span className="text-[11px] uppercase tracking-[.18em] text-muted-foreground">
-                {label}
-            </span>
+            <span className="label">{label}</span>
             <input
                 type={type}
                 required={required}
@@ -89,7 +87,7 @@ function Field({
                 placeholder={placeholder}
                 autoComplete={autoComplete}
                 onChange={(e) => onChange(e.target.value)}
-                className="mt-2 h-11 w-full rounded-lg border border-border bg-white px-3 text-base outline-none transition-colors duration-[160ms] ease-[cubic-bezier(0.23,1,0.32,1)] focus:border-bt-red"
+                className="mt-1.5 h-11 w-full rounded-md bg-white px-3 text-[17px] outline-none shadow-[var(--ring)] transition-shadow duration-[160ms] ease-[cubic-bezier(0.23,1,0.32,1)] focus:shadow-[0_0_0_1px_var(--bt-red)]"
             />
         </label>
     );

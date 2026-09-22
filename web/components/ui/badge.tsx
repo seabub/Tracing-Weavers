@@ -2,20 +2,19 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-/* Pills for status, letterspaced caps — status colour used sparingly.
-   `indigo` and `amber` are the brand's reserved dye colours, so they only
-   appear where they mean something (dye, to-confirm). */
+/* Pills for status. The dye colours (nila, kunyit) only appear where they mean
+   something — a dye reference or a "to confirm" mark. */
 const badgeVariants = cva(
-    "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-normal uppercase tracking-[.14em]",
+    "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] tracking-[.06em] shadow-[var(--ring)]",
     {
         variants: {
             variant: {
-                default: "border-stone bg-white text-muted-foreground",
-                accent: "border-bt-red text-bt-red bg-blush",
-                indigo: "border-indigo-bt/40 text-indigo-bt bg-indigo-bt/5",
-                amber: "border-amber-bt text-[#8a6100] bg-amber-bt/5",
-                positive: "border-success text-success bg-success/5",
-                inverse: "border-white/45 text-white bg-transparent",
+                default: "bg-card text-muted-foreground",
+                accent: "bg-blush text-bt-red shadow-[0_0_0_1px_rgba(174,24,0,.18)]",
+                indigo: "bg-indigo-bt/8 text-indigo-bt shadow-[0_0_0_1px_rgba(43,58,103,.2)]",
+                amber: "bg-amber-bt/12 text-[#7a5600] shadow-[0_0_0_1px_rgba(236,164,6,.3)]",
+                positive: "bg-success/10 text-success shadow-[0_0_0_1px_rgba(62,107,46,.25)]",
+                ink: "bg-ink text-white",
             },
         },
         defaultVariants: { variant: "default" },

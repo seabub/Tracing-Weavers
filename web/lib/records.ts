@@ -13,6 +13,11 @@ export type ProductRecord = {
     title: string;
     subtitle?: string;
     description: string;
+    /** documentary photo for the page — hands, cloth, looms */
+    photo?: string;
+    /** who took it, under whose permission; shown under the photo */
+    photoCredit?: string;
+    /** the record sheet drawn by `npm run record:svg` — passport + print */
     image: string;
     collection?: string;
     /** How many passports this record may ever issue. 1 = unique item. */
@@ -38,3 +43,6 @@ export function attr(record: ProductRecord, name: string) {
 
 export const collectionName = (record: ProductRecord) =>
     record.collection ?? "Digital Product Passport";
+
+/** The object itself: the photo when there is one, else the record sheet. */
+export const recordVisual = (record: ProductRecord) => record.photo ?? record.image;

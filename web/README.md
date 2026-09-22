@@ -127,7 +127,8 @@ supply (`1 of 1` on a one-of-one).
 | --- | --- | --- |
 | `data/records.json` | yes | **this is the product data** |
 | `data/tags.json` | yes | tag → record map; ships to the browser, keep it non-sensitive |
-| `public/records/*.svg` | yes | artwork, generated |
+| `public/records/*.svg` | yes | the record sheet, generated — used on the passport and for print |
+| `public/imagery/*.jpg` | yes | documentary photos for the page. **Placeholder caveat:** these come from the design system's uploads and include AI-generated reference images — replace with licensed community photography before publication (brief §6). |
 | `data/passports.json` | your call | the file store; contains holder names + emails |
 | `.env.local` | **no** | gitignored |
 

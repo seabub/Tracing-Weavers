@@ -6,36 +6,34 @@ import { t } from "@/lib/copy";
 import { PassportShelf } from "@/components/passport/PassportShelf";
 import { TagLookupForm } from "@/components/nfc/tag-lookup-form";
 import { Button } from "@/components/ui/button";
-import { WarpField } from "@/components/motif/marks";
 
 export const dynamic = "force-dynamic";
 
 export const metadata = { title: "Paspor saya" };
 
+/* OPERATE surface: the things you hold, and the one action that matters
+   (read another tag). No masthead theatre. */
 export default async function CollectionPage() {
     const identity = await currentIdentity();
     const store = passportStore();
     const issued = identity ? await store.listByHolder(identity.email) : [];
 
     return (
-        <div className="space-y-10">
-            <section className="ink-band cloth relative overflow-hidden rounded-2xl px-6 py-10 sm:px-10" data-theme="dark">
-                <WarpField className="pointer-events-none absolute inset-0 h-full w-full text-white/12" />
-                <div className="relative">
-                    <div className="eyebrow">{t.collectionEyebrow}</div>
-                    <h1 className="display mt-3 text-3xl sm:text-4xl">{t.collectionTitle}</h1>
-                    <p className="mt-4 max-w-[52ch] text-base text-white/75">
-                        {identity
-                            ? `Paspor yang terbit ke ${identity.email}.`
-                            : t.collectionSignInNote}
-                    </p>
-                </div>
-            </section>
+        <div className="space-y-9">
+            <header className="border-b border-border pb-5">
+                <div className="eyebrow">{t.collectionEyebrow}</div>
+                <h1 className="mt-3">{t.collectionTitle}</h1>
+                <p className="mt-3 max-w-[52ch] text-[17px] text-muted-foreground">
+                    {identity
+                        ? `Paspor yang terbit untuk ${identity.email}.`
+                        : t.collectionSignInNote}
+                </p>
+            </header>
 
             {!identity && (
-                <div className="rounded-xl border border-border bg-card p-6">
+                <div className="rounded-lg bg-card p-6 shadow-[var(--ring)]">
                     <div className="eyebrow">{t.signInEyebrow}</div>
-                    <p className="mt-3 text-base text-muted-foreground">
+                    <p className="mt-3 text-[17px] text-muted-foreground">
                         Tanpa kata sandi, tanpa dompet — emailnya saja.
                     </p>
                     <Link href="/login" className="mt-5 inline-block">
@@ -45,9 +43,9 @@ export default async function CollectionPage() {
             )}
 
             {identity && issued.length === 0 && (
-                <div className="space-y-4 rounded-xl border border-dashed border-border px-6 py-14 text-center">
+                <div className="rounded-lg px-6 py-14 text-center shadow-[var(--ring)]">
                     <p className="display text-2xl">{t.collectionEmpty}</p>
-                    <p className="mx-auto max-w-[52ch] text-base text-muted-foreground">
+                    <p className="mx-auto mt-3 max-w-[52ch] text-[17px] text-muted-foreground">
                         {t.collectionEmptyNote}
                     </p>
                     <TagLookupForm className="mx-auto mt-6 max-w-sm text-left" />
@@ -59,7 +57,7 @@ export default async function CollectionPage() {
             {identity && issued.length > 0 && (
                 <Link
                     href="/scan"
-                    className="inline-block text-[12px] uppercase tracking-[.18em] text-muted-foreground"
+                    className="inline-block text-[14px] text-muted-foreground hover:text-ink"
                 >
                     {t.readTag} →
                 </Link>

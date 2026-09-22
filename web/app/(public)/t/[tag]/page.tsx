@@ -28,52 +28,40 @@ export default async function TagPage({
     return (
         <div className="mx-auto max-w-2xl">
             <div className="eyebrow">Tag belum dikenali</div>
-            <h1 className="display mt-5 text-3xl sm:text-4xl">
-                Tag ini belum tersambung
-                <br />
-                ke sebuah jejak.
-            </h1>
-            <p className="mt-6 max-w-[52ch] text-base text-muted-foreground">
-                Tag terbaca{" "}
-                <span className="font-medium text-foreground">{tag}</span>. Kodenya
+            <h1 className="mt-4">Tag ini belum tersambung ke sebuah jejak.</h1>
+            <p className="mt-4 max-w-[52ch] text-[17px] text-muted-foreground">
+                Tag terbaca <span className="data text-ink">{tag}</span>. Kodenya
                 belum ada di daftar, atau kainnya belum dicatat.
             </p>
 
-            <div className="mt-10 rounded-xl border border-border bg-card p-6">
-                <div className="eyebrow">Cara lain membacanya</div>
-                <p className="mt-3 text-base text-muted-foreground">
-                    Ketik kode yang tercetak di sebelah tag.
-                </p>
-                <Link
-                    href="/scan"
-                    className="mt-5 inline-block text-[12px] uppercase tracking-[.18em]"
-                >
-                    Buka pembacanya →
-                </Link>
-            </div>
-
-            <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                <div className="border-t border-border pt-4">
-                    <div className="text-[11px] uppercase tracking-[.2em] text-bt-red">
-                        Tim lapangan
-                    </div>
-                    <p className="mt-2 text-base text-muted-foreground">
-                        Tambahkan kodenya ke{" "}
-                        <span className="font-medium">data/tags.json</span> beserta
-                        jejak yang harus dibuka, lalu deploy ulang.
+            <div className="mt-9 grid gap-6 sm:grid-cols-2">
+                <div className="rounded-lg bg-card p-6 shadow-[var(--ring)]">
+                    <div className="eyebrow">Cara lain membacanya</div>
+                    <p className="mt-3 text-[16px] text-muted-foreground">
+                        Ketik kode yang tercetak di sebelah tag.
                     </p>
+                    <Link href="/scan" className="mt-4 inline-block text-[14px]">
+                        Buka pembacanya →
+                    </Link>
                 </div>
-                <div className="border-t border-border pt-4">
-                    <div className="text-[11px] uppercase tracking-[.2em] text-bt-red">
-                        Lihat yang lain
-                    </div>
-                    <p className="mt-2 text-base text-muted-foreground">
-                        <Link href="/">{t.backToRecords} →</Link>
+                <div className="rounded-lg bg-card p-6 shadow-[var(--ring)]">
+                    <div className="eyebrow">Tim lapangan</div>
+                    <p className="mt-3 text-[16px] text-muted-foreground">
+                        Tambahkan kodenya ke{" "}
+                        <span className="data text-ink">data/tags.json</span> beserta
+                        jejak yang harus dibuka, lalu deploy ulang.
                     </p>
                 </div>
             </div>
 
             <ThreadRule className="mt-12 h-2 w-full text-stone" aria-hidden />
+
+            <Link
+                href="/"
+                className="mt-6 inline-block text-[14px] text-muted-foreground hover:text-ink"
+            >
+                ← {t.backToRecords}
+            </Link>
         </div>
     );
 }

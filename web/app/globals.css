@@ -1,115 +1,80 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* ═══════════════════════════════════════════════════════════════
-   Digital Product Passport — theme
+/* ═══════════════════════════════════════════════════════════════════════
+   Digital Product Passport — visual system
 
-   Two layers:
-   · Beyond Tenun (the design system in this repo): ink / paper grounds, one
-     red accent (morinda, salmon on ink), letterspaced eyebrows, hairline
-     rules, Hanken Grotesk 900 + Archivo Narrow, the ten line marks.
-   · Alto Project (the app this is modelled on): rounded surfaces, soft
-     shadows, warm tinted ground, gradient headings, motion.
+   Composition first: the surface that matters is the record page, because that
+   is where an NFC tap lands — on a phone, one-handed, in the field. It is a
+   LEARN surface with one Configure action at the end. Home is EXPLORE (a
+   catalogue with a compact masthead), /scan is CONFIGURE, /collection is
+   OPERATE. No marketing hero on a product page, no gradient headline, no glass.
 
-   Motion follows Emil Kowalski's rules: strong custom easing, UI durations
-   under 300ms, transform/opacity only, hover gated behind a real pointer,
-   press feedback on every pressable, reduced motion respected.
-   ═══════════════════════════════════════════════════════════════ */
+   Vocabulary, drawn from two references and one brand:
+   · warm parchment ground, one earthy accent, ring + hairline depth instead of
+     drop shadows, editorial pacing, 8px spacing scale
+   · hairline containment, tight display tracking, uppercase data labels,
+     colour-as-depth, pill vs small radius discipline
+   · and underneath both, this repo's Beyond Tenun: ink #201E1D, paper #F3F2F2,
+     morinda #AE1800, letterspaced eyebrows, the ten weave marks, no emoji,
+     community at the centre.
+   ═══════════════════════════════════════════════════════════════════════ */
 
 :root{
-  /* Beyond Tenun base — ink, paper, one accent */
   --bt-ink:#201E1D;
-  --bt-ink-2:#605D5D;
+  --bt-ink-2:#5A5755;          /* warm secondary — never a cool grey */
   --bt-ink-3:#7B7B7B;
   --bt-white:#FFFFFF;
   --bt-paper:#F3F2F2;
-  --bt-paper-2:#F5F5F5;
   --bt-stone:#CFC8BB;
-  --bt-red:#AE1800;          /* morinda root */
+  --bt-stone-2:#E4DFD6;        /* hairline */
+  --bt-red:#AE1800;            /* morinda root */
   --bt-red-bright:#EC3013;
   --bt-salmon:#FF9783;
   --bt-blush:#FFF2EF;
   --bt-clay:#F29A6A;
-  --bt-amber:#ECA406;        /* kunyit, natural-dye gold */
-  --bt-indigo:#2B3A67;       /* nila, indigo */
+  --bt-amber:#ECA406;          /* kunyit */
+  --bt-indigo:#2B3A67;         /* nila */
 
-  /* Alto's warmth, mixed in */
-  --ap-magenta:#8B2A6B;
-  --ap-pink-tint:#FBF6F9;
+  --surface-page:#F3F2F2;
+  --surface-card:#FAF8F7;      /* warm ivory, never pure white */
+  --surface-ink:#201E1D;
 
-  --gradient-brand:linear-gradient(90deg,var(--bt-indigo) 0%,var(--bt-red) 52%,var(--bt-amber) 100%);
-  --gradient-warm:linear-gradient(135deg,var(--bt-blush) 0%,var(--ap-pink-tint) 100%);
-
-  --shadow-soft:0 2px 10px rgba(32,30,29,.05);
-  --shadow-lift:0 12px 32px rgba(32,30,29,.12);
+  /* depth: ring + hairline, not drop shadow */
+  --ring:0 0 0 1px var(--bt-stone-2);
+  --ring-hover:0 0 0 1px var(--bt-stone);
   --shadow-float:0 18px 44px rgba(32,30,29,.18);
+  --shadow-soft:rgba(32,30,29,.05) 0 4px 24px;
 
-  --scrim-bottom:linear-gradient(180deg,rgba(32,30,29,0) 35%,rgba(32,30,29,.78) 100%);
-  --photo-filter:saturate(.92) contrast(1.04);
-
-  /* motion — custom curves, never the browser defaults */
+  /* motion — custom curves, UI under 300ms */
   --ease-out:cubic-bezier(0.23,1,0.32,1);
-  --ease-in-out:cubic-bezier(0.77,0,0.175,1);
-  --ease-drawer:cubic-bezier(0.32,0.72,0,1);
   --dur-press:140ms;
   --dur-fast:160ms;
   --dur-base:200ms;
-  --dur-modal:260ms;
-  --stagger:60ms;
+  --stagger:55ms;
 
-  /* the cloth itself: warp + weft at 3–5% — a ground, never a pattern */
-  --cloth-warp:repeating-linear-gradient(90deg,rgba(32,30,29,.055) 0 1px,transparent 1px 11px);
-  --cloth-weft:repeating-linear-gradient(0deg,rgba(32,30,29,.03) 0 1px,transparent 1px 13px);
-}
-
-/* semantic — light */
-:root{
-  --background:var(--ap-pink-tint);
-  --foreground:var(--bt-ink);
-  --card:var(--bt-white);
-  --card-foreground:var(--bt-ink);
-  --popover:var(--bt-white);
-  --popover-foreground:var(--bt-ink);
-  --primary:var(--bt-red);
-  --primary-foreground:var(--bt-white);
-  --secondary:var(--bt-paper-2);
-  --secondary-foreground:var(--bt-ink);
-  --muted:var(--bt-paper-2);
-  --muted-foreground:var(--bt-ink-2);
-  --accent:var(--bt-blush);
-  --accent-foreground:var(--bt-red);
-  --destructive:var(--bt-red-bright);
-  --destructive-foreground:var(--bt-white);
-  --border:var(--bt-stone);
-  --input:var(--bt-stone);
-  --ring:var(--bt-red-bright);
-  --success:#3E6B2E;
-  --warning:var(--bt-amber);
-  --radius:12px;
+  /* the cloth: warp + weft under 5% — a ground, never a pattern */
+  --cloth-warp:repeating-linear-gradient(90deg,rgba(32,30,29,.05) 0 1px,transparent 1px 9px);
+  --cloth-weft:repeating-linear-gradient(0deg,rgba(32,30,29,.028) 0 1px,transparent 1px 11px);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-success: var(--success);
-  --color-warning: var(--warning);
+  --color-background: var(--surface-page);
+  --color-foreground: var(--bt-ink);
+  --color-card: var(--surface-card);
+  --color-card-foreground: var(--bt-ink);
+  --color-muted: #EDEBE7;
+  --color-muted-foreground: var(--bt-ink-2);
+  --color-border: var(--bt-stone-2);
+  --color-primary: var(--bt-red);
+  --color-primary-foreground: var(--bt-white);
+  --color-accent: var(--bt-blush);
+  --color-accent-foreground: var(--bt-red);
+  --color-destructive: var(--bt-red-bright);
+  --color-ring: var(--bt-red-bright);
+  --color-success: #3E6B2E;
+  --color-warning: var(--bt-amber);
+
   --color-ink: var(--bt-ink);
   --color-ink-2: var(--bt-ink-2);
   --color-ink-3: var(--bt-ink-3);
@@ -122,41 +87,30 @@
   --color-clay: var(--bt-clay);
   --color-amber-bt: var(--bt-amber);
   --color-indigo-bt: var(--bt-indigo);
-  --color-magenta: var(--ap-magenta);
 
   --font-sans: var(--font-body);
   --font-display: var(--font-display-family);
-  --font-script: var(--font-script-family);
-
-  --radius-sm: calc(var(--radius) - 6px);
-  --radius-md: calc(var(--radius) - 4px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
+  --font-mono: var(--font-mono-family);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
 }
 
-/* dark ground — the cloth under a single bulb */
 [data-theme="dark"]{
-  --background:var(--bt-ink);
-  --foreground:var(--bt-white);
-  --card:#2A2827;
-  --card-foreground:var(--bt-white);
-  --popover:#2A2827;
-  --popover-foreground:var(--bt-white);
-  --primary:var(--bt-salmon);
-  --primary-foreground:var(--bt-ink);
-  --secondary:#332F2E;
-  --secondary-foreground:var(--bt-white);
-  --muted:#332F2E;
-  --muted-foreground:rgba(255,255,255,.72);
-  --accent:#332F2E;
-  --accent-foreground:var(--bt-salmon);
-  --border:rgba(255,255,255,.18);
-  --input:rgba(255,255,255,.18);
-  --ring:var(--bt-salmon);
-  --cloth-warp:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,transparent 1px 11px);
-  --cloth-weft:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 13px);
+  --surface-page:var(--bt-ink);
+  --surface-card:#2A2827;
+  --color-card:#2A2827;
+  --color-card-foreground:var(--bt-white);
+  --color-muted:#332F2E;
+  --color-muted-foreground:rgba(255,255,255,.72);
+  --color-border:rgba(255,255,255,.16);
+  --color-primary:var(--bt-salmon);
+  --color-primary-foreground:var(--bt-ink);
+  --ring:0 0 0 1px rgba(255,255,255,.16);
+  --ring-hover:0 0 0 1px rgba(255,255,255,.3);
+  --cloth-warp:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,transparent 1px 9px);
+  --cloth-weft:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 11px);
 }
 
 @layer base {
@@ -164,82 +118,84 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
-    font-size: 19px;
-    line-height: 1.4;
+    font-size: 18px;
+    line-height: 1.55;
     -webkit-font-smoothing: antialiased;
     text-wrap: pretty;
   }
-  h1, h2, h3, h4 {
+  h1, h2, h3 {
     font-family: var(--font-display);
     font-weight: 900;
-    letter-spacing: -.025em;
-    line-height: 1.08;
+    letter-spacing: -.03em;
+    line-height: 1.02;
+    text-wrap: balance;
   }
-  a { color: var(--primary); transition: color var(--dur-fast) var(--ease); }
+  h1 { font-size: clamp(2rem, 7vw, 3.25rem); }
+  h2 { font-size: clamp(1.45rem, 4.4vw, 2.15rem); }
+  h3 { font-size: clamp(1.1rem, 3vw, 1.45rem); letter-spacing: -.02em; }
+  a { color: var(--bt-red); transition: color var(--dur-fast) ease; }
   button, input, select, textarea { font: inherit; color: inherit; }
 
-  /* one visible focus treatment for the whole app, keyboard only */
   :where(a, button, input, select, [tabindex]):focus-visible {
-    outline: 2px solid var(--ring);
+    outline: 2px solid var(--bt-red-bright);
     outline-offset: 2px;
-    border-radius: var(--radius-sm);
+    border-radius: 4px;
   }
-
-  /* hover only where there is a real pointer: a tap must not fake a hover */
   @media (hover: hover) and (pointer: fine) {
     a:hover { color: var(--bt-red-bright); }
   }
 }
 
 @layer utilities {
-  /* the deck's opening device: uppercase, letterspaced, red */
+  /* Eyebrow — the deck's opening device: uppercase, letterspaced, red */
   .eyebrow {
     font-family: var(--font-body);
-    font-size: 13px;
-    font-weight: 400;
+    font-size: 12px;
     line-height: 1;
-    letter-spacing: .38em;
+    letter-spacing: .34em;
     text-transform: uppercase;
     color: var(--bt-red);
   }
   [data-theme="dark"] .eyebrow { color: var(--bt-salmon); }
 
-  .footnote {
-    font-family: var(--font-body);
-    font-size: 13px;
-    letter-spacing: .12em;
+  /* Data register: codes, ids and counts read as machine output, not prose */
+  .data {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .06em;
+    font-variant-numeric: tabular-nums;
     text-transform: uppercase;
-    color: var(--muted-foreground);
   }
+  .num { font-variant-numeric: tabular-nums; }
 
   .display {
     font-family: var(--font-display);
     font-weight: 900;
-    letter-spacing: -.025em;
-    line-height: 1;
+    letter-spacing: -.03em;
+    line-height: 1.02;
   }
 
-  .text-gradient {
-    background: var(--gradient-brand);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  .label {
+    font-size: 11px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
   }
 
-  /* the cloth: warp + weft on the ground, under 5% contrast */
   .cloth { background-image: var(--cloth-warp), var(--cloth-weft); }
 
-  /* selvedge: the finished edge of the weave, a heavy frayed line */
+  /* selvedge: the finished edge of the weave */
   .selvedge {
     height: 3px;
-    background-image: repeating-linear-gradient(90deg, var(--border) 0 6px, transparent 6px 8px);
+    background-image: repeating-linear-gradient(90deg, var(--bt-stone) 0 6px, transparent 6px 8px);
+  }
+  [data-theme="dark"] .selvedge {
+    background-image: repeating-linear-gradient(90deg, rgba(255,255,255,.3) 0 6px, transparent 6px 8px);
   }
 
-  .ink-band { background: var(--bt-ink); color: var(--bt-white); }
-  .rule-step { border-top: 2px solid var(--bt-red); }
-  .rule-hair { border-top: 1px solid var(--border); }
+  .ink-band { background: var(--surface-ink); color: var(--bt-white); }
+  .card-ring { box-shadow: var(--ring); }
 
-  /* press feedback — every pressable answers the finger */
   .pressable {
     transition-property: transform, background-color, border-color, color, box-shadow;
     transition-duration: var(--dur-press);
@@ -247,38 +203,39 @@
   }
   .pressable:active { transform: scale(.975); }
 
-  /* entrance: 10px rise + fade, staggered by --i (60ms per item) */
   .rise {
     opacity: 0;
-    transform: translateY(10px);
-    animation: rise 420ms var(--ease-out) both;
+    transform: translateY(8px);
+    animation: rise 380ms var(--ease-out) both;
     animation-delay: calc(var(--i, 0) * var(--stagger));
   }
-
-  .warm-panel { background: var(--gradient-warm); }
 }
 
 @keyframes rise { to { opacity: 1; transform: translateY(0); } }
 
-/* card lift — real pointer only, transform + shadow only */
 @media (hover: hover) and (pointer: fine) {
   .lift {
     transition: box-shadow var(--dur-base) var(--ease-out),
                 transform var(--dur-base) var(--ease-out);
   }
-  .lift:hover { box-shadow: var(--shadow-lift); transform: translateY(-3px); }
+  .lift:hover { transform: translateY(-2px); box-shadow: var(--ring-hover), var(--shadow-soft); }
 }
 
-/* fewer and gentler, not zero: keep colour and opacity, drop movement */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 120ms !important;
+    scroll-behavior: auto !important;
   }
-  .rise { animation: fade-only 120ms var(--ease) both; transform: none; }
+  .rise { animation: fade-only 120ms ease both; transform: none; }
   .pressable:active { transform: none; }
   .lift:hover { transform: none; }
 }
 
 @keyframes fade-only { from { opacity: 0 } to { opacity: 1 } }
+
+@media print {
+  header, footer, .no-print { display: none !important; }
+  body { background: #fff; }
+}

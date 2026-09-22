@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { CornerBrackets } from "@/components/motif/marks";
 import { t } from "@/lib/copy";
 import { siteUrl } from "@/lib/brand";
 import type { Passport } from "@/lib/types";
@@ -13,9 +12,11 @@ const issuedOn = (iso: string) =>
         year: "numeric",
     });
 
-/** The passport as an artefact: a woven-paper record card, bilingual rows,
- *  corner brackets for a frame, and a verify link you can read off a screen
- *  or a print. */
+/**
+ * The passport as an artefact: a numbered record card. The id is set in the
+ * data register so it reads as something you could read out loud, quote, or
+ * check against a register — which is the whole point of a passport.
+ */
 export function PassportCard({
     passport,
     record,
@@ -26,74 +27,79 @@ export function PassportCard({
     const revoked = passport.status === "revoked";
 
     return (
-        <div className="cloth relative rounded-xl border border-border bg-card p-6 shadow-[0_2px_10px_rgba(32,30,29,.05)]">
-            <CornerBrackets
-                aria-hidden
-                className="pointer-events-none absolute inset-2 h-[calc(100%-1rem)] w-[calc(100%-1rem)] text-stone"
-            />
-
-            <div className="relative flex flex-wrap items-baseline justify-between gap-3">
-                <div className="eyebrow">{revoked ? "Dicabut" : "Paspor"}</div>
+        <article className="cloth overflow-hidden rounded-lg bg-card shadow-[var(--ring)]">
+            {record?.image && (
+                <div className="border-b border-border bg-ink">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                        src={record.image}
+                        alt={`Lembar jejak ${record.code}`}
+                        className="h-28 w-full object-cover object-top sm:h-32"
+                        draggable={false}
+                    />
+                </div>
+            )}
+            <header className="flex items-start justify-between gap-4 border-b border-border px-5 py-4">
+                <div>
+                    <div className="eyebrow">{revoked ? "Dicabut" : "Paspor"}</div>
+                    <p className="data mt-2 text-[15px] text-ink">{passport.id}</p>
+                </div>
                 <Badge variant={revoked ? "default" : "accent"}>
-                    {revoked ? "Dicabut" : "Terbit sekali"}
+                    {revoked ? "Dicabut" : "Terbit"}
                 </Badge>
+            </header>
+
+            <div className="px-5 py-4">
+                <p className="text-[19px] leading-tight">{passport.holder}</p>
+                {passport.outlet && (
+                    <p className="text-[15px] text-muted-foreground">{passport.outlet}</p>
+                )}
+
+                <dl className="mt-4">
+                    <Row
+                        label={t.recordEyebrow}
+                        value={record ? record.title.split(" · ")[0] : passport.code}
+                    />
+                    {record?.subtitle && <Row label={t.fieldOrigin} value={record.subtitle} />}
+                    <Row
+                        label="Urutan"
+                        value={`${passport.serial} / ${record?.supply ?? "—"}`}
+                    />
+                    <Row label={t.claimedIssued} value={issuedOn(passport.issuedAt)} />
+                    {passport.tags?.length ? (
+                        <Row label={t.tagRead} value={passport.tags.join(", ")} />
+                    ) : null}
+                </dl>
             </div>
 
-            <h3 className="display relative mt-3 text-2xl">{passport.id}</h3>
-
-            <div className="relative mt-5 space-y-0 text-sm">
-                <Row label={t.claimedHolder} value={passport.holder} />
-                {passport.outlet && <Row label="Lembaga" value={passport.outlet} />}
-                <Row
-                    label={t.recordEyebrow}
-                    value={
-                        record
-                            ? `${record.title.split(" · ")[0]} · ${passport.code}`
-                            : passport.code
-                    }
-                />
-                {record?.subtitle && <Row label={t.fieldOrigin} value={record.subtitle} />}
-                <Row
-                    label="Urutan"
-                    value={`${passport.serial} / ${record?.supply ?? "—"}`}
-                />
-                <Row label={t.claimedIssued} value={issuedOn(passport.issuedAt)} />
-                {passport.tags?.length ? (
-                    <Row label={t.tagRead} value={passport.tags.join(", ")} />
-                ) : null}
-            </div>
-
-            <div className="relative mt-5 flex flex-wrap gap-5 border-t border-border pt-4">
+            <footer className="flex flex-wrap items-center gap-5 border-t border-border px-5 py-3.5">
                 <Link
                     href={`/verify/${passport.id}`}
-                    className="text-[12px] uppercase tracking-[.18em]"
+                    className="text-[14px] font-medium text-ink hover:text-bt-red"
                 >
                     Periksa paspor →
                 </Link>
                 {record && (
                     <Link
                         href={`/record/${record.code}`}
-                        className="text-[12px] uppercase tracking-[.18em]"
+                        className="text-[14px] text-muted-foreground hover:text-ink"
                     >
                         Baca jejaknya →
                     </Link>
                 )}
-            </div>
-
-            <p className="relative mt-4 text-[12px] uppercase tracking-[.12em] text-muted-foreground">
-                {siteUrl.replace(/^https?:\/\//, "")}/verify/{passport.id}
-            </p>
-        </div>
+                <span className="data ml-auto hidden text-muted-foreground sm:inline">
+                    {siteUrl.replace(/^https?:\/\//, "")}/verify/{passport.id}
+                </span>
+            </footer>
+        </article>
     );
 }
 
 function Row({ label, value }: { label: string; value: string }) {
     return (
         <div className="flex items-baseline justify-between gap-4 border-t border-border py-2.5 first:border-t-0">
-            <span className="text-[11px] uppercase tracking-[.18em] text-muted-foreground">
-                {label}
-            </span>
-            <span className="text-right font-medium">{value}</span>
+            <dt className="label">{label}</dt>
+            <dd className="num text-right text-[16px]">{value}</dd>
         </div>
     );
 }

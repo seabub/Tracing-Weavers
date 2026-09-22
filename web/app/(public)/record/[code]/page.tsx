@@ -1,20 +1,37 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { attr, getRecord } from "@/lib/records";
+import { attr, getRecord, recordVisual } from "@/lib/records";
 import { passportStore } from "@/lib/store";
 import { currentIdentity } from "@/lib/session";
 import { resolveTag } from "@/lib/tags";
 import { t } from "@/lib/copy";
 import { PassportClaim } from "@/components/passport/PassportClaim";
-import { RecordTraits } from "@/components/records/RecordTraits";
 import { PassportCard } from "@/components/passport/PassportCard";
+import { ClaimBar } from "@/components/passport/claim-bar";
+import { RecordTraits } from "@/components/records/RecordTraits";
 import { ClothTabs } from "@/components/cloth-tabs";
 import { JourneyStrip } from "@/components/journey-strip";
-import { Badge } from "@/components/ui/badge";
-import { ThreadRule, CornerBrackets } from "@/components/motif/marks";
-
+import { CornerBrackets, ThreadRule } from "@/components/motif/marks";
 export const dynamic = "force-dynamic";
 
+/* The fact table of a record: Indonesian label, English gloss, and the source
+   attribute. Same order as the artwork, so the card and the page agree. */
+const FACTS: [string, string][] = [
+    ["Penenun · Maker", "Maker"],
+    ["Asal · Origin", "Origin"],
+    ["Bahan · Material", "Material"],
+    ["Teknik · Technique", "Technique"],
+    ["Pewarna · Dye", "Dye"],
+    ["Lama di alat tenun · Weeks", "Weeks on the loom"],
+    ["Kali celup · Dye baths", "Dye baths"],
+];
+
+/**
+ * LEARN surface with one Configure action: where an NFC tap lands, on a phone,
+ * one-handed. The artwork leads (it is the object), the facts follow as
+ * hairline rows, and the claim is reachable by thumb. On desktop the cloth
+ * stays put while the story scrolls beside it.
+ */
 export default async function RecordPage({
     params,
     searchParams,
@@ -44,124 +61,143 @@ export default async function RecordPage({
           )
         : undefined;
 
+    const maker = String(attr(record, "Maker") ?? record.title.split(" · ")[0]);
     const step = attr(record, "Journey step");
+    const soldOut = remaining <= 0;
 
     return (
-        <>
-            <Link
-                href="/"
-                className="mb-8 inline-flex items-center text-[12px] uppercase tracking-[.18em] text-muted-foreground hover:text-bt-red"
-            >
-                ← {t.backToRecords}
-            </Link>
-
-            {tagCode && (
-                <div className="mb-6 flex flex-wrap items-center gap-3 rounded-lg border border-border bg-card px-4 py-3">
-                    <Badge variant="accent">{t.tagRead}</Badge>
-                    <span className="text-sm">
-                        {tagCode}
+        <div className={mine ? undefined : "pb-28 lg:pb-0"}>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+                <Link
+                    href="/"
+                    className="text-[14px] text-muted-foreground hover:text-ink"
+                >
+                    ← {t.backToRecords}
+                </Link>
+                {tagCode && (
+                    <span className="data text-bt-red">
+                        {t.tagRead}: {tagCode}
                         {tagEntry?.position ? ` · ${tagEntry.position}` : ""}
                     </span>
-                </div>
-            )}
+                )}
+            </div>
 
-            <div className="grid gap-10 md:grid-cols-2">
-                {/* ── the cloth ── */}
-                <div>
-                    <div className="relative overflow-hidden rounded-xl border border-border bg-white">
+            <div className="mt-6 grid gap-10 lg:grid-cols-2 lg:gap-14">
+                {/* the cloth, and what it is made of */}
+                <div className="lg:sticky lg:top-24 lg:self-start">
+                    <figure className="relative overflow-hidden rounded-xl bg-ink shadow-[var(--ring)]">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                            src={record.image}
+                            src={recordVisual(record)}
                             alt={record.title}
-                            className="aspect-square w-full object-cover"
+                            className="aspect-4/5 w-full object-cover"
                             draggable={false}
                         />
-                        <CornerBrackets className="pointer-events-none absolute inset-3 h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)] text-white/70" />
-                    </div>
+                        <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/95 via-ink/55 to-transparent px-5 pt-24 pb-6">
+                            <div className="data text-[13px] text-salmon">{record.code}</div>
+                            <div className="display mt-2 text-[clamp(1.7rem,6vw,2.15rem)] text-white">
+                                {maker}
+                            </div>
+                            <div className="mt-2 text-[15px] text-white/75">
+                                {String(attr(record, "Origin") ?? "")}
+                                {record.supply > 1
+                                    ? ` · ${t.supplyShared.replace("{n}", String(record.supply))}`
+                                    : ` · ${t.supplyUnique}`}
+                            </div>
+                        </figcaption>
+                    </figure>
+                    {record.photoCredit && (
+                        <p className="mt-3 text-[13px] text-ink-2">
+                            Foto: {record.photoCredit}
+                        </p>
+                    )}
 
-                    <div className="mt-6">
-                        <ClothTabs
-                            items={[
-                                {
-                                    id: "bahan",
-                                    label: "Bahan",
-                                    gloss: "Material",
-                                    body: (
-                                        <>
-                                            <strong className="font-medium text-foreground">
-                                                {String(attr(record, "Material") ?? "—")}
-                                            </strong>{" "}
-                                            — kapas tumbuh di kebun komunitas,
-                                            dipintal dengan tangan, diwarnai tanpa
-                                            benang sintetis.
-                                        </>
-                                    ),
-                                },
-                                {
-                                    id: "teknik",
-                                    label: "Teknik",
-                                    gloss: "Technique",
-                                    body: (
-                                        <>
-                                            <strong className="font-medium text-foreground">
-                                                {String(attr(record, "Technique") ?? "—")}
-                                            </strong>{" "}
-                                            — benang lusi diikat dan dicelup
-                                            sebelum ditenun, sehingga polanya
-                                            muncul saat kainnya jadi. Satu
-                                            penenun, satu alat tenun, satu helai.
-                                        </>
-                                    ),
-                                },
-                                {
-                                    id: "motif",
-                                    label: "Motif",
-                                    gloss: "Apa yang motif boleh ceritakan",
-                                    body: (
-                                        <>
-                                            Motif ini dipakai di upacara keluarga.
-                                            Komunitas yang memutuskan bagian mana
-                                            yang boleh dicatat dan ditampilkan;
-                                            sebagian maknanya tetap tinggal bersama
-                                            penenun.
-                                        </>
-                                    ),
-                                },
-                            ]}
-                        />
-                    </div>
+                    <ClothTabs
+                        className="mt-6"
+                        items={[
+                            {
+                                id: "bahan",
+                                label: "Bahan",
+                                gloss: "Material",
+                                body: (
+                                    <>
+                                        <span className="text-ink">
+                                            {String(attr(record, "Material") ?? "—")}
+                                        </span>{" "}
+                                        — kapas tumbuh di kebun komunitas, dipintal
+                                        dengan tangan, diwarnai tanpa benang sintetis.
+                                    </>
+                                ),
+                            },
+                            {
+                                id: "teknik",
+                                label: "Teknik",
+                                gloss: "Technique",
+                                body: (
+                                    <>
+                                        <span className="text-ink">
+                                            {String(attr(record, "Technique") ?? "—")}
+                                        </span>{" "}
+                                        — benang lusi diikat dan dicelup sebelum
+                                        ditenun, sehingga polanya muncul saat kainnya
+                                        jadi. Satu penenun, satu alat tenun, satu helai.
+                                    </>
+                                ),
+                            },
+                            {
+                                id: "motif",
+                                label: "Motif",
+                                gloss: "Apa yang motif boleh ceritakan",
+                                body: (
+                                    <>
+                                        Motif ini dipakai di upacara keluarga.
+                                        Komunitas yang memutuskan bagian mana yang
+                                        boleh dicatat dan ditampilkan; sebagian
+                                        maknanya tetap tinggal bersama penenun.
+                                    </>
+                                ),
+                            },
+                        ]}
+                    />
                 </div>
 
-                {/* ── the record ── */}
-                <div className="space-y-10">
-                    <div>
-                        <div className="flex items-baseline justify-between gap-4">
-                            <span className="eyebrow">{record.collection ?? "Jejak"}</span>
-                            <span className="footnote">{record.code}</span>
-                        </div>
-                        <h1 className="display mt-4 text-3xl sm:text-4xl">{record.title}</h1>
+                {/* the story, the facts, the action */}
+                <div className="space-y-9">
+                    <header>
+                        <div className="eyebrow">{record.collection ?? "Jejak"}</div>
+                        <h1 className="mt-3">{record.title.split(" · ")[0]}</h1>
                         {record.subtitle && (
-                            <p className="mt-3 text-[13px] uppercase tracking-[.14em] text-muted-foreground">
+                            <p className="mt-2 text-[14px] uppercase tracking-[.14em] text-muted-foreground">
                                 {record.subtitle}
                             </p>
                         )}
-                        <p className="mt-5 text-base text-muted-foreground">
+                        <p className="mt-4 max-w-[58ch] text-[17px] text-muted-foreground">
                             {record.description}
                         </p>
-                    </div>
+                    </header>
 
-                    <dl className="grid grid-cols-2 gap-x-8">
-                        <Field label={t.fieldMaker} value={String(attr(record, "Maker") ?? "—")} />
-                        <Field label={t.fieldOrigin} value={String(attr(record, "Origin") ?? "—")} />
-                        <Field
-                            label="Kuota"
-                            value={
-                                record.supply > 1
-                                    ? t.supplyShared.replace("{n}", String(record.supply))
-                                    : t.supplyUnique
-                            }
-                        />
-                        <Field label={t.issued} value={String(issued.length)} />
+                    <dl>
+                        {FACTS.map(([label, key]) => {
+                            const value = attr(record, key);
+                            if (value === undefined) return null;
+                            return (
+                                <div
+                                    key={key}
+                                    className="flex items-baseline justify-between gap-6 border-t border-border py-3"
+                                >
+                                    <dt className="label">{label}</dt>
+                                    <dd className="num text-right text-[17px]">
+                                        {String(value)}
+                                    </dd>
+                                </div>
+                            );
+                        })}
+                        <div className="flex items-baseline justify-between gap-6 border-t border-border py-3">
+                            <dt className="label">Sudah terbit</dt>
+                            <dd className="num text-right text-[17px]">
+                                {issued.length} / {record.supply}
+                            </dd>
+                        </div>
                     </dl>
 
                     {mine ? (
@@ -181,29 +217,58 @@ export default async function RecordPage({
                     )}
 
                     <RecordTraits attributes={record.attributes} />
+
+                    {/* the record sheet: what print, QR and the passport carry */}
+                    <section className="rounded-lg bg-card p-4 shadow-[var(--ring)]">
+                        <div className="flex items-baseline justify-between gap-4">
+                            <h2 className="eyebrow">Lembar jejak · Record sheet</h2>
+                            <a
+                                href={record.image}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-[13px] text-muted-foreground hover:text-ink"
+                            >
+                                Buka untuk cetak →
+                            </a>
+                        </div>
+                        <div className="mt-3 overflow-hidden rounded-md bg-ink">
+                            <div className="relative">
+                                <CornerBrackets
+                                    aria-hidden
+                                    className="pointer-events-none absolute inset-2 h-[calc(100%-1rem)] w-[calc(100%-1rem)] text-white/45"
+                                />
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src={record.image}
+                                    alt={`Lembar jejak ${record.code}`}
+                                    className="w-full"
+                                    draggable={false}
+                                />
+                            </div>
+                        </div>
+                        <p className="mt-2 text-[13px] text-muted-foreground">
+                            Lembar ini yang tercetak di kemasan, di-encode jadi QR, dan
+                            menempel di paspor sebagai bukti jejak.
+                        </p>
+                    </section>
                 </div>
             </div>
 
-            {/* ── where this piece sits in the three-year path ── */}
+            {/* where this piece sits in the three-year path */}
             <section className="mt-16">
                 <ThreadRule className="h-2 w-full text-stone" aria-hidden />
-                <div className="mt-10">
+                <div className="mt-8">
                     <div className="eyebrow">{t.journeyEyebrow}</div>
-                    <h2 className="display mt-3 text-2xl">{t.journeyTitle}</h2>
-                    <JourneyStrip activeStep={step ? String(step) : undefined} className="mt-8" />
+                    <h2 className="mt-3">{t.journeyTitle}</h2>
+                    <JourneyStrip
+                        activeStep={step ? String(step) : undefined}
+                        className="mt-6"
+                    />
                 </div>
             </section>
-        </>
-    );
-}
 
-function Field({ label, value }: { label: string; value: string }) {
-    return (
-        <div className="border-t border-border py-3">
-            <dt className="text-[11px] uppercase tracking-[.18em] text-muted-foreground">
-                {label}
-            </dt>
-            <dd className="mt-1 font-medium">{value}</dd>
+            {/* thumb-reachable action, phone only, only while it is useful */}
+            {!mine && <ClaimBar remaining={remaining} soldOut={soldOut} />}
         </div>
     );
 }

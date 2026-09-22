@@ -1,143 +1,157 @@
+import Link from "next/link";
 import { records } from "@/lib/records";
 import { tagCount } from "@/lib/tags";
 import { brand } from "@/lib/brand";
 import { t } from "@/lib/copy";
 import RecordGrid from "@/components/records/RecordGrid";
 import { JourneyStrip } from "@/components/journey-strip";
-import { ThreadRule, WarpField, ValueLoop } from "@/components/motif/marks";
+import { ThreadRule, WarpField } from "@/components/motif/marks";
+import { Button } from "@/components/ui/button";
 
-/* The natural dyes the weavers actually use — the brand's reserved data
-   colours, so nothing here is decoration: each swatch names a dyestuff. */
+/* The four dyestuffs the weavers actually use — the brand's reserved dye
+   colours, so each swatch is a material, not a decoration. */
 const DYES = [
-    { name: "Nila", en: "Indigo leaf", hex: "#2B3A67", note: "daun indigo, direndam berhari-hari" },
-    { name: "Mengkudu", en: "Morinda root", hex: "#AE1800", note: "akar mengkudu, merah yang tahan lama" },
+    { name: "Nila", en: "Indigo", hex: "#2B3A67", note: "daun indigo, direndam berhari-hari" },
+    { name: "Mengkudu", en: "Morinda", hex: "#AE1800", note: "akar mengkudu, merah yang tahan lama" },
     { name: "Kunyit", en: "Turmeric", hex: "#ECA406", note: "kunyit, kuning hangat" },
-    { name: "Tanah", en: "Clay & bark", hex: "#F29A6A", note: "tanah liat dan kulit kayu" },
+    { name: "Tanah", en: "Clay", hex: "#F29A6A", note: "tanah liat dan kulit kayu" },
 ];
 
+/**
+ * Explore surface: a compact masthead that frames the catalogue, then the
+ * records. One ink chapter below carries what a passport is and where the
+ * seven steps go — chapters, not a pile of equal-weight sections.
+ */
 export default function Home() {
     return (
         <>
-            {/* ── hero: ink ground, warp field as the quiet ground ── */}
-            <section className="ink-band cloth relative overflow-hidden rounded-2xl px-6 py-14 sm:px-12 sm:py-20" data-theme="dark">
-                <WarpField className="pointer-events-none absolute inset-x-0 top-0 h-full w-full text-white/12" />
-                <div className="relative max-w-3xl">
-                    <div className="eyebrow rise">{t.homeEyebrow}</div>
-                    <h1 className="display rise mt-5 text-4xl sm:text-6xl" style={{ ["--i" as string]: "1" }}>
-                        {t.homeTitleA} <span className="text-gradient">{t.homeTitleB}</span>.
+            {/* masthead — a photo band with a scrim, framing the catalogue */}
+            <section
+                className="relative mt-6 overflow-hidden rounded-xl bg-ink"
+                data-theme="dark"
+            >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                    src="/imagery/tenun-hanging.jpg"
+                    alt=""
+                    aria-hidden
+                    className="absolute inset-0 h-full w-full object-cover"
+                    draggable={false}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/78 to-ink/40" />
+                <WarpField className="pointer-events-none absolute inset-0 h-full w-full text-white/8" />
+
+                <div className="relative max-w-2xl px-6 py-14 sm:px-10 sm:py-16">
+                    <div className="eyebrow">{t.homeEyebrow}</div>
+                    <h1 className="mt-4 text-[clamp(2rem,7vw,3rem)] text-white">
+                        {t.homeTitleA} <span className="text-salmon">{t.homeTitleB}</span>.
                     </h1>
-                    <p
-                        className="rise mt-6 max-w-[56ch] text-lg text-white/75"
-                        style={{ ["--i" as string]: "2" }}
-                    >
+                    <p className="mt-4 max-w-[52ch] text-[17px] text-white/80">
                         {t.homeLead}
                     </p>
-                    <div
-                        className="rise mt-9 flex flex-wrap gap-3"
-                        style={{ ["--i" as string]: "3" }}
-                    >
-                        <a
-                            href="/scan"
-                            className="pressable rounded-lg border border-salmon bg-salmon px-6 py-3 text-[13px] font-medium uppercase tracking-[.12em] text-ink"
-                        >
-                            {t.readTag}
-                        </a>
-                        <a
+                    <div className="mt-7 flex flex-wrap items-center gap-3">
+                        <Link href="/scan">
+                            <Button variant="inverse">{t.readTag}</Button>
+                        </Link>
+                        <Link
                             href="/login"
-                            className="pressable rounded-lg border border-white/45 px-6 py-3 text-[13px] font-medium uppercase tracking-[.12em] text-white"
+                            className="text-[15px] text-white/75 underline decoration-white/30 underline-offset-4 hover:text-white"
                         >
                             {t.openPassport}
-                        </a>
+                        </Link>
                     </div>
-                    <p className="footnote mt-8 text-white/50">
-                        {records.length} jejak · {tagCount} {t.tagsCount} · Adonara · Lembata · Manggarai
-                    </p>
                 </div>
             </section>
 
-            {/* ── the records ── */}
+            {/* the catalogue */}
             <section className="mt-14">
                 <div className="mb-6 flex items-end justify-between gap-4 border-b border-border pb-3">
                     <div>
                         <div className="eyebrow">{t.recordsEyebrow}</div>
-                        <h2 className="display mt-2 text-2xl">{t.recordsTitle}</h2>
+                        <h2 className="mt-2">{t.recordsTitle}</h2>
                     </div>
-                    <span className="footnote hidden sm:block">
-                        {records.length} {t.recordsCount}
+                    <span className="data shrink-0 pb-1 text-muted-foreground">
+                        {records.length} {t.recordsCount} · {tagCount} {t.tagsCount}
                     </span>
                 </div>
                 <RecordGrid records={records} />
             </section>
 
-            {/* ── the seven steps of the programme ── */}
+            {/* the dyes — data, not tiles */}
             <section className="mt-16">
-                <ThreadRule className="h-2 w-full text-stone" aria-hidden />
-                <div className="mt-10">
-                    <div className="eyebrow">{t.journeyEyebrow}</div>
-                    <h2 className="display mt-3 max-w-[26ch] text-3xl">
-                        {t.journeyTitle}
-                    </h2>
-                    <p className="mt-4 max-w-[56ch] text-base text-muted-foreground">
-                        {t.journeyLead}
+                <div className="flex flex-wrap items-baseline justify-between gap-3">
+                    <div className="eyebrow">{t.dyeEyebrow}</div>
+                    <p className="text-[15px] text-muted-foreground">
+                        Warna di halaman ini berasal dari pewarna penenun.
                     </p>
-                    <JourneyStrip className="mt-10" />
                 </div>
-            </section>
-
-            {/* ── natural dyes: the colours of this page have origins ── */}
-            <section className="mt-16 rounded-2xl border border-border bg-card p-6 sm:p-10">
-                <div className="flex flex-wrap items-end justify-between gap-4">
-                    <div>
-                        <div className="eyebrow">{t.dyeEyebrow}</div>
-                        <p className="mt-3 max-w-[56ch] text-base text-muted-foreground">
-                            {t.dyeLead}
-                        </p>
-                    </div>
-                    <ValueLoop className="h-10 w-28 text-stone" aria-hidden />
-                </div>
-
-                <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                    {DYES.map((dye, i) => (
-                        <li key={dye.name} className="rise" style={{ ["--i" as string]: String(i) }}>
-                            <div
-                                className="h-16 w-full rounded-md border border-border"
-                                style={{ background: dye.hex }}
+                <ul className="mt-4 grid gap-x-7 gap-y-3 sm:grid-cols-2 lg:grid-cols-4">
+                    {DYES.map((dye) => (
+                        <li key={dye.name} className="flex items-center gap-3">
+                            <span
                                 aria-hidden
+                                className="h-9 w-9 shrink-0 rounded-sm shadow-[var(--ring)]"
+                                style={{ background: dye.hex }}
                             />
-                            <div className="display mt-3 text-lg">{dye.name}</div>
-                            <div className="text-[11px] uppercase tracking-[.18em] text-muted-foreground">
-                                {dye.en}
-                            </div>
-                            <p className="mt-2 text-sm text-muted-foreground">{dye.note}</p>
+                            <span className="min-w-0">
+                                <span className="block text-[17px] leading-tight">
+                                    {dye.name}
+                                    <span className="data ml-2 text-muted-foreground">
+                                        {dye.en}
+                                    </span>
+                                </span>
+                                <span className="block text-[14px] leading-snug text-muted-foreground">
+                                    {dye.note}
+                                </span>
+                            </span>
                         </li>
                     ))}
                 </ul>
             </section>
 
-            {/* ── what a passport is, and is not ── */}
-            <section className="mt-16">
-                <div className="eyebrow">{t.beforeEyebrow}</div>
-                <h2 className="display mt-3 max-w-[26ch] text-3xl">{t.beforeTitle}</h2>
+            {/* chapter: what a passport is, and where the seven steps go */}
+            <section
+                className="ink-band cloth mt-16 rounded-xl px-6 py-12 sm:px-10"
+                data-theme="dark"
+            >
+                <div className="grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+                    <div>
+                        <div className="eyebrow">{t.beforeEyebrow}</div>
+                        <h2 className="mt-3 max-w-[22ch] text-white">{t.beforeTitle}</h2>
 
-                <div className="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2">
-                    {t.explain.map((item, i) => (
-                        <div
-                            key={item.title}
-                            className="rise border-t border-border pt-4"
-                            style={{ ["--i" as string]: String(i) }}
-                        >
-                            <div className="text-[11px] uppercase tracking-[.2em] text-bt-red">
-                                {item.title}
-                            </div>
-                            <p className="mt-3 text-base text-muted-foreground">{item.body}</p>
-                        </div>
-                    ))}
+                        <dl className="mt-8">
+                            {t.explain.map((item) => (
+                                <div
+                                    key={item.title}
+                                    className="border-t border-white/18 py-4"
+                                >
+                                    <dt className="text-[11px] uppercase tracking-[.2em] text-salmon">
+                                        {item.title}
+                                    </dt>
+                                    <dd className="mt-2 text-[16px] leading-relaxed text-white/72">
+                                        {item.body}
+                                    </dd>
+                                </div>
+                            ))}
+                        </dl>
+                    </div>
+
+                    <div>
+                        <div className="eyebrow">{t.journeyEyebrow}</div>
+                        <h2 className="mt-3 max-w-[20ch] text-white">{t.journeyTitle}</h2>
+                        <p className="mt-3 max-w-[46ch] text-[16px] text-white/70">
+                            {t.journeyLead}
+                        </p>
+                        <JourneyStrip className="mt-6" tone="ink" />
+                    </div>
                 </div>
 
-                <p className="footnote mt-10">
-                    {brand} · sasaran yang akan diukur selama tiga tahun, bukan janji
+                <p className="mt-10 border-t border-white/18 pt-4 text-[12px] uppercase tracking-[.12em] text-white/50">
+                    {brand} · sasaran yang diukur selama tiga tahun, bukan janji
                 </p>
             </section>
+
+            <ThreadRule className="mt-16 h-2 w-full text-stone" aria-hidden />
         </>
     );
 }
