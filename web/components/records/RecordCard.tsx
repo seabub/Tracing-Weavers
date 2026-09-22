@@ -20,7 +20,7 @@ export default function RecordCard({
 
     return (
         <article className="rise" style={{ ["--i" as string]: String(index % 6) }}>
-            <Link href={`/record/${record.code}`} className="group block">
+            <Link href={`/record/${encodeURIComponent(record.code)}`} className="group block">
                 <div className="relative overflow-hidden rounded-lg bg-ink shadow-[var(--ring)]">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
