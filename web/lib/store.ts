@@ -58,11 +58,11 @@ async function writeFileStore(data: FileShape) {
         await fs.mkdir(path.dirname(FILE), { recursive: true });
         await fs.writeFile(FILE, `${JSON.stringify(data, null, 2)}\n`, "utf8");
     } catch (cause) {
-        const onReadOnlyHost = Boolean(process.env.VERCEL) || process.env.NODE_ENV === "production";
+        const detail = (cause as Error)?.message ?? "unknown error";
         throw new Error(
-            onReadOnlyHost
-                ? "The passport store is set to `file`, which cannot be written here (a deployed filesystem is read-only). Connect Upstash from Vercel → Storage → Marketplace, then set PASSPORT_STORE=kv and redeploy."
-                : `Could not write ${FILE}: ${(cause as Error)?.message ?? "unknown error"}`,
+            process.env.VERCEL
+                ? "The passport store is set to `file`, which cannot be written on a deployment (Vercel's filesystem is read-only). Connect Upstash from Vercel → Storage → Marketplace, then set PASSPORT_STORE=kv and redeploy."
+                : `Could not write ${FILE}: ${detail}. Locally that usually means the directory is not writable, or PASSPORT_STORE points at kv without the Redis env vars.`,
         );
     }
 }

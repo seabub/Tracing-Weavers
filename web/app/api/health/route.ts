@@ -19,16 +19,14 @@ export const dynamic = "force-dynamic";
 export async function GET() {
     const store = passportStore();
 
-    const kvUrl = Boolean(
-        process.env.KV_REST_API_URL ??
-            process.env.UPSTASH_REDIS_REST_URL ??
-            process.env.STORAGE_URL,
-    );
-    const kvToken = Boolean(
-        process.env.KV_REST_API_TOKEN ??
-            process.env.UPSTASH_REDIS_REST_TOKEN ??
-            process.env.STORAGE_TOKEN,
-    );
+    const URL_NAMES = ["KV_REST_API_URL", "UPSTASH_REDIS_REST_URL", "STORAGE_URL"];
+    const TOKEN_NAMES = ["KV_REST_API_TOKEN", "UPSTASH_REDIS_REST_TOKEN", "STORAGE_TOKEN"];
+
+    /* Report which names are present — never their values. This is what tells
+       you whether the Marketplace integration's prefix matches what we read. */
+    const found = [...URL_NAMES, ...TOKEN_NAMES].filter((name) => Boolean(process.env[name]));
+    const kvUrl = URL_NAMES.some((name) => Boolean(process.env[name]));
+    const kvToken = TOKEN_NAMES.some((name) => Boolean(process.env[name]));
 
     let writable: boolean | "unknown" = "unknown";
     if (store.backend === "file") {
@@ -50,6 +48,11 @@ export async function GET() {
     }
 
     const problems: string[] = [];
+    if (issued === null) {
+        problems.push(
+            "The store was configured but did not answer — check the Redis url/token (open the database in Upstash and confirm it is running).",
+        );
+    }
     if (!signingConfigured()) {
         problems.push("PASSPORT_SIGNING_SECRET is not set — passports cannot be signed.");
     }
@@ -60,7 +63,7 @@ export async function GET() {
     }
     if (store.backend === "kv" && !(kvUrl && kvToken)) {
         problems.push(
-            "PASSPORT_STORE=kv but the Redis REST url/token are missing — connect Upstash and redeploy.",
+            "PASSPORT_STORE=kv but no Redis env var was found. Connect Upstash (Vercel → Storage → Marketplace) and redeploy — or rename the two variables it created to KV_REST_API_URL and KV_REST_API_TOKEN.",
         );
     }
     if (/localhost|127\.0\.0\.1/.test(siteUrl) && process.env.VERCEL) {
@@ -72,7 +75,7 @@ export async function GET() {
     return NextResponse.json({
         ok: problems.length === 0,
         store: { backend: store.backend, writable },
-        kv: { url: kvUrl, token: kvToken },
+        kv: { url: kvUrl, token: kvToken, namesFound: found },
         signing: signingConfigured(),
         site: siteUrl,
         data: { records: records.length, tags: tagCount, passports: issued },
