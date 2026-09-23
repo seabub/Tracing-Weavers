@@ -19,7 +19,6 @@ export const dynamic = "force-dynamic";
 /* The fact table of a record: Indonesian label, English gloss, and the source
    attribute. Same order as the artwork, so the card and the page agree. */
 const FACTS: string[] = [
-    "Maker",
     "Origin",
     "Material",
     "Technique",
@@ -68,7 +67,6 @@ export default async function RecordPage({
           )
         : undefined;
 
-    const maker = String(attr(record, "Maker") ?? record.title.split(" · ")[0]);
     const step = attr(record, "Journey step");
     const soldOut = remaining <= 0;
 
@@ -103,7 +101,7 @@ export default async function RecordPage({
                         <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/95 via-ink/55 to-transparent px-5 pt-24 pb-6">
                             <div className="data text-[13px] text-salmon">{record.code}</div>
                             <div className="display mt-2 text-[clamp(1.7rem,6vw,2.15rem)] text-white">
-                                {maker}
+                                {record.title.split(" · ")[0]}
                             </div>
                             <div className="mt-2 text-[15px] text-white/75">
                                 {String(attr(record, "Origin") ?? "")}

@@ -85,7 +85,6 @@ export const t = {
     issued: "Issued",
     remaining: "Still available",
     tagRead: "Tag read",
-    fieldMaker: "Maker",
     fieldOrigin: "Origin",
     fieldMaterial: "Material",
     fieldTechnique: "Technique",

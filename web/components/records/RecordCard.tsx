@@ -4,7 +4,7 @@ import { attr, recordVisual, type ProductRecord } from "@/lib/records";
 
 /**
  * Explore surface: the artwork does the work, the metadata sits under it in
- * three registers — code (machine), title (display), maker · origin (warm
+ * two registers — code (machine), title (display), origin (warm
  * grey) — and the action is a quiet text link. Four red buttons in a grid is
  * noise; one hairline and an arrow is enough.
  */
@@ -15,7 +15,6 @@ export default function RecordCard({
     record: ProductRecord;
     index?: number;
 }) {
-    const maker = attr(record, "Maker");
     const origin = attr(record, "Origin");
 
     return (
@@ -52,9 +51,9 @@ export default function RecordCard({
                     {record.title.split(" · ")[0]}
                 </h3>
 
-                {(maker || origin) && (
+                {origin && (
                     <p className="mt-1 text-[15px] text-muted-foreground">
-                        {[maker, origin].filter(Boolean).join(" · ")}
+                        {origin}
                     </p>
                 )}
 
