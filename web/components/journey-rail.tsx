@@ -62,15 +62,18 @@ export function JourneyRail({
         });
     }, [index, reduce]);
 
-    /* Auto-play: walk through all seven stages, one every three seconds,
-       restarting from Seed after Flourish.  Stops under reduced motion. */
+    /* Auto-play: walk through all seven stages, one every 2.5 seconds,
+       restarting from Seed after Flourish.  Pauses while the pointer is
+       over the rail (so someone can read a note), stops under reduced
+       motion. */
+    const [paused, setPaused] = useState(false);
     useEffect(() => {
-        if (!autoPlay || reduce) return;
+        if (!autoPlay || reduce || paused) return;
         const timer = setInterval(() => {
             setIndex((prev) => (prev + 1) % n);
-        }, 3000);
+        }, 2500);
         return () => clearInterval(timer);
-    }, [autoPlay, reduce, n]);
+    }, [autoPlay, reduce, paused, n]);
 
     function move(to: number) {
         const next = (to + n) % n;
@@ -103,7 +106,11 @@ export function JourneyRail({
               : "bg-border";
 
     return (
-        <div className={className}>
+        <div
+            className={className}
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+        >
             <div
                 role="tablist"
                 aria-label="The seven stages"
@@ -165,7 +172,7 @@ export function JourneyRail({
                                 <span
                                     className={cn(
                                         "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full transition-[width,height,background-color] duration-[200ms] ease-[cubic-bezier(0.23,1,0.32,1)]",
-                                        on ? "h-3 w-3" : "h-2 w-2",
+                                        on ? "h-4 w-4" : "h-3 w-3",
                                         reached
                                             ? on
                                                 ? ink
