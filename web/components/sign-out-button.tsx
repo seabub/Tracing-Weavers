@@ -9,9 +9,10 @@ import { forgetLocalPassports } from "@/lib/local-passports";
 /**
  * Sign out — and mean it.
  *
- * `forgetLocalPassports` existed but nothing called it, and DELETE /api/session
- * had no button: signing out left the holder's name, email and passport ids in
- * localStorage on a shared phone. Now both cookies and the local copy go.
+ * `forgetLocalPassports` existed but nothing called it, and the DELETE handler
+ * had no button: signing out left the holder's name, email and certificate
+ * ids in localStorage on a shared phone. Now both cookies and the local copy
+ * go.
  */
 export function SignOutButton() {
     const router = useRouter();
@@ -20,7 +21,7 @@ export function SignOutButton() {
     async function signOut() {
         setBusy(true);
         try {
-            await fetch("/api/session", { method: "DELETE" });
+            await fetch("/api/auth", { method: "DELETE" });
         } catch {
             /* Cookie is httpOnly: if the request fails, say so rather than
                pretending the holder is signed out. */
@@ -40,7 +41,7 @@ export function SignOutButton() {
             disabled={busy}
         >
             <LogOut className="h-4 w-4" />
-            <span className="hidden sm:inline">Keluar</span>
+            <span className="hidden sm:inline">Sign out</span>
         </Button>
     );
 }

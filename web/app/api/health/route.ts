@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { promises as fs } from "node:fs";
 import { passportStore } from "@/lib/store";
+import { accountStore } from "@/lib/accounts";
 import { signingConfigured } from "@/lib/passport";
 import { records } from "@/lib/records";
 import { tagCount } from "@/lib/tags";
@@ -47,10 +48,25 @@ export async function GET() {
         issued = null;
     }
 
+    /* Accounts live in their own keyspace but the same backend, so a failing
+       account store is the same class of problem as a failing passport store
+       and belongs in the same report. */
+    let accounts: number | null = null;
+    try {
+        accounts = await accountStore().count();
+    } catch {
+        accounts = null;
+    }
+
     const problems: string[] = [];
     if (issued === null) {
         problems.push(
             "The store was configured but did not answer — check the Redis url/token (open the database in Upstash and confirm it is running).",
+        );
+    }
+    if (accounts === null) {
+        problems.push(
+            "The account store did not answer, so nobody can sign in or claim — same Redis url/token as the passport store.",
         );
     }
     if (!signingConfigured()) {
@@ -78,7 +94,12 @@ export async function GET() {
         kv: { url: kvUrl, token: kvToken, namesFound: found },
         signing: signingConfigured(),
         site: siteUrl,
-        data: { records: records.length, tags: tagCount, passports: issued },
+        data: {
+            records: records.length,
+            tags: tagCount,
+            passports: issued,
+            accounts,
+        },
         problems,
         /* No runtime/version here on purpose: /api/health is public, and the
            node version plus the deployment flag is free reconnaissance. */

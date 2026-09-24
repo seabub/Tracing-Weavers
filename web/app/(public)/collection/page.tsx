@@ -2,80 +2,120 @@ import Link from "next/link";
 import { passportStore } from "@/lib/store";
 import { currentIdentity, heldIds } from "@/lib/session";
 import { records } from "@/lib/records";
-import { t } from "@/lib/copy";
 import { PassportShelf } from "@/components/passport/PassportShelf";
 import { Button } from "@/components/ui/button";
 import type { Passport } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "My passport" };
+export const metadata = { title: "Traces" };
 
-/* OPERATE surface: the things you hold, and the one action that matters
-   (read another tag). No masthead theatre.
-
-   What is listed comes from the signed held-passport cookie — the ids this
-   browser has proved it holds — NOT from whatever email happens to be typed in.
-   That is the difference between a collection and a lookup service for other
-   people's names. */
+/**
+ * Traces — the certificates you hold.
+ *
+ * What is listed is the signed held-passport cookie (the ids this browser has
+ * proved it holds) plus everything issued to the signed-in account. That
+ * distinction is the whole security model: a typed email reads nothing, and
+ * knowing somebody's address does not open their certificates.
+ *
+ * Signed out, this page is a sign-in prompt rather than an empty book —
+ * "no certificates yet" would be a lie for someone who has simply not signed
+ * in on this device.
+ */
 export default async function CollectionPage() {
     const [identity, ids] = await Promise.all([currentIdentity(), heldIds()]);
     const store = passportStore();
-    const found = await Promise.all(ids.map((id) => store.get(id).catch(() => null)));
-    const issued = found.filter((passport): passport is Passport => Boolean(passport));
 
-    /* Only shown when the holder has nothing to show: a sign-in prompt next to a
-       personalized book would be contradictory. */
-    const emptyState = (
-        <div className="space-y-9">
-            {!identity && (
-                <div className="rounded-lg bg-card p-6 shadow-[var(--ring)]">
-                    <div className="eyebrow">{t.signInEyebrow}</div>
-                    <p className="mt-3 text-[17px] text-muted-foreground">
-                        No password, no wallet. Just an email.
+    /* The held cookie is a device convenience, not a claim of ownership: it
+       records "this browser once proved it held this id", which the verify
+       page can set from anyone's link. So a held passport only counts when it
+       belongs to the signed-in account — otherwise saving a friend's
+       certificate to this device would put it in your traces. */
+    const held = (
+        await Promise.all(ids.map((id) => store.get(id).catch(() => null)))
+    ).filter(
+        (p): p is Passport =>
+            p !== null &&
+            (p.email ?? "").trim().toLowerCase() === (identity?.email ?? "\u0000"),
+    );
+
+    const byAccount = identity
+        ? await store.listByHolder(identity.email).catch(() => [] as Passport[])
+        : [];
+
+    const merged = new Map<string, Passport>();
+    for (const passport of [...held, ...byAccount]) merged.set(passport.id, passport);
+    const issued = [...merged.values()].sort((a, b) =>
+        a.issuedAt < b.issuedAt ? 1 : -1,
+    );
+
+    if (!identity) {
+        return (
+            <div className="mx-auto max-w-lg">
+                <header className="border-b border-border pb-5">
+                    <div className="eyebrow">Traces</div>
+                    <h1 className="mt-3">Your certificates</h1>
+                </header>
+                <div className="mt-6 rounded-lg bg-card p-6 shadow-[var(--ring)]">
+                    <p className="text-[15px] text-muted-foreground">
+                        Sign in to see the certificates kept under your account —
+                        one page per cloth you have claimed, bound as a book you
+                        can open anywhere.
                     </p>
-                    <Link href="/login" className="mt-5 inline-block">
-                        <Button size="lg">{t.signIn}</Button>
+                    <Link
+                        href={`/login?next=${encodeURIComponent("/collection")}`}
+                        className="mt-5 inline-block"
+                    >
+                        <Button size="lg">Sign in</Button>
                     </Link>
+                    <p className="mt-4 text-[14px] text-muted-foreground">
+                        No account yet? The same page makes one.
+                    </p>
                 </div>
-            )}
-
-            <div className="rounded-lg px-6 py-14 text-center shadow-[var(--ring)]">
-                <p className="display text-2xl">{t.collectionEmpty}</p>
-                <p className="mx-auto mt-3 max-w-[52ch] text-[17px] text-muted-foreground">
-                    {t.collectionEmptyNote}
-                </p>
             </div>
+        );
+    }
+
+    const emptyState = (
+        <div className="rounded-lg px-6 py-14 text-center shadow-[var(--ring)]">
+            <p className="display text-2xl">No certificates yet</p>
+            <p className="mx-auto mt-3 max-w-[48ch] text-[15px] text-muted-foreground">
+                Claim a cloth and its certificate appears here — one page per
+                weave, kept under {identity.email}.
+            </p>
+            <Link href="/" className="mt-6 inline-block">
+                <Button size="lg">Browse the collection</Button>
+            </Link>
         </div>
     );
 
     return (
         <div className="space-y-9">
             <header className="border-b border-border pb-5">
-                <div className="eyebrow">{t.collectionEyebrow}</div>
-                <h1 className="mt-3">{t.collectionTitle}</h1>
-                <p className="mt-3 max-w-[52ch] text-[17px] text-muted-foreground">
-                    {identity
+                <div className="eyebrow">Traces</div>
+                <h1 className="mt-3">Your certificates</h1>
+                <p className="mt-3 max-w-[52ch] text-[15px] text-muted-foreground">
+                    {issued.length === 0
                         ? `Kept under ${identity.email}.`
-                        : t.collectionSignInNote}
+                        : `${issued.length} certificate${
+                              issued.length === 1 ? "" : "s"
+                          } kept under ${identity.email}. Open the book to read any of them.`}
                 </p>
             </header>
 
             <PassportShelf issued={issued} records={records} emptyState={emptyState} />
 
             {issued.length > 0 && (
-                <Link
-                    href="/scan"
-                    className="inline-block text-[14px] text-muted-foreground hover:text-ink"
-                >
-                    {t.readTag} →
-                </Link>
-            )}
-
-            {identity && (
-                <p className="max-w-[52ch] text-[13px] text-muted-foreground">
-                    A passport issued on another device arrives here once you open its
-                    verification link and press “Save to my collection”.
+                <p className="max-w-[56ch] text-[14px] text-muted-foreground">
+                    A certificate claimed on another device arrives here once you
+                    open its verification link and press “Save to my
+                    collection”.{" "}
+                    <Link
+                        href="/profile"
+                        className="underline underline-offset-2 hover:text-ink"
+                    >
+                        Manage your account →
+                    </Link>
                 </p>
             )}
         </div>

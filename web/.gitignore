@@ -38,3 +38,7 @@ data/tags.csv
 # data/passports.example.json is the tracked shape.
 data/passports.json
 data/passports.json.tmp
+
+# the account store holds password hashes — never commit it either.
+data/accounts.json
+data/accounts.json.tmp
