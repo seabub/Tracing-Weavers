@@ -18,8 +18,9 @@ import { motion, useReducedMotion } from "framer-motion";
  */
 const ITEMS = [
     { href: "/", label: "Records" },
-    { href: "/scan", label: "Tap" },
-    { href: "/collection", label: "Passport" },
+    { href: "/scan", label: "Browse" },
+    { href: "/collection", label: "Traces" },
+    { href: "/profile", label: "Profile" },
 ];
 
 export function NavPills({ className }: { className?: string }) {
@@ -30,7 +31,7 @@ export function NavPills({ className }: { className?: string }) {
         ITEMS.map((item) => item.href)
             .filter((href) => (href === "/" ? path === "/" : path.startsWith(href)))
             .sort((a, b) => b.length - a.length)[0] ??
-        (path.startsWith("/record") || path.startsWith("/t/") ? "/" : "");
+        (path.startsWith("/record") || path.startsWith("/t/") || path.startsWith("/verify") ? "/" : "");
 
     return (
         <nav
