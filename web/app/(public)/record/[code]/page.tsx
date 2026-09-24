@@ -124,6 +124,12 @@ export default async function RecordPage({
                                                 <span className="num text-right text-[15px] text-ink">{String(attr(record, "Size"))}</span>
                                             </div>
                                         )}
+                                        {attr(record, "Displayed at") && (
+                                            <div className="flex items-baseline justify-between gap-4 border-b border-border pb-2">
+                                                <span className="label">Displayed at</span>
+                                                <span className="text-right text-[15px] text-ink">{String(attr(record, "Displayed at"))}</span>
+                                            </div>
+                                        )}
                                         <p className="text-[15px] text-muted-foreground pt-1">
                                             Handwoven in {String(attr(record, "Origin") ?? "Indonesia")}, one thread at a time.
                                         </p>
