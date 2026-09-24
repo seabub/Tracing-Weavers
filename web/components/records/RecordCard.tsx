@@ -37,8 +37,7 @@ export default function RecordCard({
                     )}
                 </div>
 
-                <div className="mt-4 flex items-baseline justify-between gap-3">
-                    <span className="data text-bt-red">{record.code}</span>
+                <div className="mt-4">
                     <span className="text-[13px] text-muted-foreground">
                         {record.collection ?? "Record"}
                     </span>

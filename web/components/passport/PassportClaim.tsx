@@ -20,14 +20,12 @@ export function PassportClaim({
     supply,
     remaining,
     identity,
-    tagCode,
 }: {
     code: string;
     title: string;
     supply: number;
     remaining: number | null;
     identity: { name: string; email: string; outlet?: string } | null;
-    tagCode?: string;
 }) {
     const [name, setName] = useState(identity?.name ?? "");
     const [email, setEmail] = useState(identity?.email ?? "");
@@ -53,7 +51,7 @@ export function PassportClaim({
             const res = await fetch("/api/claim", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ code, name, email, outlet, tag: tagCode }),
+                body: JSON.stringify({ code, name, email, outlet }),
             });
 
             /* Read as text first: an error page (HTML) must not turn into a
@@ -115,7 +113,7 @@ export function PassportClaim({
                         label={t.remaining}
                         value={remaining === null ? "—" : String(Math.max(remaining, 0))}
                     />
-                    {tagCode && <Row label={t.tagRead} value={tagCode} mono />}
+
                 </dl>
 
                 {issued ? (

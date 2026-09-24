@@ -4,7 +4,6 @@ import { currentIdentity, heldIds } from "@/lib/session";
 import { records } from "@/lib/records";
 import { t } from "@/lib/copy";
 import { PassportShelf } from "@/components/passport/PassportShelf";
-import { TagLookupForm } from "@/components/nfc/tag-lookup-form";
 import { Button } from "@/components/ui/button";
 import type { Passport } from "@/lib/types";
 
@@ -46,7 +45,6 @@ export default async function CollectionPage() {
                 <p className="mx-auto mt-3 max-w-[52ch] text-[17px] text-muted-foreground">
                     {t.collectionEmptyNote}
                 </p>
-                <TagLookupForm className="mx-auto mt-6 max-w-sm text-left" />
             </div>
         </div>
     );

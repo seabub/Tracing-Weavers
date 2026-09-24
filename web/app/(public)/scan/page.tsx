@@ -1,33 +1,26 @@
-import { NfcReader } from "@/components/nfc/nfc-reader";
-import { TagLookupForm } from "@/components/nfc/tag-lookup-form";
-import { tagCount } from "@/lib/tags";
-import { siteUrl } from "@/lib/brand";
+import { records } from "@/lib/records";
 import { t } from "@/lib/copy";
 import { ThreadRule, WarpField, WeftCrossing } from "@/components/motif/marks";
-import { Reveal } from "@/components/ui/reveal";
 
-export const metadata = { title: "Read a tag" };
+export const metadata = { title: "Browse" };
 
 const STEPS = [
     {
-        title: "Find the tag",
-        body: "An NTAG213 chip is sewn into the edge of the cloth; a backup QR is on the packaging.",
+        title: "Find a cloth",
+        body: "Every cloth in the exhibition carries a code — look for it on the label beside each piece.",
     },
     {
-        title: "Hold your phone to it",
-        body: "iPhone reads it from the lock screen. Android: turn NFC on, hold, then tap the notification.",
+        title: "Open the record",
+        body: "Browse the gallery or type the code. No app to install, no account needed.",
     },
     {
-        title: "Tap the banner",
-        body: "It is a link to the cloth's record. No app to install, no account.",
-    },
-    {
-        title: "Read it, then claim it",
-        body: "Who wove it, from what, for how long. Put your name on it and the passport is yours.",
+        title: "Read its story",
+        body: "Where it was woven, from what, how long it took, and every hand that shaped it.",
     },
 ];
 
-/* CONFIGURE surface: how to do the one thing, then the two ways to do it. */
+/* How to explore the collection — the tag-technical section is gone because
+   there are no physical NFC tags deployed yet. This is a browse surface. */
 export default function ScanPage() {
     return (
         <div className="mx-auto max-w-3xl">
@@ -37,7 +30,7 @@ export default function ScanPage() {
                     {t.scanTitleA} <span className="text-bt-red">{t.scanTitleB}</span>
                 </h1>
                 <p className="mt-4 max-w-[54ch] text-[17px] text-muted-foreground">
-                    {tagCount} {t.scanLead}
+                    {records.length} cloths, six collections, three districts. One page per weave.
                 </p>
             </header>
 
@@ -61,40 +54,16 @@ export default function ScanPage() {
                 ))}
             </ol>
 
-            <div className="mt-10 grid gap-5">
-                <NfcReader />
-
-                <div className="rounded-lg bg-card p-6 shadow-[var(--ring)]">
-                    <div className="eyebrow">Tag code</div>
-                    <p className="mt-3 text-[17px] text-muted-foreground">
-                        Tag not reading? Type the code printed beside it.
+            <div
+                className="ink-band cloth relative mt-10 overflow-hidden rounded-lg p-6"
+                data-theme="dark"
+            >
+                <WarpField className="pointer-events-none absolute inset-0 h-full w-full text-white/10" />
+                <div className="relative">
+                    <div className="eyebrow">How it works</div>
+                    <p className="mt-3 max-w-[60ch] text-[16px] text-white/75">
+                        Each cloth in the exhibition has a page here. The code on its label opens it — anyone can read it, no sign-in required. If the cloth changes hands, its record travels with it.
                     </p>
-                    <TagLookupForm className="mt-5 max-w-md" />
-                </div>
-
-                <div
-                    className="ink-band cloth relative overflow-hidden rounded-lg p-6"
-                    data-theme="dark"
-                >
-                    <WarpField className="pointer-events-none absolute inset-0 h-full w-full text-white/10" />
-                    <div className="relative">
-                        <div className="eyebrow">For the field team</div>
-                        <p className="mt-3 max-w-[60ch] text-[16px] text-white/75">
-                            One tag, one URL, one line in the tag file.
-                        </p>
-                        <Reveal tone="ink" summary="How to write a tag" className="mt-4">
-                            <p>
-                                Write each tag with{" "}
-                                <code className="data text-salmon">
-                                    {siteUrl}/t/&lt;TAG_CODE&gt;
-                                </code>{" "}
-                                as an NDEF URI, then add its code to{" "}
-                                <code className="data text-salmon">data/tags.json</code>.
-                                The list of URLs comes from{" "}
-                                <code className="data text-salmon">npm run nfc:urls</code>.
-                            </p>
-                        </Reveal>
-                    </div>
                 </div>
             </div>
 

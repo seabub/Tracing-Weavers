@@ -84,7 +84,6 @@ export const t = {
     supplyShared: "up to {n} holders",
     issued: "Issued",
     remaining: "Still available",
-    tagRead: "Tag read",
     fieldOrigin: "Origin",
     fieldMaterial: "Material",
     fieldTechnique: "Technique",
@@ -134,8 +133,8 @@ export const t = {
     verifyProves: "What this page proves",
 
     /* scan */
-    scanEyebrow: "Reading a tag",
-    scanTitleA: "Hold your phone",
-    scanTitleB: "to the edge of the cloth.",
-    scanLead: "registered tags. One tag, one cloth.",
+    scanEyebrow: "Browse the collection",
+    scanTitleA: "One cloth,",
+    scanTitleB: "one page.",
+    scanLead: "cloths registered across six collections.",
 } as const;

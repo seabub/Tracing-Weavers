@@ -3,9 +3,7 @@ import { notFound } from "next/navigation";
 import { attr, getRecord, recordVisual } from "@/lib/records";
 import { passportStore } from "@/lib/store";
 import { currentIdentity } from "@/lib/session";
-import { resolveTag } from "@/lib/tags";
 import { t } from "@/lib/copy";
-import { safeDecode } from "@/lib/safe";
 import { PassportClaim } from "@/components/passport/PassportClaim";
 import { PassportLeaf } from "@/components/passport/passport-leaf";
 import { ClaimBar } from "@/components/passport/claim-bar";
@@ -38,10 +36,10 @@ export default async function RecordPage({
     searchParams,
 }: {
     params: Promise<{ code: string }>;
-    searchParams: Promise<{ tag?: string }>;
+    searchParams?: Promise<{ tag?: string }>;
 }) {
     const { code } = await params;
-    const { tag } = await searchParams;
+
 
     const record = getRecord(code);
     if (!record) notFound();
@@ -55,9 +53,6 @@ export default async function RecordPage({
     const issuedCount = await store.issuableCount(record.code);
     const remaining = Math.max(record.supply - issuedCount, 0);
     const identity = await currentIdentity();
-
-    const tagCode = tag ? safeDecode(tag).trim().toUpperCase() : undefined;
-    const tagEntry = tag ? resolveTag(tag)?.entry : undefined;
 
     const mine = identity
         ? issued.find(
@@ -79,12 +74,7 @@ export default async function RecordPage({
                 >
                     ← {t.backToRecords}
                 </Link>
-                {tagCode && (
-                    <span className="data text-bt-red">
-                        {t.tagRead}: {tagCode}
-                        {tagEntry?.position ? ` · ${tagEntry.position}` : ""}
-                    </span>
-                )}
+
             </div>
 
             <div className="mt-6 grid gap-10 lg:grid-cols-2 lg:gap-14">
@@ -207,7 +197,6 @@ export default async function RecordPage({
                             supply={record.supply}
                             remaining={remaining}
                             identity={identity}
-                            tagCode={tagCode}
                         />
                     )}
 
