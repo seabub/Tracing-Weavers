@@ -50,10 +50,6 @@ export const t = {
             title: "What you get",
             body: "A record anyone can verify, and a thread you can follow.",
         },
-        {
-            title: "What it is not",
-            body: "Not ownership, not a token, not an investment. Just a trace.",
-        },
     ],
 
         /* The seven stages of the programme. `id_label` is what is shown, and `id` is

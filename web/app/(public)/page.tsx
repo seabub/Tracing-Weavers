@@ -131,7 +131,7 @@ export default function Home() {
 
                 <JourneyRail className="mt-5" tone="ink" autoPlay />
 
-                <dl className="mt-8 grid gap-x-10 gap-y-4 sm:grid-cols-2">
+                <dl className="mt-8 grid gap-x-10 gap-y-4 sm:grid-cols-3">
                     {t.explain.map((item) => (
                         <div key={item.title} className="border-t border-white/18 pt-3">
                             <dt className="text-[11px] tracking-[.2em] uppercase text-salmon">

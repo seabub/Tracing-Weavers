@@ -134,7 +134,7 @@ export function ClothTabs({
                         {items[index].gloss}
                     </div>
                 )}
-                <div className={cn("mt-2 text-[17px] leading-relaxed text-muted-foreground")}>
+                <div className={cn("mt-2 text-[15px] leading-relaxed text-muted-foreground")}>
                     {items[index].body}
                 </div>
             </motion.div>

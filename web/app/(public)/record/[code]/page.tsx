@@ -7,11 +7,9 @@ import { t } from "@/lib/copy";
 import { PassportClaim } from "@/components/passport/PassportClaim";
 import { PassportLeaf } from "@/components/passport/passport-leaf";
 import { ClaimBar } from "@/components/passport/claim-bar";
-import { RecordTraits } from "@/components/records/RecordTraits";
 import { ClothTabs } from "@/components/cloth-tabs";
 import { JourneyRail } from "@/components/journey-rail";
 import { ThreadRule } from "@/components/motif/marks";
-import { Reveal } from "@/components/ui/reveal";
 export const dynamic = "force-dynamic";
 
 
@@ -114,10 +112,15 @@ export default async function RecordPage({
                                             <span className="label">Technique</span>
                                             <span className="num text-right text-[15px] text-ink">{String(attr(record, "Technique") ?? "Not recorded")}</span>
                                         </div>
-                                        <div className="flex items-baseline justify-between gap-4 border-b border-border pb-2">
-                                            <span className="label">Dye</span>
-                                            <span className="num text-right text-[15px] text-ink">{String(attr(record, "Dye") ?? String(attr(record, "Material") ?? "Natural"))}</span>
-                                        </div>
+                                        {/* Dye only when the record actually carries
+                                            one: falling back to Material printed the
+                                            same value twice. */}
+                                        {attr(record, "Dye") && (
+                                            <div className="flex items-baseline justify-between gap-4 border-b border-border pb-2">
+                                                <span className="label">Dye</span>
+                                                <span className="num text-right text-[15px] text-ink">{String(attr(record, "Dye"))}</span>
+                                            </div>
+                                        )}
                                         {attr(record, "Size") && (
                                             <div className="flex items-baseline justify-between gap-4 border-b border-border pb-2">
                                                 <span className="label">Size</span>
@@ -159,6 +162,12 @@ export default async function RecordPage({
                                             <span className="label">Collection</span>
                                             <span className="num text-right text-[15px] text-ink">{record.collection}</span>
                                         </div>
+                                        <div className="flex items-baseline justify-between gap-4 border-b border-border pb-2">
+                                            <span className="label">Journey stage</span>
+                                            <span className="text-right text-[15px] text-ink">
+                                                {step ? String(step) : "Not recorded"}
+                                            </span>
+                                        </div>
                                         <p className="text-[15px] text-muted-foreground pt-1">
                                             Part of the Tracing Weavers programme — Indonesia Heritage for Human Flourishing. ICM × TBN Indonesia × Torajamelo.
                                         </p>
@@ -175,11 +184,11 @@ export default async function RecordPage({
                         <div className="eyebrow">{record.collection ?? "Jejak"}</div>
                         <h1 className="mt-3">{record.title.split(" · ")[0]}</h1>
                         {record.subtitle && (
-                            <p className="mt-2 text-[14px] uppercase tracking-[.14em] text-muted-foreground">
+                            <p className="mt-2 text-[15px] uppercase tracking-[.14em] text-muted-foreground">
                                 {record.subtitle}
                             </p>
                         )}
-                        <p className="mt-4 max-w-[58ch] text-[17px] text-muted-foreground">
+                        <p className="mt-4 max-w-[58ch] text-[15px] text-muted-foreground">
                             {record.description}
                         </p>
                     </header>
@@ -201,9 +210,6 @@ export default async function RecordPage({
                         />
                     )}
 
-                    <Reveal summary="Everything on the record sheet">
-                        <RecordTraits attributes={record.attributes} />
-                    </Reveal>
                 </div>
             </div>
 
