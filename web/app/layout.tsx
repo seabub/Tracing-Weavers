@@ -31,7 +31,7 @@ const caveat = Caveat({
 export const metadata: Metadata = {
     title: { default: brand, template: `%s | ${brand}` },
     description:
-        "A birth record for a handwoven cloth: who wove it, what from, how long it took. Hold your phone to the tag to read it.",
+        "Tracing Weavers — Indonesia Heritage for Human Flourishing. One cloth, one page: trace every thread back to the hands that wove it.",
 };
 
 export default function RootLayout({

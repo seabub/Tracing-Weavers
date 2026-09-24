@@ -18,51 +18,51 @@ export const t = {
     /* shell */
     readTag: "Tap a tag",
     readTagEn: "Read a tag",
-    myPassports: "My passport",
-    openPassport: "Open my passport",
+    myPassports: "My traces",
+    openPassport: "My traces",
     signIn: "Sign in",
-    brandLine: "Seed to Loom",
+    brandLine: "Trace every thread",
 
     /* home — the promise, then the news, then the action */
-    homeEyebrow: "Digital Product Passport · Seed to Loom",
-    homeTitleA: "This cloth",
-    homeTitleB: "has a name",
+    homeEyebrow: "Tracing Weavers · Indonesia Heritage for Human Flourishing",
+    homeTitleA: "Every thread",
+    homeTitleB: "has a story",
     homeLead:
-        "Mama Ina Dida wove it for eleven weeks in Adonara. Hold your phone to the tag, and its birth record comes up.",
+        "From seed to loom, from Adonara to the world. Hold your phone to the tag on any cloth, and trace every hand that shaped it.",
     recordsEyebrow: "Cloth records",
-    recordsTitle: "One cloth. One name.",
+    recordsTitle: "Trace the weave.",
     recordsCount: "records",
     tagsCount: "tags",
 
     /* what it is / is not — the trust block, one line each */
-    beforeEyebrow: "Before you claim",
-    beforeTitle: "A birth record, not a token.",
+    beforeEyebrow: "What this is",
+    beforeTitle: "A trace, not a token.",
     explain: [
         {
             title: "What you claim",
-            body: "One cloth, one page: who wove it, what from, how long it took.",
+            body: "One cloth, one page: trace every hand, every material, every week on the loom.",
         },
         {
             title: "Why it exists",
-            body: "Weavers' names are rarely recorded. This page writes it down.",
+            body: "In Adonara, a weaver's name is rarely written down. Tracing Weavers changes that.",
         },
         {
             title: "What you get",
-            body: "An id, a page anyone can check, and a place in your collection.",
+            body: "A record anyone can verify, and a thread you can follow.",
         },
         {
             title: "What it is not",
-            body: "Not ownership of the cloth, not a token, not an investment. No crypto wallet.",
+            body: "Not ownership, not a token, not an investment. Just a trace.",
         },
     ],
 
         /* The seven stages of the programme. `id_label` is what is shown, and `id` is
        the key that a record's "Journey step" attribute matches on (see
        components/journey-strip.tsx). */
-    journeyEyebrow: "What the record follows",
-    journeyTitle: "Seed to loom, and after.",
+    journeyEyebrow: "The path of a weave",
+    journeyTitle: "Seven stages of a weave.",
     journeyLead:
-        "Three years, seven stages, three districts. Each stage stands on the one before it.",
+        "Three years, seven stages, across Adonara, Lembata and Manggarai. Each stage carries the one before it forward.",
     steps: [
                 { id: "Seed", id_label: "Seed", note: "Cotton planted in community gardens" },
         { id: "Loom", id_label: "Loom", note: "Woven, one length by one weaver" },
@@ -75,7 +75,7 @@ export const t = {
 
     /* the natural dyes — the brand's reserved data palette */
     dyeEyebrow: "Natural dyes",
-    dyeLead: "Four colours, all of them from the weavers' dye pots.",
+    dyeLead: "Four colours from the weavers' dye pots — indigo leaf, morinda root, turmeric, clay.",
 
     /* record page */
     backToRecords: "All records",
@@ -117,11 +117,11 @@ export const t = {
     stayHere: "Stay on this record",
 
     /* collection / verify / login */
-    collectionEyebrow: "My passport",
-    collectionTitle: "Kept under your name",
+    collectionEyebrow: "My traces",
+    collectionTitle: "The threads you follow",
     collectionEmpty: "No passports here yet",
     collectionEmptyNote:
-        "Issue one and its place is already waiting. A passport claimed on another device arrives once you open its verification link and save it.",
+        "Trace a cloth and its record waits here. Claimed on another device? Open the verification link and save it.",
     collectionSignInNote:
         "Sign in with the email you claimed with, so your name is filled in next time.",
     signInEyebrow: "Sign in",

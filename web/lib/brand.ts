@@ -4,7 +4,7 @@ export const siteUrl = (
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
 ).replace(/\/$/, "");
 
-export const brand = process.env.NEXT_PUBLIC_BRAND ?? "Digital Product Passport";
+export const brand = process.env.NEXT_PUBLIC_BRAND ?? "Tracing Weavers";
 
 /** The one URL that goes onto a physical tag. */
 export function tagUrl(tagCode: string) {

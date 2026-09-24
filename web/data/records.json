@@ -9,7 +9,7 @@
       "photo": "/imagery/cloth-hanging.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/1-JM.svg",
-      "collection": "Jejak Masters",
+      "collection": "Heritage Collection",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -43,7 +43,7 @@
       "photo": "/imagery/tenun/2-GW.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/2-GW.svg",
-      "collection": "Gallery Wall",
+      "collection": "Gallery",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -77,7 +77,7 @@
       "photo": "/imagery/tenun/3-GW.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/3-GW.svg",
-      "collection": "Gallery Wall",
+      "collection": "Gallery",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -111,7 +111,7 @@
       "photo": "/imagery/tenun/4-TM.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/4-TM.svg",
-      "collection": "Tenun Masters",
+      "collection": "Weave Archive",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -145,7 +145,7 @@
       "photo": "/imagery/tenun/5-GW.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/5-GW.svg",
-      "collection": "Gallery Wall",
+      "collection": "Gallery",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -179,7 +179,7 @@
       "photo": "/imagery/tenun/6-GW.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/6-GW.svg",
-      "collection": "Gallery Wall",
+      "collection": "Gallery",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -213,7 +213,7 @@
       "photo": "/imagery/tenun/7-TM.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/7-TM.svg",
-      "collection": "Tenun Masters",
+      "collection": "Weave Archive",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -247,7 +247,7 @@
       "photo": "/imagery/tenun/21-JM.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/21-JM.svg",
-      "collection": "Jejak Masters",
+      "collection": "Heritage Collection",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -273,7 +273,7 @@
       "photo": "/imagery/tenun/8-TM.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/8-TM.svg",
-      "collection": "Tenun Masters",
+      "collection": "Weave Archive",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -307,7 +307,7 @@
       "photo": "/imagery/tenun/9-TM.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/9-TM.svg",
-      "collection": "Tenun Masters",
+      "collection": "Weave Archive",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -341,7 +341,7 @@
       "photo": "/imagery/tenun/10-TM.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/10-TM.svg",
-      "collection": "Tenun Masters",
+      "collection": "Weave Archive",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -375,7 +375,7 @@
       "photo": "/imagery/tenun/11-TM.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/11-TM.svg",
-      "collection": "Tenun Masters",
+      "collection": "Weave Archive",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -409,7 +409,7 @@
       "photo": "/imagery/tenun/12-TM.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/12-TM.svg",
-      "collection": "Tenun Masters",
+      "collection": "Weave Archive",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -443,7 +443,7 @@
       "photo": "/imagery/tenun/13-GW.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/13-GW.svg",
-      "collection": "Gallery Wall",
+      "collection": "Gallery",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -477,7 +477,7 @@
       "photo": "/imagery/tenun/14-GW.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/14-GW.svg",
-      "collection": "Gallery Wall",
+      "collection": "Gallery",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -511,7 +511,7 @@
       "photo": "/imagery/tenun/15-JM.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/15-JM.svg",
-      "collection": "Jejak Masters",
+      "collection": "Heritage Collection",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -545,7 +545,7 @@
       "photo": "/imagery/tenun/16-JM.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/16-JM.svg",
-      "collection": "Jejak Masters",
+      "collection": "Heritage Collection",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -579,7 +579,7 @@
       "photo": "/imagery/tenun/18-GW.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/18-GW.svg",
-      "collection": "Gallery Wall",
+      "collection": "Gallery",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -613,7 +613,7 @@
       "photo": "/imagery/tenun/17-GW.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/17-GW.svg",
-      "collection": "Gallery Wall",
+      "collection": "Gallery",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -647,7 +647,7 @@
       "photo": "/imagery/tenun/19-GW.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/19-GW.svg",
-      "collection": "Gallery Wall",
+      "collection": "Gallery",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -681,7 +681,7 @@
       "photo": "/imagery/tenun/20-GW.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/20-GW.svg",
-      "collection": "Gallery Wall",
+      "collection": "Gallery",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -911,7 +911,7 @@
       "photo": "/imagery/tenun/26-TM.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/26-TM.svg",
-      "collection": "Tenun Masters",
+      "collection": "Weave Archive",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
@@ -945,7 +945,7 @@
       "photo": "/imagery/tenun/27-TM.jpg",
       "photoCredit": "[PHOTOGRAPHER · WEAVER'S PERMISSION]",
       "image": "/records/27-TM.svg",
-      "collection": "Tenun Masters",
+      "collection": "Weave Archive",
       "supply": 1,
       "perHolder": 1,
       "attributes": [
