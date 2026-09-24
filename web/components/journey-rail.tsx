@@ -62,18 +62,15 @@ export function JourneyRail({
         });
     }, [index, reduce]);
 
-    /* Auto-play: walk through all seven stages, one every 2.5 seconds,
-       restarting from Seed after Flourish.  Pauses while the pointer is
-       over the rail (so someone can read a note), stops under reduced
-       motion. */
-    const [paused, setPaused] = useState(false);
+    /* Auto-play: walk through all seven stages, one every 2.5 seconds.
+       No pause, no click — purely decorative, the journey tells itself. */
     useEffect(() => {
-        if (!autoPlay || reduce || paused) return;
+        if (!autoPlay || reduce) return;
         const timer = setInterval(() => {
             setIndex((prev) => (prev + 1) % n);
         }, 2500);
         return () => clearInterval(timer);
-    }, [autoPlay, reduce, paused, n]);
+    }, [autoPlay, reduce, n]);
 
     function move(to: number) {
         const next = (to + n) % n;
@@ -106,11 +103,7 @@ export function JourneyRail({
               : "bg-border";
 
     return (
-        <div
-            className={className}
-            onMouseEnter={() => setPaused(true)}
-            onMouseLeave={() => setPaused(false)}
-        >
+        <div className={className}>
             <div
                 role="tablist"
                 aria-label="The seven stages"
@@ -125,19 +118,18 @@ export function JourneyRail({
                     const reached = i <= index;
                     const isRecord = i === here;
                     return (
-                        <button
+                        <span
                             key={s.id}
-                            ref={(el) => {
-                                nodes.current[i] = el;
+                            ref={autoPlay ? undefined : (el) => {
+                                nodes.current[i] = el as HTMLButtonElement | null;
                             }}
-                            type="button"
-                            role="tab"
-                            aria-selected={on}
-                            tabIndex={on ? 0 : -1}
-                            onClick={() => setIndex(i)}
+                            role={autoPlay ? "presentation" : "tab"}
+                            aria-selected={autoPlay ? undefined : on}
+                            tabIndex={autoPlay ? undefined : on ? 0 : -1}
+                            onClick={autoPlay ? undefined : () => setIndex(i)}
                             /* flex-1 from sm up so the thread spans the full
                                width of the section instead of stopping short. */
-                            className="group/step relative shrink-0 snap-center px-3 pb-2 text-center sm:flex-1"
+                            className="group/step relative shrink-0 snap-center px-3 pb-2 text-center sm:flex-1 outline-none"
                         >
                             {/* the warp thread of this stage, heavier once reached */}
                             <span
@@ -216,7 +208,7 @@ export function JourneyRail({
                                     this record
                                 </span>
                             )}
-                        </button>
+                        </span>
                     );
                 })}
             </div>
