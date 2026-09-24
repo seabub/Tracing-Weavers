@@ -224,8 +224,13 @@ export default async function RecordPage({
                     <h2 className="mt-2 text-[clamp(1.3rem,4vw,1.7rem)]">
                         {t.journeyTitle}
                     </h2>
+                    {/* Same self-running rail as the home page: the path
+                        walks itself, no click needed.  `activeStep` stays so
+                        the stage this particular cloth sits at keeps its
+                        "this record" badge while the journey animates. */}
                     <JourneyRail
                         activeStep={step ? String(step) : undefined}
+                        autoPlay
                         className="mt-3"
                     />
                 </div>
