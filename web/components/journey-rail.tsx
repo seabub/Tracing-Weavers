@@ -31,10 +31,15 @@ import { cn } from "@/lib/utils";
 export function JourneyRail({
     activeStep,
     tone = "light",
+    autoPlay = false,
     className,
 }: {
     activeStep?: string;
     tone?: "light" | "ink";
+    /** Advance through all seven stages on a loop, one every 3s.  For the
+        home page where no single stage is "this record" — it shows the
+        journey moving. */
+    autoPlay?: boolean;
     className?: string;
 }) {
     const steps = t.steps;
@@ -56,6 +61,16 @@ export function JourneyRail({
             behavior: reduce ? "auto" : "smooth",
         });
     }, [index, reduce]);
+
+    /* Auto-play: walk through all seven stages, one every three seconds,
+       restarting from Seed after Flourish.  Stops under reduced motion. */
+    useEffect(() => {
+        if (!autoPlay || reduce) return;
+        const timer = setInterval(() => {
+            setIndex((prev) => (prev + 1) % n);
+        }, 3000);
+        return () => clearInterval(timer);
+    }, [autoPlay, reduce, n]);
 
     function move(to: number) {
         const next = (to + n) % n;
@@ -150,7 +165,7 @@ export function JourneyRail({
                                 <span
                                     className={cn(
                                         "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full transition-[width,height,background-color] duration-[200ms] ease-[cubic-bezier(0.23,1,0.32,1)]",
-                                        on ? "h-2.5 w-2.5" : "h-1.5 w-1.5",
+                                        on ? "h-3 w-3" : "h-2 w-2",
                                         reached
                                             ? on
                                                 ? ink

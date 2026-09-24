@@ -10,20 +10,11 @@ import { ClaimBar } from "@/components/passport/claim-bar";
 import { RecordTraits } from "@/components/records/RecordTraits";
 import { ClothTabs } from "@/components/cloth-tabs";
 import { JourneyRail } from "@/components/journey-rail";
-import { CornerBrackets, ThreadRule } from "@/components/motif/marks";
+import { ThreadRule } from "@/components/motif/marks";
 import { Reveal } from "@/components/ui/reveal";
 export const dynamic = "force-dynamic";
 
-/* The fact table of a record: Indonesian label, English gloss, and the source
-   attribute. Same order as the artwork, so the card and the page agree. */
-const FACTS: string[] = [
-    "Origin",
-    "Material",
-    "Technique",
-    "Dye",
-    "Weeks on the loom",
-    "Dye baths",
-];
+
 
 /**
  * LEARN surface with one Configure action: where an NFC tap lands, on a phone,
@@ -114,23 +105,29 @@ export default async function RecordPage({
                                 id: "material",
                                 label: "Material",
                                 body: (
-                                    <>
-                                        <span className="text-ink">
-                                            {String(attr(record, "Material") ?? "Not recorded yet")}
-                                        </span>{" "}
-                                        from community gardens, dyed without synthetic thread.
-                                    </>
-                                ),
-                            },
-                            {
-                                id: "technique",
-                                label: "Technique",
-                                body: (
-                                    <>
-                                        <span className="text-ink">
-                                            {String(attr(record, "Technique") ?? "Not recorded yet")}
-                                        </span>. The warp is tied and dyed before weaving, so the pattern appears as the cloth does. One weaver, one loom, one length.
-                                    </>
+                                    <div className="space-y-3">
+                                        <div className="flex items-baseline justify-between gap-4 border-b border-border pb-2">
+                                            <span className="label">Material</span>
+                                            <span className="num text-right text-[15px] text-ink">{String(attr(record, "Material") ?? "Not recorded")}</span>
+                                        </div>
+                                        <div className="flex items-baseline justify-between gap-4 border-b border-border pb-2">
+                                            <span className="label">Technique</span>
+                                            <span className="num text-right text-[15px] text-ink">{String(attr(record, "Technique") ?? "Not recorded")}</span>
+                                        </div>
+                                        <div className="flex items-baseline justify-between gap-4 border-b border-border pb-2">
+                                            <span className="label">Dye</span>
+                                            <span className="num text-right text-[15px] text-ink">{String(attr(record, "Dye") ?? String(attr(record, "Material") ?? "Natural"))}</span>
+                                        </div>
+                                        {attr(record, "Size") && (
+                                            <div className="flex items-baseline justify-between gap-4 border-b border-border pb-2">
+                                                <span className="label">Size</span>
+                                                <span className="num text-right text-[15px] text-ink">{String(attr(record, "Size"))}</span>
+                                            </div>
+                                        )}
+                                        <p className="text-[15px] text-muted-foreground pt-1">
+                                            Handwoven in {String(attr(record, "Origin") ?? "Indonesia")}, one thread at a time.
+                                        </p>
+                                    </div>
                                 ),
                             },
                             {
@@ -141,6 +138,25 @@ export default async function RecordPage({
                                     <>
                                         This motif is worn at family ceremonies. The community decides how much may be recorded; the rest stays with the weaver.
                                     </>
+                                ),
+                            },
+                            {
+                                id: "origin",
+                                label: "Origin",
+                                body: (
+                                    <div className="space-y-3">
+                                        <div className="flex items-baseline justify-between gap-4 border-b border-border pb-2">
+                                            <span className="label">Origin</span>
+                                            <span className="num text-right text-[15px] text-ink">{String(attr(record, "Origin") ?? "")}</span>
+                                        </div>
+                                        <div className="flex items-baseline justify-between gap-4 border-b border-border pb-2">
+                                            <span className="label">Collection</span>
+                                            <span className="num text-right text-[15px] text-ink">{record.collection}</span>
+                                        </div>
+                                        <p className="text-[15px] text-muted-foreground pt-1">
+                                            Part of the Tracing Weavers programme — Indonesia Heritage for Human Flourishing. ICM × TBN Indonesia × Torajamelo.
+                                        </p>
+                                    </div>
                                 ),
                             },
                         ]}
@@ -162,28 +178,7 @@ export default async function RecordPage({
                         </p>
                     </header>
 
-                    {/* Two facts to a row on a phone: the same eight rows read
-                        as four, which is a third of the scrolling. */}
-                    <dl className="grid grid-cols-2 gap-x-6 sm:grid-cols-2">
-                        {FACTS.map((key) => {
-                            const value = attr(record, key);
-                            if (value === undefined) return null;
-                            return (
-                                <div key={key} className="border-t border-border py-2.5">
-                                    <dt className="label">{key}</dt>
-                                    <dd className="num mt-0.5 text-[16px] leading-snug">
-                                        {String(value)}
-                                    </dd>
-                                </div>
-                            );
-                        })}
-                        <div className="border-t border-border py-2.5">
-                            <dt className="label">{t.issued}</dt>
-                            <dd className="num mt-0.5 text-[16px] leading-snug">
-                                {issuedCount} / {record.supply}
-                            </dd>
-                        </div>
-                    </dl>
+
 
                     {mine ? (
                         <div className="space-y-4">

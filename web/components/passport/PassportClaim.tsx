@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { rememberLocalPassport } from "@/lib/local-passports";
+import { ClaimNotice } from "@/components/passport/claim-notice";
 import { t } from "@/lib/copy";
 import type { Passport } from "@/lib/types";
 
@@ -33,6 +34,7 @@ export function PassportClaim({
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [issued, setIssued] = useState<Passport | null>(null);
+    const [showNotice, setShowNotice] = useState(false);
     
 
     const soldOut = remaining !== null && remaining <= 0;
@@ -79,6 +81,7 @@ export function PassportClaim({
 
             rememberLocalPassport(body.passport);
             setIssued(body.passport);
+            setShowNotice(true);
         } catch {
             setError(
                 navigator.onLine
@@ -185,6 +188,14 @@ export function PassportClaim({
                     {t.claimFine}
                 </p>
             </section>
+
+            {showNotice && issued && (
+                <ClaimNotice
+                    passportId={issued.id}
+                    clothName={title.split(" · ")[0]}
+                    onClose={() => setShowNotice(false)}
+                />
+            )}
 
         </>
     );

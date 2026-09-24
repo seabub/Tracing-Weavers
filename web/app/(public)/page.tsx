@@ -41,7 +41,7 @@ export default function Home() {
             >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                    src="/imagery/cloth-hanging.jpg"
+                    src="/imagery/weaving-hands-loom.jpg"
                     alt=""
                     aria-hidden
                     className="absolute inset-0 h-full w-full object-cover"
@@ -129,7 +129,7 @@ export default function Home() {
                     {t.journeyLead}
                 </p>
 
-                <JourneyRail className="mt-5" tone="ink" />
+                <JourneyRail className="mt-5" tone="ink" autoPlay />
 
                 <dl className="mt-8 grid gap-x-10 gap-y-4 sm:grid-cols-2">
                     {t.explain.map((item) => (
@@ -160,7 +160,7 @@ export default function Home() {
                 </Reveal>
 
                 <p className="mt-8 border-t border-white/18 pt-4 text-[12px] tracking-[.12em] uppercase text-white/50">
-                    {brand} · three years measured, not promised.
+                    {brand} · All rights reserved · Confidential
                 </p>
             </section>
 
