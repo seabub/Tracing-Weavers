@@ -78,7 +78,7 @@ export default async function RecordPage({
                             draggable={false}
                         />
                         <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/95 via-ink/55 to-transparent px-5 pt-24 pb-6">
-                            <div className="data text-[13px] text-salmon">{record.code}</div>
+                            <div className="font-mono text-[15px] tracking-[.06em] uppercase text-salmon">{record.code}</div>
                             <div className="display mt-2 text-[clamp(1.7rem,6vw,2.15rem)] text-white">
                                 {record.title.split(" · ")[0]}
                             </div>
