@@ -77,8 +77,8 @@ export function PassportShelf({
                         </p>
                         <p className="mt-1 text-[14px] text-white/70">
                             {merged.length === 1
-                                ? "passport in this book"
-                                : "passports in this book"}
+                                ? "certificate in this book"
+                                : "certificates in this book"}
                         </p>
                     </div>
                     <p className="relative text-[11px] tracking-[.16em] uppercase text-white/50">
@@ -114,16 +114,16 @@ export function PassportShelf({
                         ))}
                     </ol>
                     <p className="mt-3 border-t border-ink/12 pt-3 text-[13px] text-ink-2">
-                        One page per claimed tag. Every page can be checked on its
+                        One page per claimed cloth. Every page can be checked on its
                         own.
                     </p>
                 </div>
             ),
         },
-        /* one page per passport */
+        /* one page per certificate */
         ...merged.map((passport, i) => ({
             id: passport.id,
-            label: `Passport ${i + 1} of ${merged.length}`,
+            label: `Certificate ${i + 1} of ${merged.length}`,
             content: (
                 <PassportLeaf
                     fill

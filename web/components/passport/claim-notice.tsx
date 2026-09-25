@@ -5,16 +5,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
 /**
- * A toast that appears after a passport is claimed.
+ * The moment a claim lands.
  *
- * It is not a generic "success" banner — it says what just happened ("You
- * now hold the record for [cloth name]"), where to find it, and what to do
- * next.  The animation is a soft slide-up from the bottom that holds for
- * eight seconds, so there is time to read it, and a close button so it
- * never traps anyone.
+ * This is the one screen in the app allowed to celebrate: it happens once per
+ * cloth, it is the whole point of the programme, and the holder has just
+ * attached their name to somebody's eleven weeks of work. So it congratulates
+ * them, says what they now hold, and — the part that matters — says where to
+ * find it again, with a button straight there rather than a word in a
+ * sentence.
  *
- * The notification is keyed on the passport id: claiming the same cloth
- * twice on the same page never stacks two copies of the same message.
+ * Nine seconds, dismissible, and keyed on the passport id so claiming twice
+ * never stacks two copies of the same message.
  */
 export function ClaimNotice({
     passportId,
@@ -31,53 +32,79 @@ export function ClaimNotice({
         if (!visible) return;
         const timer = setTimeout(() => {
             setVisible(false);
-            setTimeout(onClose, 400); // wait for exit animation
-        }, 8000);
+            setTimeout(onClose, 400); // wait for the exit animation
+        }, 9000);
         return () => clearTimeout(timer);
     }, [visible, onClose]);
+
+    function close() {
+        setVisible(false);
+        setTimeout(onClose, 400);
+    }
 
     return (
         <AnimatePresence>
             {visible && (
                 <motion.div
-                    initial={{ y: 80, opacity: 0 }}
+                    initial={{ y: 96, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: 60, opacity: 0 }}
-                    transition={{ duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
-                    className="fixed right-4 bottom-4 left-4 z-50 mx-auto max-w-md rounded-xl bg-ink p-5 text-white shadow-[0_18px_44px_rgba(32,30,29,.35)] sm:right-6 sm:left-auto sm:w-96"
+                    transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+                    role="status"
+                    aria-live="polite"
+                    className="fixed right-4 bottom-4 left-4 z-50 mx-auto max-w-md overflow-hidden rounded-xl bg-ink text-white shadow-[0_18px_44px_rgba(32,30,29,.4)] sm:right-6 sm:left-auto sm:w-[26rem]"
                     data-theme="dark"
                 >
-                    <button
-                        onClick={() => {
-                            setVisible(false);
-                            setTimeout(onClose, 400);
-                        }}
-                        className="absolute top-3 right-3 flex h-7 w-7 items-center justify-center rounded-full text-white/50 hover:text-white"
-                        aria-label="Close"
-                    >
-                        ×
-                    </button>
+                    {/* the finished edge of the weave, across the top */}
+                    <div
+                        aria-hidden
+                        className="selvedge absolute inset-x-0 top-0 opacity-70"
+                    />
 
-                    <div className="eyebrow">Congratulations</div>
-                    <p className="mt-2 text-[16px] leading-snug text-white/90">
-                        You now hold the digital record for{" "}
-                        <span className="text-salmon">{clothName}</span>.
-                    </p>
-                    <p className="mt-2 text-[14px] text-white/65">
-                        It is saved in{" "}
-                        <Link
-                            href="/collection"
-                            className="underline decoration-white/30 underline-offset-2 hover:text-salmon"
-                            onClick={() => {
-                                setVisible(false);
-                                setTimeout(onClose, 400);
-                            }}
+                    <div className="p-5">
+                        <button
+                            onClick={close}
+                            className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full text-white/45 transition-colors duration-150 hover:bg-white/10 hover:text-white"
+                            aria-label="Close"
                         >
-                            your traces
-                        </Link>{" "}
-                        — one page per weave, bound as a book you can open
-                        anywhere.
-                    </p>
+                            ×
+                        </button>
+
+                        <div className="eyebrow">Congratulations</div>
+
+                        <p className="mt-2 text-[17px] leading-snug text-white">
+                            You now hold the certificate for{" "}
+                            <span className="text-salmon">{clothName}</span>.
+                        </p>
+
+                        <p className="mt-2 text-[14px] leading-snug text-white/65">
+                            It is kept under your account. Open{" "}
+                            <span className="text-white/90">Traces</span> in the
+                            menu to see it again — the cloth&apos;s photograph and
+                            its data, bound as a book you can open anywhere.
+                        </p>
+
+                        <p className="num mt-2 text-[11px] break-all text-white/40">
+                            {passportId}
+                        </p>
+
+                        <div className="mt-4 flex items-center gap-3">
+                            <Link
+                                href="/collection"
+                                onClick={close}
+                                className="pressable inline-flex h-10 flex-1 items-center justify-center rounded-md bg-salmon px-4 text-[15px] font-medium text-ink hover:bg-[#FFB3A4]"
+                            >
+                                See it in your traces
+                            </Link>
+                            <Link
+                                href={`/verify/${passportId}`}
+                                onClick={close}
+                                className="inline-flex h-10 items-center justify-center rounded-md px-3 text-[14px] text-white/70 shadow-[0_0_0_1px_rgba(255,255,255,.25)] hover:bg-white/10 hover:text-white"
+                            >
+                                Check it
+                            </Link>
+                        </div>
+                    </div>
                 </motion.div>
             )}
         </AnimatePresence>
