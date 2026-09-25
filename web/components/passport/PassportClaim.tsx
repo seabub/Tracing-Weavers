@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { rememberLocalPassport } from "@/lib/local-passports";
 import { ClaimNotice } from "@/components/passport/claim-notice";
+import { PassportLeaf } from "@/components/passport/passport-leaf";
+import { getRecord } from "@/lib/records";
 import { t } from "@/lib/copy";
 import type { Passport } from "@/lib/types";
 
@@ -40,6 +42,14 @@ export function PassportClaim({
 
     const soldOut = remaining !== null && remaining <= 0;
     const clothName = title.split(" · ")[0];
+
+    /* The count on screen has to move the moment the claim lands: leaving
+       "still available 1" next to a certificate just issued is a lie the
+       holder can see. */
+    const available =
+        remaining === null
+            ? null
+            : Math.max(remaining - (issued ? 1 : 0), 0);
 
     async function claim() {
         setError(null);
@@ -99,44 +109,72 @@ export function PassportClaim({
                 {/* The lead is the one line that differs by state: telling a
                     signed-in holder to sign in reads as a bug. */}
                 <p className="mt-2 text-[15px] text-muted-foreground">
-                    {identity
-                        ? "It will be issued to you and kept under your account."
-                        : t.claimLead}
+                    {!identity
+                        ? t.claimLead
+                        : issued
+                          ? "Issued to you, and kept under your account."
+                          : "It will be issued to you and kept under your account."}
                 </p>
 
                 <dl className="mt-5">
                     <Row label="Record" value={code} mono />
-                    <Row
-                        label="Supply"
-                        value={
-                            supply > 1
-                                ? t.supplyShared.replace("{n}", String(supply))
-                                : t.supplyUnique
-                        }
-                    />
-                    <Row
-                        label={t.remaining}
-                        value={remaining === null ? "—" : String(Math.max(remaining, 0))}
-                    />
+                    {/* A one-of-one cloth already reads "the only one" in the
+                        caption above, so supply and remaining would both be
+                        restating it. They only carry information when there is
+                        more than one to go round. */}
+                    {supply > 1 && !issued && (
+                        <Row
+                            label="Supply"
+                            value={t.supplyShared.replace("{n}", String(supply))}
+                        />
+                    )}
+                    {supply > 1 && (
+                        <Row
+                            label={t.remaining}
+                            value={available === null ? "—" : String(available)}
+                        />
+                    )}
                     {identity && (
                         <Row label="Kept under" value={identity.email} />
                     )}
                 </dl>
 
                 {issued ? (
-                    <div className="mt-5 rounded-md bg-success/8 p-4 shadow-[0_0_0_1px_rgba(62,107,46,.25)]">
-                        <div className="text-[11px] tracking-[.2em] uppercase text-success">
-                            {t.claimedEyebrow}
+                    /* The certificate itself, here, the moment it is issued —
+                       claiming and then being handed a bare id made the
+                       holder go and look for what they had just got. */
+                    <div className="mt-5">
+                        <div className="rounded-md bg-success/8 p-4 shadow-[0_0_0_1px_rgba(62,107,46,.25)]">
+                            <div className="text-[11px] tracking-[.2em] uppercase text-success">
+                                {t.claimedEyebrow}
+                            </div>
+                            <p className="mt-1.5 text-[15px] text-ink">
+                                This certificate is yours, kept under your account.
+                            </p>
                         </div>
-                        <p className="data mt-2 text-[13px] break-all text-ink">
-                            {issued.id}
-                        </p>
-                        <Link
-                            href={`/verify/${issued.id}`}
-                            className="mt-3 inline-block min-h-6 py-1 text-[14px] font-medium text-ink hover:text-bt-red"
-                        >
-                            {t.viewPassport} →
-                        </Link>
+
+                        <div className="mt-4">
+                            <PassportLeaf
+                                passport={issued}
+                                record={getRecord(issued.code)}
+                            />
+                        </div>
+
+                        <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1">
+                            <Link
+                                href="/collection"
+                                className="min-h-6 py-1 text-[14px] font-medium text-ink hover:text-bt-red"
+                            >
+                                See it in your traces →
+                            </Link>
+                            <Link
+                                href={`/verify/${issued.id}`}
+                                className="min-h-6 py-1 text-[14px] text-muted-foreground hover:text-ink"
+                            >
+                                Check the certificate →
+                            </Link>
+                        </div>
+
                         <p className="mt-2 text-[15px] text-muted-foreground">
                             {t.claimedNote}
                         </p>
@@ -179,7 +217,7 @@ export function PassportClaim({
                 ) : (
                     <div className="mt-6">
                         <Link
-                            href={`/login?next=${encodeURIComponent(`/record/${code}`)}`}
+                            href={`/login?next=${encodeURIComponent(`/record/${encodeURIComponent(code)}`)}`}
                             className="block"
                         >
                             <Button size="lg" className="w-full">

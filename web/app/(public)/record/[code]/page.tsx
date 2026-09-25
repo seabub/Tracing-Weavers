@@ -6,7 +6,6 @@ import { currentIdentity } from "@/lib/session";
 import { t } from "@/lib/copy";
 import { PassportClaim } from "@/components/passport/PassportClaim";
 import { PassportLeaf } from "@/components/passport/passport-leaf";
-import { ClaimBar } from "@/components/passport/claim-bar";
 import { ClothTabs } from "@/components/cloth-tabs";
 import { JourneyRail } from "@/components/journey-rail";
 import { ThreadRule } from "@/components/motif/marks";
@@ -52,10 +51,9 @@ export default async function RecordPage({
         : undefined;
 
     const step = attr(record, "Journey step");
-    const soldOut = remaining <= 0;
 
     return (
-        <div className={mine ? undefined : "pb-28 lg:pb-0"}>
+        <div>
             <div className="flex flex-wrap items-center justify-between gap-3">
                 <Link
                     href="/"
@@ -236,8 +234,7 @@ export default async function RecordPage({
                 </div>
             </section>
 
-            {/* thumb-reachable action, phone only, only while it is useful */}
-            {!mine && <ClaimBar remaining={remaining} soldOut={soldOut} />}
+
         </div>
     );
 }
