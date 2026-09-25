@@ -15,6 +15,7 @@ import { allowRequest, guardRequest, tooMany } from "@/lib/request-guard";
  *
  *   POST { action: "register", name, email, password, outlet? }
  *   POST { action: "login",    email, password }
+ *   POST { action: "name",     name }              needs a session
  *   POST { action: "password", current, next }     needs a session
  *   POST { action: "email",    email, password }   needs a session
  *   DELETE                                          sign out
@@ -143,6 +144,34 @@ export async function POST(request: Request) {
     /* ── the two signed-in actions ──────────────────────────────────── */
     const identity = await currentIdentity();
     if (!identity) return bad("Sign in first.", 401);
+
+    if (action === "name") {
+        const next = String(body.name ?? "").trim();
+        const password = String(body.password ?? "");
+
+        if (next.length < 2 || next.length > MAX_NAME) {
+            return bad("A name is needed, between 2 and 100 characters.");
+        }
+
+        const account = await store.get(identity.email).catch(() => null);
+        if (!account) return bad("That account no longer exists.", 404);
+        if (next === account.name) {
+            return bad("That is already your name.");
+        }
+        /* The name is what a certificate is issued to, so it is asked for the
+           password the same way the email address is. */
+        if (!(await verifyPassword(password, account.passwordHash))) {
+            return bad("Your password is needed to change your name.", 401);
+        }
+
+        await store.save({ ...account, name: next });
+        await setSession({
+            name: next,
+            email: account.email,
+            outlet: account.outlet,
+        });
+        return ok({ changed: "name", name: next });
+    }
 
     if (action === "password") {
         const current = String(body.current ?? "");

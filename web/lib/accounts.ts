@@ -28,6 +28,10 @@ export type Account = {
     email: string;
     outlet?: string;
     passwordHash: string;
+    /** The member's number, e.g. TW-0001. Assigned once, at registration, and
+        never reused — it is the one identifier on the account that the member
+        did not choose and cannot change. */
+    memberNo: string;
     createdAt: string;
     updatedAt: string;
 };
@@ -85,6 +89,19 @@ export async function verifyPassword(
 }
 
 export const normaliseEmail = (email: string) => email.trim().toLowerCase();
+
+/** TW-0001 — four digits, so the register reads in order for years. */
+export const formatMemberNo = (n: number) =>
+    `TW-${String(Math.max(n, 1)).padStart(4, "0")}`;
+
+/** The highest number in use, so a removal can never hand the same number out
+    twice. */
+export function highestMemberNo(accounts: Account[]): number {
+    return accounts.reduce((max, account) => {
+        const digits = Number(account.memberNo?.replace(/[^0-9]/g, ""));
+        return Number.isFinite(digits) ? Math.max(max, digits) : max;
+    }, 0);
+}
 
 function publicView(account: Account): PublicAccount {
     const { passwordHash: _ignored, ...rest } = account;
@@ -158,6 +175,7 @@ const fileStore: AccountStore = {
                 email: wanted,
                 outlet: outlet?.trim() || undefined,
                 passwordHash: await hashPassword(password),
+                memberNo: formatMemberNo(highestMemberNo(data.accounts) + 1),
                 createdAt: now,
                 updatedAt: now,
             };
@@ -195,6 +213,9 @@ const fileStore: AccountStore = {
 const ACCOUNT_KEY = (email: string) => `dpp:account:${normaliseEmail(email)}`;
 /* an index of emails, so "how many accounts" never needs KEYS */
 const ACCOUNT_INDEX = "dpp:accounts";
+/* the member-number counter: INCR is atomic, so two people registering at the
+   same moment cannot be handed the same number */
+const MEMBER_COUNTER = "dpp:members";
 
 async function kvCommand<T>(command: (string | number)[]): Promise<T> {
     const url = (
@@ -243,6 +264,9 @@ const kvStore: AccountStore = {
             email: wanted,
             outlet: outlet?.trim() || undefined,
             passwordHash: await hashPassword(password),
+            memberNo: formatMemberNo(
+                Number(await kvCommand<number>(["INCR", MEMBER_COUNTER])),
+            ),
             createdAt: now,
             updatedAt: now,
         };
